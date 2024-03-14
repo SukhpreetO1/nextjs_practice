@@ -40,3 +40,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 <!-- ------------------------------------------------------------------------------------------------------------------------------------- -->
 To create a next js, run this command 
     npx create-next-app@latest
+
+To change the port number, just the following script in the package.json file 
+    "scripts": {
+    "start": "[ -e .env ] && set -a && . ./.env; next start",
+    },
+
+To run the project, run this command 
+    npm run dev <!-- locally -->
+    npm run build <!-- to make the build -->
+    npm start  <!-- to deploy it online -->
