@@ -22,7 +22,7 @@ const RadioButtonField = ({ label_heading, div_name, options, onSelect, classNam
                             </div>
                         ))}
                     </div>
-                    <span className={`${error[name]} text-red-500 font-semibold text-sm`} >{error[name]}</span>
+                    <span className={`${error} text-red-500 font-semibold text-sm`} >{error}</span>
                 </div>
             </div>
         </>

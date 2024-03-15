@@ -36,12 +36,14 @@
 
 @media (max-width: 1120px) {
   .first_name_last_name,
+  .email_username,
   .date_of_birth_mobile_number,
   .password_confirm_password {
     flex-wrap: wrap;
   }
 
   .signup_first_name,
+  .signup_email,
   .signup_date_of_birth,
   .signup_password {
     margin-right: 0rem !important;
@@ -49,6 +51,7 @@
 }
 
 .signup_first_name,
+.signup_email,
 .signup_date_of_birth,
 .signup_password {
   margin-right: 1rem;
