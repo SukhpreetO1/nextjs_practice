@@ -1,5 +1,4 @@
 export const validate_submit_form = (data) => {
-    console.log(data);
     const errors = {};
 
     if (!data.first_name.trim()) {
@@ -32,7 +31,7 @@ export const validate_submit_form = (data) => {
         errors.gender = 'Gender is required';        
     }
 
-    if (!data.hobbies.trim()) {
+    if (!data.hobbies) {
         errors.hobbies = 'Hobby field is required';        
     }
 

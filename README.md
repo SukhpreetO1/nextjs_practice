@@ -51,7 +51,15 @@ To run the project, run this command
     npm run build <!-- to make the build -->
     npm start  <!-- to deploy it online -->
 
+To connect the next js with firebase  : 
+    npm install firebase
 
+    to check the firebase version
+        firebase --version
+    If you have the Firebase CLI installed, but it's not v12.5.4 or higher, update it
+        npm update -g firebase-tools
+    If you don't have the Firebase CLI installed, install it:
+        npm install -g firebase-tools
 
-
-npx tailwindcss -i ./src/app/globals.css -o ./public/assets/css/global.css --watch
+To read the env file, fotenv package is used 
+    npm install dotenv

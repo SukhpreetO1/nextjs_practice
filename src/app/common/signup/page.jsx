@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_submit_form } from '@/app/api/routes/page';
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "@/db/firebase";
 
 const genderOptions = [
     { label: 'Male', value: '1' },
@@ -58,11 +60,26 @@ const Signup = () => {
         }));
     };
 
-    const formSubmit = (e) => {
+    const formSubmit = async (e) => {
         e.preventDefault();
         const validation_errors = validate_submit_form(formData);
         if (Object.keys(validation_errors).length === 0) {
-            console.log('Form Submitted');
+            try {
+            await addDoc(collection(db, "users"), {
+                first_name: formData.first_name.trim(),
+                last_name: formData.last_name.trim(),
+                email: formData.email.trim(),
+                username: formData.username.trim(),
+                date_of_birth: formData.date_of_birth.trim(),
+                mobile_number: formData.mobile_number.trim(),
+                gender: formData.gender,
+                hobbies: formData.hobbies,
+                password: formData.password,
+            })
+            console.log("Form submitted successfully");
+        } catch (e) {
+            console.log(e);
+        }
         } else {
             setErrors(validation_errors);
         }
