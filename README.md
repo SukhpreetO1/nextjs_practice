@@ -50,3 +50,8 @@ To run the project, run this command
     npm run dev <!-- locally -->
     npm run build <!-- to make the build -->
     npm start  <!-- to deploy it online -->
+
+
+
+
+npx tailwindcss -i ./src/app/globals.css -o ./public/assets/css/global.css --watch
