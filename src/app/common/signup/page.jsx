@@ -1,7 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_submit_form } from '@/app/api/routes/page';
-import { collection, addDoc } from "firebase/firestore"; 
+import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link } from '@/app/api/routes/page';
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/db/firebase";
 
 const genderOptions = [
@@ -62,24 +61,28 @@ const Signup = () => {
 
     const formSubmit = async (e) => {
         e.preventDefault();
-        const validation_errors = validate_submit_form(formData);
+        const validation_errors = validate_signup_submit_form(formData);
         if (Object.keys(validation_errors).length === 0) {
             try {
-            await addDoc(collection(db, "users"), {
-                first_name: formData.first_name.trim(),
-                last_name: formData.last_name.trim(),
-                email: formData.email.trim(),
-                username: formData.username.trim(),
-                date_of_birth: formData.date_of_birth.trim(),
-                mobile_number: formData.mobile_number.trim(),
-                gender: formData.gender,
-                hobbies: formData.hobbies,
-                password: formData.password,
-            })
-            console.log("Form submitted successfully");
-        } catch (e) {
-            console.log(e);
-        }
+                await addDoc(collection(db, "users"), {
+                    first_name: formData.first_name.trim(),
+                    last_name: formData.last_name.trim(),
+                    email: formData.email.trim(),
+                    username: formData.username.trim(),
+                    date_of_birth: formData.date_of_birth.trim(),
+                    mobile_number: formData.mobile_number.trim(),
+                    gender: formData.gender,
+                    hobbies: formData.hobbies,
+                    password: formData.password,
+                })
+                // if (get_documents) {
+                //     console.log(get_documents);
+                // } else {
+                //     console.log("Getting error");
+                // }
+            } catch (e) {
+                console.log(e);
+            }
         } else {
             setErrors(validation_errors);
         }
@@ -125,6 +128,9 @@ const Signup = () => {
                         <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" />
                     </div>
                 </form>
+                <div>
+                    <p className="mt-3 text-center text-sm text-gray-500">Already have an account? <Link href={LOGIN_URL} className="underline underline-offset-4 italic text-blue-500">Login here.</Link></p>
+                </div>
             </div>
         </>
     );

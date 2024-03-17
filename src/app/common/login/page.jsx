@@ -1,89 +1,69 @@
-import React from "react";
+"use client";
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter } from '@/app/api/routes/page';
 
 const login = () => {
+  const router = useRouter();
+
+  const [errors, setErrors] = useState({});
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
+
+  const loginFormSubmit = async (e) => {
+    e.preventDefault();
+    const validation_errors = validate_login_submit_form(formData);
+    if (Object.keys(validation_errors).length === 0) {
+      try {
+        await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        if (auth.currentUser.email === formData.email) {
+          router.push(HOME_URL);
+        } else {
+          console.log('Login failed. Please try again.');
+        }
+      }
+      catch (err) {
+        console.log('Account not created with this email. Please create your account.' + err);
+      }
+    } else {
+      setErrors(validation_errors);
+    }
+  }
+
   return (
     <>
       <div className="container">
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img
-              className="mx-auto h-10 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="Your Company"
-            />
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign in to your account
+              Login
             </h2>
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+            <form className="space-y-6" action="#" method="POST" onSubmit={loginFormSubmit}>
+              <div className="login_email">
+                <InputField label_heading="Email" id="email" className="email" name="email" placeholder="Email" div_name="login_email" value={formData.email} onChange={handleInputChange} error={errors.email} />
               </div>
-
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
-                  <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                      Forgot password?
-                    </a>
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+              <div className="login_password">
+                <PasswordField label_heading="Password" id="password" className="password" name="password" placeholder="Password" div_name="login_password" value={formData.password} onChange={handleInputChange} error={errors.password} />
               </div>
-
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign in
-                </button>
+              <div className="login_button">
+                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" />
               </div>
             </form>
-
-            <p className="mt-10 text-center text-sm text-gray-500">
-              Not a member?
-              <a
-                href="#"
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-              >
-              </a>
-            </p>
+            <div>
+              <p className="mt-3 text-center text-sm text-gray-500"> Not a member? <Link href={SIGNUP_URL} className="underline underline-offset-4 italic text-blue-500">Sign up here</Link></p>
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-export const validate_submit_form = (data) => {
+export const validate_signup_submit_form = (data) => {
     const errors = {};
 
     if (!data.first_name.trim()) {
