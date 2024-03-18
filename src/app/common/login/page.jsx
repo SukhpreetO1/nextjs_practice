@@ -1,7 +1,7 @@
 "use client";
 import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer } from '@/app/api/routes/page';
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
 
   const [errors, setErrors] = useState({});
@@ -17,6 +17,7 @@ const login = () => {
       ...prevFormData,
       [name]: value
     }));
+    setErrors(validate_login_submit_form(formData));
   };
 
   const loginFormSubmit = async (e) => {
@@ -74,4 +75,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

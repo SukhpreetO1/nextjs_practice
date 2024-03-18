@@ -1,6 +1,6 @@
 "use client";
 import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer } from '@/app/api/routes/page';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from "@/db/firebase";
 
 const genderOptions = [
@@ -33,61 +33,72 @@ const Signup = () => {
         confirm_password: '',
     });
 
+    const handleFieldChange = (name, value) => {
+        const validation_errors = validate_signup_submit_form({ ...formData, [name]: value });
+        setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+        setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
+    };
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: value
-        }));
-        setErrors(prevErrors => ({
-            ...prevErrors,
-            [name]: null
-        }));
+        handleFieldChange(name, value);
     };
-
+    
     const handleOptionSelect = (value) => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            gender: value,
-        }));
+        handleFieldChange('gender', value);
+    };
+    
+    const handleCheckboxSelect = (selectedHobbies) => {
+        handleFieldChange('hobbies', selectedHobbies);
     };
 
-    const handleCheckboxSelect = (selectedHobbies) => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            hobbies: selectedHobbies
-        }));
+    // checking the unique value
+    const checkUniqueFields = async (field, value) => {
+        const q = query(collection(db, 'users'), where(field, '==', value));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.empty;
     };
 
     const formSubmit = async (e) => {
         e.preventDefault();
         const validation_errors = validate_signup_submit_form(formData);
-        if (Object.keys(validation_errors).length === 0) {
-            try {
-                await addDoc(collection(db, "users"), {
-                    first_name: formData.first_name.trim(),
-                    last_name: formData.last_name.trim(),
-                    email: formData.email.trim(),
-                    username: formData.username.trim(),
-                    date_of_birth: formData.date_of_birth.trim(),
-                    mobile_number: formData.mobile_number.trim(),
-                    gender: formData.gender,
-                    hobbies: formData.hobbies,
-                    password: formData.password,
-                })
-                toast.success("New user created successfully", {
-                    position: "top-right",
-                });
-                router.push(LOGIN_URL);
-            } catch (e) {
-                toast.error(e, {
-                    position: "top-right",
-                });
-            }
-        } else {
+    
+        if (Object.keys(validation_errors).length > 0) {
             setErrors(validation_errors);
+            return;
         }
-    };
+    
+        const fieldsToCheck = ['username', 'email', 'mobile_number'];
+        const uniqueErrors = {};
+    
+        await Promise.all(fieldsToCheck.map(async (field) => {
+            const isUnique = await checkUniqueFields(field, formData[field].trim());
+            if (!isUnique) {
+                uniqueErrors[field] = `${field === 'mobile_number' ? 'Mobile number' : field.charAt(0).toUpperCase() + field.slice(1)} is already registered`;
+            }
+        }));
+    
+        if (Object.keys(uniqueErrors).length > 0) {
+            setErrors({ ...validation_errors, ...uniqueErrors });
+            return;
+        }
+    
+        try {
+            await addDoc(collection(db, 'users'), {
+                ...formData,
+                first_name: formData.first_name.trim(),
+                last_name: formData.last_name.trim(),
+                email: formData.email.trim(),
+                username: formData.username.trim(),
+                date_of_birth: formData.date_of_birth.trim(),
+                mobile_number: formData.mobile_number.trim(),
+            });
+            toast.success('New user created successfully', { position: 'top-right' });
+            router.push(LOGIN_URL);
+        } catch (e) {
+            toast.error(e.message, { position: 'top-right' });
+        }
+    };    
 
     return (
         <>

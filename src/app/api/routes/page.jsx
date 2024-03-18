@@ -20,10 +20,12 @@ import { LOGIN_URL, SIGNUP_URL, HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, PROF
 
 // firebase import
 import { auth } from "@/db/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 // use toastify for notification
 import { ToastContainer, toast } from "react-toastify";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export {
   Link,
@@ -61,5 +63,6 @@ export {
   signOut,
 
   toast,
-  ToastContainer
+  ToastContainer,
+  FontAwesomeIcon
 };

@@ -66,3 +66,8 @@ To read the env file, fotenv package is used
 
 To add the notification, 
     npm install --save react-toastify
+
+    npm i --save @fortawesome/fontawesome-svg-core
+    npm i --save @fortawesome/free-regular-svg-icons
+    npm i --save @fortawesome/react-fontawesome
+    npm i --save @fortawesome/react-fontawesome@latest
