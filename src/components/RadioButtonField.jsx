@@ -17,7 +17,7 @@ const RadioButtonField = ({ label_heading, div_name, options, onSelect, classNam
                     <div className={`${className} flex justify-between mt-2`}>
                         {options.map((option) => (
                             <div key={option.value} >
-                                <input type="radio" id={option.label.toLowerCase()} className={`${option.label.toLowerCase()} mr-2`} name={option.label.toLowerCase()} value={option.value} checked={gender === option.value} onChange={handleOptionChange}/>
+                                <input type="radio" id={option.label.toLowerCase()} className={`${option.label.toLowerCase()} mr-2`} name={option.label.toLowerCase()} value={option.value} checked={gender === option.value} onChange={handleOptionChange} onFocus={handleOptionChange}/>
                                 <label htmlFor={option.label.toLowerCase()}>{option.label}</label>
                             </div>
                         ))}

@@ -24,7 +24,7 @@ const CheckboxField = ({ label_heading, div_name, options, onSelect, className, 
                     <div className={`${className} flex justify-between mt-2`}>
                         {options.map((option) => (
                             <div key={option.value} >
-                                <input type="checkbox" id={option.label.toLowerCase()} className={`${option.label.toLowerCase()} mr-2`} name={option.label.toLowerCase()} value={option.value} checked={selectedHobbies.includes(option.value)} onChange={handleOptionChange} />
+                                <input type="checkbox" id={option.label.toLowerCase()} className={`${option.label.toLowerCase()} mr-2`} name={option.label.toLowerCase()} value={option.value} checked={selectedHobbies.includes(option.value)} onChange={handleOptionChange} onFocus={handleOptionChange}/>
                                 <label htmlFor={option.label.toLowerCase()}>{option.label}</label>
                             </div>
                         ))}

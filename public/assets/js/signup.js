@@ -21,7 +21,7 @@ export const validate_signup_submit_form = (data) => {
 
     if (!data.username.trim()) {
         errors.username = 'Username is required';
-    } else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(data.first_name)){
+    } else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(data.username)){
         errors.username = 'Username must contain letters and numbers only';
     }
 
@@ -31,7 +31,7 @@ export const validate_signup_submit_form = (data) => {
 
     if (!data.mobile_number.trim()) {
         errors.mobile_number = 'Mobile number is required';
-    } else if (!/^\d{10,12}$/.test(data.first_name)){
+    } else if (!/^\d{10,12}$/.test(data.mobile_number)){
         errors.mobile_number = 'Mobile number must contain 10 to 12 numbers only.';
     }
 

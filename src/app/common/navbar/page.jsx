@@ -1,5 +1,6 @@
 "use client"
-import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, auth, useRouter, HOME_URL, PROFILE } from '@/app/api/routes/page';
+import { ABOUT } from '@/app/api/redirection_route/page';
+import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, auth, useRouter, HOME_URL, PROFILE, COMMON_HOME_URL, LOGIN_URL } from '@/app/api/routes/page';
 
 const Navbar = () => {
     const router = useRouter();
@@ -15,20 +16,30 @@ const Navbar = () => {
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            router.push(HOME_URL);
-            console.log('logout successfullly');
+            clearCookies();
+            localStorage.removeItem('hasShownLoginToast');
+            router.push(LOGIN_URL);
+            console.log('logout successfully');
         } catch (error) {
             console.error('Error signing out:', error);
         }
     };
+    
+    const clearCookies = () => {
+        const cookies = document.cookie.split("; ");
+        for (let cookie of cookies) {
+            const [name, _] = cookie.split("=");
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+        }
+    };    
 
     return (
-        <div className='container'>
+        <section>
             <nav className="w-full z-10">
                 <div className="justify-between px-4 mx-auto md:items-center md:flex md:px-8">
                     <div>
                         <div className="flex items-center justify-between py-3 md:py-5 md:block">
-                            <Link href="/">
+                            <Link href={COMMON_HOME_URL}>
                                 <Image src={LOGO_IMAGE_URL} width={50} height={50} alt="logo" />
                             </Link>
                         </div>
@@ -36,8 +47,8 @@ const Navbar = () => {
                     <div>
                         <div className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar ? 'p-12 md:p-0 block' : 'hidden'}`}>
                             <ul className="h-screen md:h-auto items-center justify-center md:flex ">
-                                <li className="pb-6 text-xl py-2 md:px-6 text-center border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
-                                    <Link href="#about" onClick={() => setNavbar(!navbar)}>  About </Link>
+                                <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
+                                    <Link href={COMMON_HOME_URL} onClick={() => setNavbar(!navbar)}> Home </Link>
                                 </li>
                                 <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
                                     <Link href="#blogs" onClick={() => setNavbar(!navbar)}> Blogs </Link>
@@ -47,6 +58,9 @@ const Navbar = () => {
                                 </li>
                                 <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
                                     <Link href="#projects" onClick={() => setNavbar(!navbar)}> Projects </Link>
+                                </li>
+                                <li className="pb-6 text-xl py-2 md:px-6 text-center border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
+                                    <Link href={ABOUT} onClick={() => setNavbar(!navbar)}>  About </Link>
                                 </li>
                             </ul>
                         </div>
@@ -66,7 +80,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </nav>
-        </div>
+        </section>
     );
 }
 

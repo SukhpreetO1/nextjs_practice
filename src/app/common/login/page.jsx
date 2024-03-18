@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, COMMON_HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer } from '@/app/api/routes/page';
 
 const Login = () => {
   const router = useRouter();
@@ -13,11 +13,9 @@ const Login = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: value
-    }));
-    setErrors(validate_login_submit_form(formData));
+    const validation_errors = validate_login_submit_form({ ...formData, [name]: value });
+    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+    setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
   };
 
   const loginFormSubmit = async (e) => {
@@ -27,7 +25,7 @@ const Login = () => {
       try {
         await signInWithEmailAndPassword(auth, formData.email, formData.password);
         if (auth.currentUser.email === formData.email) {
-          router.push(HOME_URL);
+          router.push(COMMON_HOME_URL);
         } else {
           toast.error("Login failed. Please try again.", {
             position: "top-right",
@@ -46,7 +44,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="container">
+      <section>
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> Login </h2>
@@ -69,7 +67,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
       <ToastContainer />
     </>
   );

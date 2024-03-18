@@ -1,6 +1,6 @@
 "use client";
-import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer } from '@/app/api/routes/page';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash } from '@/app/api/routes/page';
+import { collection, query, where, getDocs, addDoc,serverTimestamp } from 'firebase/firestore';
 import { db } from "@/db/firebase";
 
 const genderOptions = [
@@ -18,8 +18,8 @@ const hobbiesOptions = [
 ];
 
 const Signup = () => {
+    const router = useRouter();
     const [errors, setErrors] = useState({});
-
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -84,14 +84,21 @@ const Signup = () => {
         }
     
         try {
+            const hashedPassword = await hash(formData.password, 10);
+            const { confirm_password, ...userData } = formData;
             await addDoc(collection(db, 'users'), {
-                ...formData,
+                ...userData,
                 first_name: formData.first_name.trim(),
                 last_name: formData.last_name.trim(),
                 email: formData.email.trim(),
                 username: formData.username.trim(),
                 date_of_birth: formData.date_of_birth.trim(),
                 mobile_number: formData.mobile_number.trim(),
+                gender:formData.gender,
+                hobbies:formData.hobbies,
+                password:hashedPassword,
+                created_at: serverTimestamp(),
+                updated_at: serverTimestamp()
             });
             toast.success('New user created successfully', { position: 'top-right' });
             router.push(LOGIN_URL);

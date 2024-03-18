@@ -67,10 +67,14 @@ To read the env file, fotenv package is used
 To add the notification, 
     npm install --save react-toastify
 
+To use the font awesome,
     npm i --save @fortawesome/fontawesome-svg-core
     npm i --save @fortawesome/free-regular-svg-icons
     npm i --save @fortawesome/react-fontawesome
     npm i --save @fortawesome/react-fontawesome@latest
 
-
+To store data in cookies
     npm install js-cookie
+
+To do password hashing
+    npm install bcryptjs

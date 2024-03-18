@@ -16,7 +16,7 @@ import { validate_signup_submit_form } from '@/../public/assets/js/signup';
 import { validate_login_submit_form } from '@/../public/assets/js/login';
 
 // page redirection files
-import { LOGIN_URL, SIGNUP_URL, HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, PROFILE } from '@/app/api/redirection_route/page';
+import { LOGIN_URL, SIGNUP_URL, HOME_URL, COMMON_HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, PROFILE, FORGOT_PASSWORD } from '@/app/api/redirection_route/page';
 
 // firebase import
 import { auth } from "@/db/firebase";
@@ -25,9 +25,14 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } f
 // use toastify for notification
 import { ToastContainer, toast } from "react-toastify";
 
+// use fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+// used to store data in cookies
 import Cookies from 'js-cookie';
+
+// use for hashing password
+import { hash } from 'bcryptjs'; 
 
 export {
   Link,
@@ -48,9 +53,11 @@ export {
   LOGIN_URL,
   SIGNUP_URL,
   HOME_URL,
+  COMMON_HOME_URL, 
   LOGO_IMAGE_URL,
   AVATAR_IMAGE_URL,
   PROFILE,
+  FORGOT_PASSWORD,
 
   useRouter,
   usePathname,
@@ -68,5 +75,6 @@ export {
   ToastContainer,
   FontAwesomeIcon,
 
-  Cookies
+  Cookies,
+  hash
 };
