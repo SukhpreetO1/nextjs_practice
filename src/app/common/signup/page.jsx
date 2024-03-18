@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link } from '@/app/api/routes/page';
+import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer } from '@/app/api/routes/page';
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/db/firebase";
 
@@ -75,13 +75,14 @@ const Signup = () => {
                     hobbies: formData.hobbies,
                     password: formData.password,
                 })
-                // if (get_documents) {
-                //     console.log(get_documents);
-                // } else {
-                //     console.log("Getting error");
-                // }
+                toast.success("New user created successfully", {
+                    position: "top-right",
+                });
+                router.push(LOGIN_URL);
             } catch (e) {
-                console.log(e);
+                toast.error(e, {
+                    position: "top-right",
+                });
             }
         } else {
             setErrors(validation_errors);
@@ -132,6 +133,7 @@ const Signup = () => {
                     <p className="mt-3 text-center text-sm text-gray-500">Already have an account? <Link href={LOGIN_URL} className="underline underline-offset-4 italic text-blue-500">Login here.</Link></p>
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 };

@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer } from '@/app/api/routes/page';
 
 const login = () => {
   const router = useRouter();
@@ -28,11 +28,15 @@ const login = () => {
         if (auth.currentUser.email === formData.email) {
           router.push(HOME_URL);
         } else {
-          console.log('Login failed. Please try again.');
+          toast.error("Login failed. Please try again.", {
+            position: "top-right",
+          });
         }
       }
       catch (err) {
-        console.log('Account not created with this email. Please create your account.' + err);
+        toast.error("Invalid credential", {
+          position: "top-right",
+        });
       }
     } else {
       setErrors(validation_errors);
@@ -44,9 +48,7 @@ const login = () => {
       <div className="container">
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Login
-            </h2>
+            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> Login </h2>
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -67,6 +69,7 @@ const login = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

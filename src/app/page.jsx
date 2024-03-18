@@ -1,5 +1,4 @@
 "use client"
-import "react-toastify/dist/ReactToastify.css";
 import { React, auth, LOGIN_URL, toast, ToastContainer, useEffect, Navbar, useRouter } from '@/app/api/routes/page';
 
 export default function CommonHome() {

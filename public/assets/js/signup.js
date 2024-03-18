@@ -43,7 +43,5 @@ export const validate_signup_submit_form = (data) => {
         errors.confirm_password = 'Confirm password is required';
     }
 
-
-
     return errors;
 };
