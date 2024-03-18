@@ -27,6 +27,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import Cookies from 'js-cookie';
+
 export {
   Link,
   React,
@@ -64,5 +66,7 @@ export {
 
   toast,
   ToastContainer,
-  FontAwesomeIcon
+  FontAwesomeIcon,
+
+  Cookies
 };
