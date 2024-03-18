@@ -63,3 +63,6 @@ To connect the next js with firebase  :
 
 To read the env file, fotenv package is used 
     npm install dotenv
+
+To add the notification, 
+    npm install --save react-toastify

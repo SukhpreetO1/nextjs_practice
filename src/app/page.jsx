@@ -1,11 +1,28 @@
 "use client"
-import { React, LOGIN_URL } from '@/app/api/routes/page';
+import "react-toastify/dist/ReactToastify.css";
+import { React, auth, LOGIN_URL, toast, ToastContainer, useEffect, Navbar, useRouter } from '@/app/api/routes/page';
 
-export default function Home() {
-  return (
-  <>
-    home page
-    <button onClick={LOGIN_URL}>Logout</button>
-  </>
-  )
+export default function CommonHome() {
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!auth.currentUser) {
+            router.push(LOGIN_URL);
+        } else if (auth.currentUser?.email != null) {
+            toast.success("Login successfully", {
+                position: "top-right",
+            });
+        }
+    }, [router]);
+
+    if (!auth.currentUser) {
+        return null;
+    }
+
+    return (
+        <>
+            <Navbar />
+            <ToastContainer />
+        </>
+    );
 }
