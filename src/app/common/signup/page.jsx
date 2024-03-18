@@ -1,7 +1,5 @@
 "use client";
-import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash } from '@/app/api/routes/page';
-import { collection, query, where, getDocs, addDoc,serverTimestamp } from 'firebase/firestore';
-import { db } from "@/db/firebase";
+import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash, collection, query, where, getDocs, addDoc,serverTimestamp, db } from '@/app/api/routes/page';
 
 const genderOptions = [
     { label: 'Male', value: '1' },

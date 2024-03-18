@@ -19,8 +19,9 @@ import { validate_login_submit_form } from '@/../public/assets/js/login';
 import { LOGIN_URL, SIGNUP_URL, HOME_URL, COMMON_HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, PROFILE, FORGOT_PASSWORD } from '@/app/api/redirection_route/page';
 
 // firebase import
-import { auth } from "@/db/firebase";
+import { auth, db } from "@/db/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { collection, query, where, getDocs, addDoc,serverTimestamp } from 'firebase/firestore';
 
 // use toastify for notification
 import { ToastContainer, toast } from "react-toastify";
@@ -33,6 +34,7 @@ import Cookies from 'js-cookie';
 
 // use for hashing password
 import { hash } from 'bcryptjs'; 
+
 
 export {
   Link,
@@ -67,9 +69,11 @@ export {
 
 
   auth,
+  db,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  collection, query, where, getDocs, addDoc,serverTimestamp,
 
   toast,
   ToastContainer,
