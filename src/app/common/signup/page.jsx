@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash, collection, query, where, getDocs, addDoc,serverTimestamp, db } from '@/app/api/routes/page';
+import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash, collection, query, where, getDocs, addDoc,serverTimestamp, db, auth, createUserWithEmailAndPassword } from '@/app/api/routes/page';
 
 const genderOptions = [
     { label: 'Male', value: '1' },
@@ -98,7 +98,8 @@ const Signup = () => {
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp()
             });
-            toast.success('New user created successfully', { position: 'top-right' });
+
+            createUserWithEmailAndPassword(auth, formData.email, formData.password);
             router.push(LOGIN_URL);
         } catch (e) {
             toast.error(e.message, { position: 'top-right' });

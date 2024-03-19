@@ -5,7 +5,6 @@ export function middleware(request) {
   const path = request.nextUrl.pathname;
 
   const isPublicPath = path === LOGIN_URL || path === SIGNUP_URL || path === FORGOT_PASSWORD;
-
   const token = request.cookies.get('currentUserToken');
   if (!token && !isPublicPath) {
     return NextResponse.redirect(new URL(LOGIN_URL, request.url));
@@ -14,7 +13,6 @@ export function middleware(request) {
   if (token && isPublicPath) {
     return NextResponse.redirect(new URL(COMMON_HOME_URL, request.url));
   }
-
 }
 
 export const config = {

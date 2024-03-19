@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, COMMON_HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, COMMON_HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies } from '@/app/api/routes/page';
 
 const Login = () => {
   const router = useRouter();
@@ -21,10 +21,15 @@ const Login = () => {
   const loginFormSubmit = async (e) => {
     e.preventDefault();
     const validation_errors = validate_login_submit_form(formData);
+    const expirationTime = new Date();
+    expirationTime.setTime(expirationTime.getTime() + 10 * 60 * 1000);
     if (Object.keys(validation_errors).length === 0) {
       try {
         await signInWithEmailAndPassword(auth, formData.email, formData.password);
         if (auth.currentUser.email === formData.email) {
+          Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
+            expires: expirationTime
+          });
           router.push(COMMON_HOME_URL);
         } else {
           toast.error("Login failed. Please try again.", {
@@ -33,6 +38,7 @@ const Login = () => {
         }
       }
       catch (err) {
+        console.log(err);
         toast.error("Invalid credential", {
           position: "top-right",
         });
