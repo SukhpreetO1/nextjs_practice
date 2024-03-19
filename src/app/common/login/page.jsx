@@ -22,6 +22,25 @@ const Login = () => {
     e.preventDefault();
     const validation_errors = validate_login_submit_form(formData);
     if (Object.keys(validation_errors).length === 0) {
+      // const querySnapshot = await getDocs(collection(db, "users"));
+      // querySnapshot.forEach((doc) => {
+      //   const userData = doc.data();
+      //   const email = userData.email;
+      //   const hashedPassword = userData.password;
+
+      //   if (email === formData.email) {
+      //     bcrypt.compare(formData.password, hashedPassword, (err, result) => {
+      //       if (result) {
+      //         router.push(COMMON_HOME_URL);
+      //       } else {
+      //         toast.error("Email and password do not match", {
+      //           position: "top-right",
+      //         });
+      //       }
+      //     });
+      //   }
+      // });
+
       try {
         await signInWithEmailAndPassword(auth, formData.email, formData.password);
         if (auth.currentUser.email === formData.email) {

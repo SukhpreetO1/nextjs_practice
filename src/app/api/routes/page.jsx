@@ -33,7 +33,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Cookies from 'js-cookie';
 
 // use for hashing password
-import { hash } from 'bcryptjs'; 
+import bcrypt, { hash } from 'bcryptjs'; 
 
 
 export {
@@ -73,12 +73,13 @@ export {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  collection, query, where, getDocs, addDoc,serverTimestamp,
+  collection, query, where, getDocs, addDoc,serverTimestamp, 
 
   toast,
   ToastContainer,
   FontAwesomeIcon,
 
   Cookies,
-  hash
+  hash,
+  bcrypt
 };
