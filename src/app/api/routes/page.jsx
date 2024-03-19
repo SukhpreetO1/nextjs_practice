@@ -16,12 +16,12 @@ import { validate_signup_submit_form } from '@/../public/assets/js/signup';
 import { validate_login_submit_form } from '@/../public/assets/js/login';
 
 // page redirection files
-import { LOGIN_URL, SIGNUP_URL, HOME_URL, COMMON_HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, PROFILE, FORGOT_PASSWORD } from '@/app/api/redirection_route/page';
+import { LOGIN_URL, SIGNUP_URL, HOME_URL, COMMON_HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, PROFILE, FORGOT_PASSWORD, ABOUT } from '@/app/api/redirection_route/page';
 
 // firebase import
 import { auth, db } from "@/db/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { collection, query, where, getDocs, addDoc,serverTimestamp } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth, signInWithCustomToken } from "firebase/auth";
+import { collection, query, where, getDocs, addDoc,serverTimestamp, getFirestore, doc, getDoc } from 'firebase/firestore';
 
 // use toastify for notification
 import { ToastContainer, toast } from "react-toastify";
@@ -59,6 +59,7 @@ export {
   AVATAR_IMAGE_URL,
   PROFILE,
   FORGOT_PASSWORD,
+  ABOUT,
 
   useRouter,
   usePathname,
@@ -69,10 +70,13 @@ export {
 
   auth,
   db,
+  getFirestore, 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  getAuth, 
   signOut,
-  collection, query, where, getDocs, addDoc,serverTimestamp, 
+  collection, query, where, getDocs, getDoc, addDoc,serverTimestamp, doc, signInWithCustomToken,
+  onAuthStateChanged, 
 
   toast,
   ToastContainer,

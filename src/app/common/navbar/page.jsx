@@ -1,6 +1,5 @@
 "use client"
-import { ABOUT } from '@/app/api/redirection_route/page';
-import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, auth, useRouter, HOME_URL, PROFILE, COMMON_HOME_URL, LOGIN_URL } from '@/app/api/routes/page';
+import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, auth, useRouter, HOME_URL, PROFILE, COMMON_HOME_URL, LOGIN_URL, toast, ToastContainer, ABOUT } from '@/app/api/routes/page';
 
 const Navbar = () => {
     const router = useRouter();
@@ -17,11 +16,12 @@ const Navbar = () => {
         try {
             await signOut(auth);
             clearCookies();
-            localStorage.removeItem('hasShownLoginToast');
+            localStorage.setItem('hasShownLoggedOutToast', true);
             router.push(LOGIN_URL);
-            console.log('logout successfully');
         } catch (error) {
-            console.error('Error signing out:', error);
+            toast.error("Logout failed. Please try again.", {
+                position: "top-right",
+            });
         }
     };
     
@@ -80,6 +80,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </nav>
+            <ToastContainer/>
         </section>
     );
 }

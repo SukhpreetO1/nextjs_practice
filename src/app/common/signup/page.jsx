@@ -84,22 +84,27 @@ const Signup = () => {
         try {
             const hashedPassword = await hash(formData.password, 10);
             const { confirm_password, ...userData } = formData;
-            await addDoc(collection(db, 'users'), {
-                ...userData,
-                first_name: formData.first_name.trim(),
-                last_name: formData.last_name.trim(),
-                email: formData.email.trim(),
-                username: formData.username.trim(),
-                date_of_birth: formData.date_of_birth.trim(),
-                mobile_number: formData.mobile_number.trim(),
-                gender:formData.gender,
-                hobbies:formData.hobbies,
-                password:hashedPassword,
+
+            const user_data = {
+                first_name: String(formData.first_name.trim()),
+                last_name: String(formData.last_name.trim()),
+                email: String(formData.email.trim()),
+                username: String(formData.username.trim()),
+                date_of_birth: String(formData.date_of_birth.trim()),
+                mobile_number: Number(formData.mobile_number.trim()),
+                gender: Number(formData.gender),
+                role_id: Number(1),
+                hobbies: Array(formData.hobbies),
+                password: String(hashedPassword),
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp()
-            });
+            }
+            await addDoc(collection(db, 'users'), user_data);
 
             createUserWithEmailAndPassword(auth, formData.email, formData.password);
+
+            localStorage.setItem("hasShownAccountCreatedToast", false);
+
             router.push(LOGIN_URL);
         } catch (e) {
             toast.error(e.message, { position: 'top-right' });

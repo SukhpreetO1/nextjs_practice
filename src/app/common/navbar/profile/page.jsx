@@ -1,18 +1,17 @@
 "use client"
-import { React, Cookies, toast, useEffect, useState, Image, AVATAR_IMAGE_URL, InputField } from '@/app/api/routes/page';
+import { React, Cookies, toast, useEffect, useState, Image, AVATAR_IMAGE_URL, InputField, getAuth } from '@/app/api/routes/page';
 
 const Profile = () => {
     const [email, setEmail] = useState('');
 
     useEffect(() => {
-        const currentUserCookie = Cookies.get('currentUser');
-        if (currentUserCookie) {
-            const currentUser = JSON.parse(currentUserCookie);
-            setEmail(currentUser.email);
+        const currentUserAccessToken = Cookies.get('currentUserToken');
+        
+        if (currentUserAccessToken) {
+            const auth = getAuth();
+            // setEmail(currentUserEmail);
         } else {
-            toast.error("Please login first", {
-                position: "top-right",
-            });
+            console.log("currentUserToken cookie not found");
         }
     }, []);
 

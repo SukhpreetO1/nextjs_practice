@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, COMMON_HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, COMMON_HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect } from '@/app/api/routes/page';
 
 const Login = () => {
   const router = useRouter();
@@ -18,6 +18,20 @@ const Login = () => {
     setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("hasShownAccountCreatedToast") === "false") {
+      toast.success("New account created successfully", {
+        position: "top-right",
+      });
+      localStorage.removeItem("hasShownAccountCreatedToast");
+    } else if (localStorage.getItem("hasShownLoggedOutToast") === "true"){
+      toast.success("Logout successfully", {
+        position: "top-right",
+      });
+      localStorage.removeItem("hasShownLoggedOutToast");
+    }
+  }, []);
+
   const loginFormSubmit = async (e) => {
     e.preventDefault();
     const validation_errors = validate_login_submit_form(formData);
@@ -30,6 +44,7 @@ const Login = () => {
           Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
             expires: expirationTime
           });
+          localStorage.setItem("hasShownLoginToast", false);
           router.push(COMMON_HOME_URL);
         } else {
           toast.error("Login failed. Please try again.", {
