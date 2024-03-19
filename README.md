@@ -78,3 +78,8 @@ To store data in cookies
 
 To do password hashing
     npm install bcryptjs
+
+In order to stop calling routes 2 times when add "use client", then change the nextConfig in the next.config.mjs file
+    const nextConfig = {
+        reactStrictMode: false
+    };

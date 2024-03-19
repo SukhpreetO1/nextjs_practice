@@ -35,7 +35,6 @@ import Cookies from 'js-cookie';
 // use for hashing password
 import bcrypt, { hash } from 'bcryptjs'; 
 
-
 export {
   Link,
   React,
@@ -81,5 +80,6 @@ export {
 
   Cookies,
   hash,
-  bcrypt
+  bcrypt,
+
 };
