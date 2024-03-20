@@ -21,7 +21,7 @@ const ForgotPassword = () => {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          await sendPasswordResetEmail(auth, formData.email);
+          await sendPasswordResetEmail(auth, formData.email);;
           console.log(formData.email);
           if (formData.email !== null) {
             localStorage.setItem("hasShownForgotPasswordToast", false);

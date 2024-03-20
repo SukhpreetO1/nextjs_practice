@@ -84,6 +84,7 @@ const Signup = () => {
         try {
             const hashedPassword = await hash(formData.password, 10);
             const { confirm_password, ...userData } = formData;
+            const hobbiesArray = Array.isArray(formData.hobbies) ? formData.hobbies : [formData.hobbies];
 
             const user_data = {
                 first_name: String(formData.first_name.trim()),
@@ -94,7 +95,7 @@ const Signup = () => {
                 mobile_number: Number(formData.mobile_number.trim()),
                 gender: Number(formData.gender),
                 role_id: Number(1),
-                hobbies: Array(formData.hobbies),
+                hobbies: hobbiesArray,
                 password: String(hashedPassword),
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp()
