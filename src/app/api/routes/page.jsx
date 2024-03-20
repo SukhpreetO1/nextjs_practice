@@ -16,7 +16,7 @@ import { validate_signup_submit_form } from '@/../public/assets/js/signup';
 import { validate_login_submit_form } from '@/../public/assets/js/login';
 
 // page redirection files
-import { LOGIN_URL, SIGNUP_URL, HOME_URL, COMMON_HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, PROFILE, FORGOT_PASSWORD, ABOUT } from '@/app/api/redirection_route/page';
+import { LOGIN_URL, SIGNUP_URL, HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, NAVBAR_PROFILE, FORGOT_PASSWORD, NAVBAR_ABOUT } from '@/app/api/redirection_route/page';
 
 // firebase import
 import { auth, db } from "@/db/firebase";
@@ -58,12 +58,11 @@ export {
   LOGIN_URL,
   SIGNUP_URL,
   HOME_URL,
-  COMMON_HOME_URL, 
   LOGO_IMAGE_URL,
   AVATAR_IMAGE_URL,
-  PROFILE,
+  NAVBAR_PROFILE,
   FORGOT_PASSWORD,
-  ABOUT,
+  NAVBAR_ABOUT,
 
   useRouter,
   usePathname,

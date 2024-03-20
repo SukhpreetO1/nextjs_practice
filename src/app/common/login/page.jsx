@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, COMMON_HOME_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect, HOME_URL } from '@/app/api/routes/page';
 
 const Login = () => {
   const router = useRouter();
@@ -45,7 +45,7 @@ const Login = () => {
             expires: expirationTime
           });
           localStorage.setItem("hasShownLoginToast", false);
-          router.push(COMMON_HOME_URL);
+          router.push(HOME_URL);
         } else {
           toast.error("Login failed. Please try again.", {
             position: "top-right",

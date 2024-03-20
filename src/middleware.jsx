@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { FORGOT_PASSWORD, LOGIN_URL, SIGNUP_URL, HOME_URL, COMMON_HOME_URL } from '@/app/api/routes/page';
+import { FORGOT_PASSWORD, LOGIN_URL, SIGNUP_URL, HOME_URL } from '@/app/api/routes/page';
 
 export function middleware(request) {
   const path = request.nextUrl.pathname;
@@ -13,14 +13,13 @@ export function middleware(request) {
   }
 
   if (token && isPublicPath) {
-    return NextResponse.redirect(new URL(COMMON_HOME_URL, request.url));
+    return NextResponse.redirect(new URL(HOME_URL, request.url));
   }
 }
 
 export const config = {
   matcher: [
     "/",
-    "/common",
     "/common/login",
     "/common/signup",
     "/common/forgot_password",
