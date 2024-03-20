@@ -81,7 +81,7 @@ const Navbar = () => {
                         </div>
                         {isDropdownOpen && (
                             <div className="z-50 my-4 absolute right-12 top-16 w-60 border rounded-md border-gray-600 p-2">
-                                <p className='mb-2'>Hello {userData.first_name ? userData.first_name : ''} {userData.last_name ? userData.last_name : ''}</p>
+                                <p className='mb-2'>Hello {userData && userData.first_name ? userData.first_name : userData} {userData && userData.last_name ? userData.last_name : ''}</p>
                                 <hr />
                                 <Link href={NAVBAR_PROFILE}> <p className='mt-2'>Profile </p></Link>
                                 <Link href="#" onClick={handleLogout}> <p className='mt-2'>Logout </p></Link>

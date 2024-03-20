@@ -26,6 +26,8 @@ import {
   LOGO_IMAGE_URL,
   AVATAR_IMAGE_URL,
   NAVBAR_PROFILE,
+  GOOGLE_LOGO,
+  PHONE_NUMBER_LOGO,
   FORGOT_PASSWORD,
   NAVBAR_ABOUT,
 } from "@/app/api/redirection_route/page";
@@ -40,7 +42,9 @@ import {
   onAuthStateChanged,
   getAuth,
   signInWithCustomToken,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  signInWithPopup, 
+  GoogleAuthProvider
 } from "firebase/auth";
 
 import {
@@ -102,6 +106,8 @@ export {
   LOGO_IMAGE_URL,
   AVATAR_IMAGE_URL,
   NAVBAR_PROFILE,
+  GOOGLE_LOGO,
+  PHONE_NUMBER_LOGO,
   FORGOT_PASSWORD,
   NAVBAR_ABOUT,
 
@@ -115,6 +121,8 @@ export {
   getAuth,
   signInWithCustomToken,
   sendPasswordResetEmail,
+  signInWithPopup, 
+  GoogleAuthProvider,
   
   collection,
   query,

@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect, HOME_URL, FORGOT_PASSWORD } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect, HOME_URL, FORGOT_PASSWORD, GOOGLE_LOGO, PHONE_NUMBER_LOGO, Image, signInWithPopup, GoogleAuthProvider, LOGIN_URL, getAuth } from '@/app/api/routes/page';
 
 const Login = () => {
   const router = useRouter();
@@ -10,19 +10,19 @@ const Login = () => {
     email: '',
     password: '',
   });
-  
+
   useEffect(() => {
     if (localStorage.getItem("hasShownAccountCreatedToast") === "false") {
       toast.success("New account created successfully", {
         position: "top-right",
       });
       localStorage.removeItem("hasShownAccountCreatedToast");
-    } else if (localStorage.getItem("hasShownLoggedOutToast") === "true"){
+    } else if (localStorage.getItem("hasShownLoggedOutToast") === "true") {
       toast.success("Logout successfully", {
         position: "top-right",
       });
       localStorage.removeItem("hasShownLoggedOutToast");
-    } else if(localStorage.getItem("hasShownForgotPasswordToast") === "false"){
+    } else if (localStorage.getItem("hasShownForgotPasswordToast") === "false") {
       toast.success("Forgot password mail send successfully", {
         position: "top-right",
       });
@@ -68,6 +68,27 @@ const Login = () => {
     }
   }
 
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const expirationTime = new Date();
+    expirationTime.setTime(expirationTime.getTime() + 10 * 60 * 1000);
+    try {
+      await signInWithPopup(auth, provider);
+      Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
+        expires: expirationTime
+      });
+      localStorage.setItem("hasShownLoginToast", false);
+      router.push(HOME_URL);
+    } catch (err){
+      console.log(err);
+    }
+    // router.push(HOME_URL);
+  }
+
+  const signInWithPhone = () => {
+    // router.push(LOGIN_URL);
+  }
+
   return (
     <>
       <section>
@@ -88,11 +109,23 @@ const Login = () => {
                 <Link href={FORGOT_PASSWORD} className="forgot_password_link">Forgot Password?</Link>
               </div>
               <div className="login_button">
-                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" label="Login"/>
+                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" label="Login" />
               </div>
             </form>
             <div>
               <p className="mt-3 text-center text-sm text-gray-500"> Not a member? <Link href={SIGNUP_URL} className="underline underline-offset-4 italic text-blue-500">Sign up here</Link></p>
+            </div>
+            <div className="other_autherization_method flex justify-center mt-4">
+              <div>Other ways to login :
+                <div className='flex justify-center mt-4'>
+                  <div className="google_autherization cursor-pointer">
+                    <Image src={GOOGLE_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithGoogle()}/>
+                  </div>
+                  <div className="phone_number_autherization cursor-pointer">
+                    <Image src={PHONE_NUMBER_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithPhone()}/>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

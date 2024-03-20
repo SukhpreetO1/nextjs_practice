@@ -22,7 +22,6 @@ const ForgotPassword = () => {
 
         if (!querySnapshot.empty) {
           await sendPasswordResetEmail(auth, formData.email);;
-          console.log(formData.email);
           if (formData.email !== null) {
             localStorage.setItem("hasShownForgotPasswordToast", false);
             router.push(LOGIN_URL);

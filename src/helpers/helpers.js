@@ -16,6 +16,7 @@ export async function fetchUserDataFromToken(setUserData) {
                         setUserData(doc.data());
                     });
                 } else {
+                    setUserData(email);
                     console.log('User document not found');
                 }
             } else {
