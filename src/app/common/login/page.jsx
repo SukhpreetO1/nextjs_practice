@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect, HOME_URL } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect, HOME_URL, FORGOT_PASSWORD } from '@/app/api/routes/page';
 
 const Login = () => {
   const router = useRouter();
@@ -10,14 +10,7 @@ const Login = () => {
     email: '',
     password: '',
   });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const validation_errors = validate_login_submit_form({ ...formData, [name]: value });
-    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
-    setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
-  };
-
+  
   useEffect(() => {
     if (localStorage.getItem("hasShownAccountCreatedToast") === "false") {
       toast.success("New account created successfully", {
@@ -29,8 +22,20 @@ const Login = () => {
         position: "top-right",
       });
       localStorage.removeItem("hasShownLoggedOutToast");
+    } else if(localStorage.getItem("hasShownForgotPasswordToast") === "false"){
+      toast.success("Forgot password mail send successfully", {
+        position: "top-right",
+      });
+      localStorage.removeItem("hasShownForgotPasswordToast");
     }
   }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const validation_errors = validate_login_submit_form({ ...formData, [name]: value });
+    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+    setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
+  };
 
   const loginFormSubmit = async (e) => {
     e.preventDefault();
@@ -72,15 +77,18 @@ const Login = () => {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST" onSubmit={loginFormSubmit}>
+            <form className="space-y-4" action="#" method="POST" onSubmit={loginFormSubmit}>
               <div className="login_email">
                 <InputField label_heading="Email" id="email" className="email" name="email" placeholder="Email" div_name="login_email" value={formData.email} onChange={handleInputChange} error={errors.email} />
               </div>
               <div className="login_password">
                 <PasswordField label_heading="Password" id="password" className="password" name="password" placeholder="Password" div_name="login_password" value={formData.password} onChange={handleInputChange} error={errors.password} />
               </div>
+              <div className="forgot_password text-end text-blue-600 italic font-medium">
+                <Link href={FORGOT_PASSWORD} className="forgot_password_link">Forgot Password?</Link>
+              </div>
               <div className="login_button">
-                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" />
+                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" label="Login"/>
               </div>
             </form>
             <div>

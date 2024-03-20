@@ -4,9 +4,9 @@ import { Navbar, React, toast, ToastContainer, useEffect } from '@/app/api/route
 export default function CommonHome() {
   useEffect(() => {
     if (localStorage.getItem("hasShownLoginToast") === "false") {
-      // toast.success("Login successfully", {
-      //     position: "top-right",
-      // });
+      toast.success("Login successfully", {
+        position: "top-right",
+      });
     }
     localStorage.removeItem("hasShownLoginToast");
   }, []);
@@ -16,5 +16,5 @@ export default function CommonHome() {
       <Navbar />
       <ToastContainer />
     </>
-      );
+  );
 }

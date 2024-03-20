@@ -148,7 +148,7 @@ const Signup = () => {
                     </div>
 
                     <div className="submit_button">
-                        <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" />
+                        <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" label="Signup"/>
                     </div>
                 </form>
                 <div>

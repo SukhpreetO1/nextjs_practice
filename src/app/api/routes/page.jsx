@@ -1,49 +1,87 @@
-import Link from 'next/link';
-import React, {useState, useEffect} from "react";
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import Image from "next/image";
+
+// getting data from components
 import InputField from "@/components/InputField";
 import DateField from "@/components/DateField";
 import RadioButtonField from "@/components/RadioButtonField";
 import CheckboxField from "@/components/CheckboxField";
 import PasswordField from "@/components/PasswordField";
 import SubmitButton from "@/components/SubmitButton";
-import { useRouter, usePathname } from 'next/navigation'
-import Image from "next/image";
 
-import Navbar from '@/app/common/navbar/page';
+import Navbar from "@/app/common/navbar/page";
 
 // js validation files
-import { validate_signup_submit_form } from '@/../public/assets/js/signup';
-import { validate_login_submit_form } from '@/../public/assets/js/login';
+import { validate_signup_submit_form } from "@/../public/assets/js/signup";
+import { validate_login_submit_form } from "@/../public/assets/js/login";
+import { validate_forgot_password_submit_form } from "@/../public/assets/js/forgot_password";
 
 // page redirection files
-import { LOGIN_URL, SIGNUP_URL, HOME_URL, LOGO_IMAGE_URL, AVATAR_IMAGE_URL, NAVBAR_PROFILE, FORGOT_PASSWORD, NAVBAR_ABOUT } from '@/app/api/redirection_route/page';
+import {
+  LOGIN_URL,
+  SIGNUP_URL,
+  HOME_URL,
+  LOGO_IMAGE_URL,
+  AVATAR_IMAGE_URL,
+  NAVBAR_PROFILE,
+  FORGOT_PASSWORD,
+  NAVBAR_ABOUT,
+} from "@/app/api/redirection_route/page";
 
 // firebase import
 import { auth, db } from "@/db/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth, signInWithCustomToken } from "firebase/auth";
-import { collection, query, where, getDocs, addDoc,serverTimestamp, getFirestore, doc, getDoc, onSnapshot } from 'firebase/firestore';
+
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  getAuth,
+  signInWithCustomToken,
+  sendPasswordResetEmail
+} from "firebase/auth";
+
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+  getFirestore,
+  doc,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
 
 // use toastify for notification
 import { ToastContainer, toast } from "react-toastify";
 
 // use fontawesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // used to store data in cookies
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 // use for hashing password
-import bcrypt, { hash } from 'bcryptjs'; 
+import bcrypt, { hash } from "bcryptjs";
 
-import jwt from 'jsonwebtoken';
+// use for jwt
+import jwt from "jsonwebtoken";
 
-import { fetchUserDataFromToken } from '@/helpers/helpers';
+// use for getting data from helper
+import { fetchUserDataFromToken } from "@/helpers/helpers";
 
 export {
   Link,
   React,
   useState,
   useEffect,
+  useRouter,
+  usePathname,
+  Image,
 
   InputField,
   DateField,
@@ -52,8 +90,11 @@ export {
   PasswordField,
   SubmitButton,
 
+  Navbar,
+
   validate_signup_submit_form,
   validate_login_submit_form,
+  validate_forgot_password_submit_form,
 
   LOGIN_URL,
   SIGNUP_URL,
@@ -64,32 +105,39 @@ export {
   FORGOT_PASSWORD,
   NAVBAR_ABOUT,
 
-  useRouter,
-  usePathname,
-  Image,
-
-  Navbar,
-
-
   auth,
   db,
-  getFirestore, 
+
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  getAuth, 
   signOut,
-  collection, query, where, getDocs, getDoc, addDoc,serverTimestamp, doc, signInWithCustomToken,
-  onAuthStateChanged, 
-  onSnapshot, 
+  onAuthStateChanged,
+  getAuth,
+  signInWithCustomToken,
+  sendPasswordResetEmail,
+  
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+  getFirestore,
+  doc,
+  getDoc,
+  onSnapshot,
 
-  toast,
   ToastContainer,
+  toast,
+
   FontAwesomeIcon,
 
   Cookies,
-  hash,
-  bcrypt,
-  jwt,
-  fetchUserDataFromToken
 
+  bcrypt,
+  hash,
+
+  jwt,
+
+  fetchUserDataFromToken,
 };
