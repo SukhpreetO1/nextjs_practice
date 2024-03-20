@@ -83,3 +83,6 @@ In order to stop calling routes 2 times when add "use client", then change the n
     const nextConfig = {
         reactStrictMode: false
     };
+
+
+    npm install jsonwebtoken

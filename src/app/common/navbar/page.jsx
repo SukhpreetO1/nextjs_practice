@@ -1,11 +1,11 @@
 "use client"
-import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, auth, useRouter, HOME_URL, PROFILE, COMMON_HOME_URL, LOGIN_URL, toast, ToastContainer, ABOUT } from '@/app/api/routes/page';
+import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, auth, useRouter, fetchUserDataFromToken, PROFILE, COMMON_HOME_URL, LOGIN_URL, toast, ToastContainer, ABOUT, useEffect } from '@/app/api/routes/page';
 
 const Navbar = () => {
     const router = useRouter();
 
     const [navbar, setNavbar] = useState(false);
-
+    const [userData, setUserData] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -24,6 +24,14 @@ const Navbar = () => {
             });
         }
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const cleanup = await fetchUserDataFromToken(setUserData);
+            return cleanup;
+        };
+        fetchData();
+    }, []);
     
     const clearCookies = () => {
         const cookies = document.cookie.split("; ");
@@ -72,8 +80,10 @@ const Navbar = () => {
                             </div>
                         </div>
                         {isDropdownOpen && (
-                            <div className="z-50 my-4 absolute right-12 top-16 w-40 border rounded-md border-gray-600 p-2">
-                                <Link href={PROFILE}> <p className=''>Profile </p></Link>
+                            <div className="z-50 my-4 absolute right-12 top-16 w-60 border rounded-md border-gray-600 p-2">
+                                <p className='mb-2'>Hello {userData.first_name ? userData.first_name : ''} {userData.last_name ? userData.last_name : ''}</p>
+                                <hr />
+                                <Link href={PROFILE}> <p className='mt-2'>Profile </p></Link>
                                 <Link href="#" onClick={handleLogout}> <p className='mt-2'>Logout </p></Link>
                             </div>
                         )}

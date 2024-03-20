@@ -21,7 +21,7 @@ import { LOGIN_URL, SIGNUP_URL, HOME_URL, COMMON_HOME_URL, LOGO_IMAGE_URL, AVATA
 // firebase import
 import { auth, db } from "@/db/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth, signInWithCustomToken } from "firebase/auth";
-import { collection, query, where, getDocs, addDoc,serverTimestamp, getFirestore, doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, addDoc,serverTimestamp, getFirestore, doc, getDoc, onSnapshot } from 'firebase/firestore';
 
 // use toastify for notification
 import { ToastContainer, toast } from "react-toastify";
@@ -34,6 +34,10 @@ import Cookies from 'js-cookie';
 
 // use for hashing password
 import bcrypt, { hash } from 'bcryptjs'; 
+
+import jwt from 'jsonwebtoken';
+
+import { fetchUserDataFromToken } from '@/helpers/helpers';
 
 export {
   Link,
@@ -77,6 +81,7 @@ export {
   signOut,
   collection, query, where, getDocs, getDoc, addDoc,serverTimestamp, doc, signInWithCustomToken,
   onAuthStateChanged, 
+  onSnapshot, 
 
   toast,
   ToastContainer,
@@ -85,5 +90,7 @@ export {
   Cookies,
   hash,
   bcrypt,
+  jwt,
+  fetchUserDataFromToken
 
 };
