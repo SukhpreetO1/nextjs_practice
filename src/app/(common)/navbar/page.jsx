@@ -9,7 +9,7 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
-      setIsOpen(!isOpen);
+        setIsOpen(!isOpen);
     };
 
     const handleLogout = async () => {
@@ -74,19 +74,15 @@ const Navbar = () => {
                         </div>
                     </div>
                     <div className="relative">
-                        <div className="cursor-pointer" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
+                        <div className="cursor-pointer" onMouseEnter={toggleDropdown}>
                             <Image src={AVATAR_IMAGE_URL} width={50} height={50} alt="logo" />
                         </div>
                         {isOpen && (
-                            <div className="z-50 my-4 absolute right-0 top-10 w-60 border rounded-md border-gray-600 p-2">
+                            <div className="z-50 my-4 absolute right-0 top-10 w-60 border rounded-md border-gray-600 p-2" onMouseLeave={toggleDropdown}>
                                 <p className="mb-2">Hello {userData && userData.first_name ? userData.first_name : userData} {userData && userData.last_name ? userData.last_name : ''}</p>
                                 <hr />
-                                <Link href={NAVBAR_PROFILE}>
-                                    <p className="mt-2">Profile</p>
-                                </Link>
-                                <Link href="#" onClick={handleLogout}>
-                                    <p className="mt-2">Logout</p>
-                                </Link>
+                                <Link href={NAVBAR_PROFILE}><p className="mt-2">Profile</p></Link>
+                                <Link href="#" onClick={handleLogout}><p className="mt-2">Logout</p></Link>
                             </div>
                         )}
                     </div>
