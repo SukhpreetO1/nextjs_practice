@@ -11,7 +11,7 @@ import CheckboxField from "@/components/CheckboxField";
 import PasswordField from "@/components/PasswordField";
 import SubmitButton from "@/components/SubmitButton";
 
-import Navbar from "@/app/common/navbar/page";
+import Navbar from "@/app/(common)/navbar/page";
 
 // js validation files
 import { validate_signup_submit_form } from "@/../public/assets/js/signup";
@@ -20,15 +20,15 @@ import { validate_forgot_password_submit_form } from "@/../public/assets/js/forg
 
 // page redirection files
 import {
+  HOME_URL,
   LOGIN_URL,
   SIGNUP_URL,
-  HOME_URL,
+  FORGOT_PASSWORD,
   LOGO_IMAGE_URL,
   AVATAR_IMAGE_URL,
-  NAVBAR_PROFILE,
   GOOGLE_LOGO,
   PHONE_NUMBER_LOGO,
-  FORGOT_PASSWORD,
+  NAVBAR_PROFILE,
   NAVBAR_ABOUT,
 } from "@/app/api/redirection_route/page";
 
