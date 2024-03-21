@@ -1,5 +1,5 @@
 "use client"
-import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, NAVBAR_DASHBOARD, auth, useRouter, fetchUserDataFromToken, NAVBAR_PROFILE, LOGIN_URL, toast, ToastContainer, NAVBAR_ABOUT, useEffect } from '@/app/api/routes/page';
+import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, NAVBAR_DASHBOARD, auth, useRouter, fetchUserDataFromToken, NAVBAR_PROFILE, LOGIN_URL, toast, ToastContainer, NAVBAR_ABOUT, useEffect, NAVBAR_CONTACT } from '@/app/api/routes/page';
 
 const Navbar = () => {
     const router = useRouter();
@@ -62,7 +62,7 @@ const Navbar = () => {
                                     <Link href="#blogs" onClick={() => setNavbar(!navbar)}> Blogs </Link>
                                 </li>
                                 <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
-                                    <Link href="#contact" onClick={() => setNavbar(!navbar)}> Contact </Link>
+                                    <Link href={NAVBAR_CONTACT} onClick={() => setNavbar(!navbar)}> Contact </Link>
                                 </li>
                                 <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
                                     <Link href="#projects" onClick={() => setNavbar(!navbar)}> Projects </Link>

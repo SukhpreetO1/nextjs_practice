@@ -36,8 +36,9 @@ import {
   GOOGLE_LOGO,
   PHONE_NUMBER_LOGO,
   NAVBAR_DASHBOARD,
-  NAVBAR_PROFILE,
+  NAVBAR_CONTACT,
   NAVBAR_ABOUT,
+  NAVBAR_PROFILE,
 } from "@/app/api/redirection_route/page";
 
 // firebase import
@@ -121,8 +122,9 @@ export {
   GOOGLE_LOGO,
   PHONE_NUMBER_LOGO,
   NAVBAR_DASHBOARD,
-  NAVBAR_PROFILE,
+  NAVBAR_CONTACT,
   NAVBAR_ABOUT,
+  NAVBAR_PROFILE,
 
   auth,
   db,

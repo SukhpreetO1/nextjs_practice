@@ -13,5 +13,6 @@ export const PHONE_NUMBER_LOGO = "/assets/images/phone_number.jpg";
 
 // getting routes from users navbar component
 export const NAVBAR_DASHBOARD = "/dashboard";
-export const NAVBAR_PROFILE = "/profile";
+export const NAVBAR_CONTACT = "/contact";
 export const NAVBAR_ABOUT = "/about";
+export const NAVBAR_PROFILE = "/profile";

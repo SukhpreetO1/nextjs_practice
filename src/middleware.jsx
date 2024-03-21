@@ -24,7 +24,8 @@ export const config = {
     "/signup",
     "/forgot_password",
     "/dashboard",
-    "/profile",
+    "/contact",
     "/about",
+    "/profile",
   ],
 }
