@@ -9,8 +9,9 @@ export const LOGO_IMAGE_URL = "/assets/images/m_logo.avif";
 export const AVATAR_IMAGE_URL = "/assets/images/avatar.jpg";
 export const GOOGLE_LOGO = "/assets/images/google.png";
 export const PHONE_NUMBER_LOGO = "/assets/images/phone_number.jpg";
+export const RANDOM_IMAGES = "https://picsum.photos/seed/picsum/200/300";
 
-// getting routes from users component
+// getting routes from users navbar component
 export const NAVBAR_DASHBOARD = "/dashboard";
 export const NAVBAR_PROFILE = "/profile";
 export const NAVBAR_ABOUT = "/about";

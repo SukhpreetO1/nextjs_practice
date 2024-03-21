@@ -56,6 +56,46 @@
   }
 }
 
+@media (min-width: 536px) and (max-width: 767px) {
+  .common_navbar_logo{
+    display: none;
+  }
+
+  .common_navbar_details {
+    display: block;
+    height: 20rem;
+  }
+
+  .common_navbar_profile {
+    display: flex;
+    justify-content: end;
+  }
+
+  .dashboard_home_images {
+    max-width: 18rem !important;
+  }
+}
+
+@media (max-width: 535px) {
+  .common_navbar_logo{
+    display: none;
+  }
+
+  .common_navbar_profile {
+    display: flex;
+    justify-content: end;
+  }
+
+  .dashboard_card_section {
+    display: block;
+  }
+
+  .dashboard_home_images {
+    width: 30rem !important;
+    max-width: 100% !important;
+  }
+}
+
 .signup_first_name,
 .signup_email,
 .signup_date_of_birth,
@@ -72,4 +112,28 @@
 
 .user_profile_detail_page {
   margin-left: 30%;
+}
+
+.dashboard_home_images {
+  width: 50rem;
+  max-width: 20rem;
+  height: 25rem;
+}
+
+.order-1 {
+  order: 1;
+}
+
+.order-2 {
+  order: 2;
+}
+
+@media (max-width: 535px) {
+  .dashboard_card_section {
+      flex-direction: column;
+  }
+
+  .dashboard_images, .dashboard_content {
+      width: 100%;
+  }
 }

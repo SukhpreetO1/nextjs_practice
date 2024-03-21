@@ -10,6 +10,7 @@ import RadioButtonField from "@/components/RadioButtonField";
 import CheckboxField from "@/components/CheckboxField";
 import PasswordField from "@/components/PasswordField";
 import SubmitButton from "@/components/SubmitButton";
+import CardWithDetail from "@/components/CardWithDetail";
 
 // importing from common folder
 import Navbar from "@/app/(common)/navbar/page";
@@ -32,6 +33,7 @@ import {
   AVATAR_IMAGE_URL,
   GOOGLE_LOGO,
   PHONE_NUMBER_LOGO,
+  RANDOM_IMAGES,
   NAVBAR_DASHBOARD,
   NAVBAR_PROFILE,
   NAVBAR_ABOUT,
@@ -98,6 +100,7 @@ export {
   CheckboxField,
   PasswordField,
   SubmitButton,
+  CardWithDetail,
 
   Navbar,
   DashboardHome,
@@ -114,6 +117,7 @@ export {
   AVATAR_IMAGE_URL,
   GOOGLE_LOGO,
   PHONE_NUMBER_LOGO,
+  RANDOM_IMAGES,
   NAVBAR_DASHBOARD,
   NAVBAR_PROFILE,
   NAVBAR_ABOUT,

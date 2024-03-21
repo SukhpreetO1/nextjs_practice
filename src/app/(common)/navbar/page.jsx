@@ -45,16 +45,16 @@ const Navbar = () => {
         <section>
             <nav className="w-full z-10">
                 <div className="justify-between px-4 mx-auto md:items-center md:flex md:px-8">
-                    <div>
+                    <div className='common_navbar_logo'>
                         <div className="flex items-center justify-between py-3 md:py-5 md:block">
                             <Link href={NAVBAR_DASHBOARD}>
                                 <Image src={LOGO_IMAGE_URL} width={50} height={50} alt="logo" />
                             </Link>
                         </div>
                     </div>
-                    <div>
-                        <div className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar ? 'p-12 md:p-0 block' : 'hidden'}`}>
-                            <ul className="h-screen md:h-auto items-center justify-center md:flex ">
+                    <div className='common_navbar_details'>
+                        <div className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0`}>
+                            <ul className="md:h-auto items-center justify-center md:flex ">
                                 <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
                                     <Link href={NAVBAR_DASHBOARD} onClick={() => setNavbar(!navbar)}> Home </Link>
                                 </li>
@@ -73,12 +73,12 @@ const Navbar = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className="relative">
+                    <div className="relative common_navbar_profile">
                         <div className="cursor-pointer" onMouseEnter={toggleDropdown}>
                             <Image src={AVATAR_IMAGE_URL} width={50} height={50} alt="logo" />
                         </div>
                         {isOpen && (
-                            <div className="z-50 my-4 absolute right-0 top-10 w-60 border rounded-md border-gray-600 p-2" onMouseLeave={toggleDropdown}>
+                            <div className="common_navbar_profile_dropdown z-50 my-4 absolute right-0 top-10 w-60 border rounded-md border-gray-600 p-2 bg-white" onMouseLeave={toggleDropdown}>
                                 <p className="mb-2">Hello {userData && userData.first_name ? userData.first_name : userData} {userData && userData.last_name ? userData.last_name : ''}</p>
                                 <hr />
                                 <Link href={NAVBAR_PROFILE}><p className="mt-2">Profile</p></Link>

@@ -4,9 +4,9 @@ import { React, toast, ToastContainer, useEffect, DashboardHome } from '@/app/ap
 const Dashboard = () => {
   useEffect(() => {
     if (localStorage.getItem("hasShownLoginToast") === "false") {
-      toast.success("Login successfully", {
-        position: "top-right",
-      });
+      // toast.success("Login successfully", {
+      //   position: "top-right",
+      // });
     }
     localStorage.removeItem("hasShownLoginToast");
   }, []);
