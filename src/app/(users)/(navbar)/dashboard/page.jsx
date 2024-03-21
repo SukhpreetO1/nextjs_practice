@@ -1,5 +1,5 @@
 "use client"
-import { Navbar, React, toast, ToastContainer, useEffect } from '@/app/api/routes/page';
+import { React, toast, ToastContainer, useEffect, DashboardHome } from '@/app/api/routes/page';
 
 const Dashboard = () => {
   useEffect(() => {
@@ -12,6 +12,7 @@ const Dashboard = () => {
   }, []);
   return (
     <>
+      <DashboardHome />
       <ToastContainer />
     </>
   )

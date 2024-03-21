@@ -11,7 +11,11 @@ import CheckboxField from "@/components/CheckboxField";
 import PasswordField from "@/components/PasswordField";
 import SubmitButton from "@/components/SubmitButton";
 
+// importing from common folder
 import Navbar from "@/app/(common)/navbar/page";
+
+// importing from users/navbar/dashboard folder
+import DashboardHome from "@/app/(users)/(navbar)/dashboard/(home)/page";
 
 // js validation files
 import { validate_signup_submit_form } from "@/../public/assets/js/signup";
@@ -96,6 +100,7 @@ export {
   SubmitButton,
 
   Navbar,
+  DashboardHome,
 
   validate_signup_submit_form,
   validate_login_submit_form,
