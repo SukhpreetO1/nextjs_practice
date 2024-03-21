@@ -14,6 +14,7 @@ import CardWithDetail from "@/components/CardWithDetail";
 
 // importing from common folder
 import Navbar from "@/app/(common)/navbar/page";
+import Footer from "@/app/(common)/footer/page";
 
 // importing from users/navbar/dashboard folder
 import DashboardHome from "@/app/(users)/(navbar)/dashboard/(home)/page";
@@ -103,6 +104,7 @@ export {
   CardWithDetail,
 
   Navbar,
+  Footer,
   DashboardHome,
 
   validate_signup_submit_form,
