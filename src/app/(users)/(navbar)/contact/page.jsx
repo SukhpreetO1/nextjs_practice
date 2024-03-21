@@ -8,11 +8,11 @@ const Contact = () => {
         <section>
             <div className='contact_heading text-center mx-6'>
                 <p className='text-5xl font-bold mb-5'>Contact Us</p>
-                <p>You can contact us through the following details or you can send your message through email as well.</p>
+                <p className='font-light'>You can contact us through the following details or you can send your message through email as well.</p>
             </div>
             <div className="contact_form flex mx-12 mt-12">
-                <div className="contact_details w-2/4 text-justify mb-8">
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum nisi, libero delectus neque laboriosam excepturi perferendis cupiditate voluptates consectetur commodi similique molestiae dolores vero ipsum!</p>
+                <div className="contact_details w-2/4 text-justify mb-8 font-light leading-loose">
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem aliquam voluptate in voluptatem perferendis, cum itaque laudantium dolores, officia debitis aspernatur, velit tempore! Dolorum error ex quod ipsa similique iste esse, praesentium molestias repudiandae, quaerat itaque nam quis alias at.</p>
                 </div>
                 <div className="contact_sending_form w-1/4 ml-32">
                     <form action="#" method="POST">

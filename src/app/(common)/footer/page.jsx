@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <>
         <section>
-            <div className='footer_content flex mt-14 bg-gray-200'>
+            <div className='footer_content flex mt-14 bg-gray-200 font-normal leading-loose'>
                 <div className='footer_text text-justify pt-4 pb-12 px-5'>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, beatae facere ipsum laborum pariatur assumenda fugit dolorum ipsa at reiciendis possimus, recusandae quidem aliquam. Minima.
                 </div>
