@@ -1,20 +1,9 @@
-"use client"
-import { Navbar, React, toast, ToastContainer, useEffect } from '@/app/api/routes/page';
+import React from 'react'
 
-export default function CommonHome() {
-  useEffect(() => {
-    if (localStorage.getItem("hasShownLoginToast") === "false") {
-      // toast.success("Login successfully", {
-      //   position: "top-right",
-      // });
-    }
-    localStorage.removeItem("hasShownLoginToast");
-  }, []);
-
+const page = () => {
   return (
-    <>
-      <Navbar />
-      <ToastContainer />
-    </>
-  );
+    <div>page</div>
+  )
 }
+
+export default page

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { FORGOT_PASSWORD, LOGIN_URL, SIGNUP_URL, HOME_URL } from '@/app/api/routes/page';
+import { FORGOT_PASSWORD, LOGIN_URL, SIGNUP_URL, NAVBAR_DASHBOARD, HOME_URL } from '@/app/api/routes/page';
 
 export function middleware(request) {
   const path = request.nextUrl.pathname;
@@ -12,17 +12,19 @@ export function middleware(request) {
     return NextResponse.redirect(new URL(LOGIN_URL, request.url));
   }
 
-  if (token && isPublicPath) {
-    return NextResponse.redirect(new URL(HOME_URL, request.url));
+  if (token && isPublicPath || path === HOME_URL) {
+    return NextResponse.redirect(new URL(NAVBAR_DASHBOARD, request.url));
   }
 }
 
 export const config = {
   matcher: [
     "/",
-    "/common/login",
-    "/common/signup",
-    "/common/forgot_password",
-    "/common/navbar/profile"
+    "/login",
+    "/signup",
+    "/forgot_password",
+    "/dashboard",
+    "/profile",
+    "/about",
   ],
 }

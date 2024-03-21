@@ -28,6 +28,7 @@ import {
   AVATAR_IMAGE_URL,
   GOOGLE_LOGO,
   PHONE_NUMBER_LOGO,
+  NAVBAR_DASHBOARD,
   NAVBAR_PROFILE,
   NAVBAR_ABOUT,
 } from "@/app/api/redirection_route/page";
@@ -100,15 +101,16 @@ export {
   validate_login_submit_form,
   validate_forgot_password_submit_form,
 
+  HOME_URL,
   LOGIN_URL,
   SIGNUP_URL,
-  HOME_URL,
+  FORGOT_PASSWORD,
   LOGO_IMAGE_URL,
   AVATAR_IMAGE_URL,
-  NAVBAR_PROFILE,
   GOOGLE_LOGO,
   PHONE_NUMBER_LOGO,
-  FORGOT_PASSWORD,
+  NAVBAR_DASHBOARD,
+  NAVBAR_PROFILE,
   NAVBAR_ABOUT,
 
   auth,
