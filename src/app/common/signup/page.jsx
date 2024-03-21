@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash, collection, query, where, getDocs, addDoc,serverTimestamp, db, auth, createUserWithEmailAndPassword } from '@/app/api/routes/page';
+import { React, useState, InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash, collection, query, where, getDocs, addDoc, serverTimestamp, db, auth, createUserWithEmailAndPassword, onAuthStateChanged, getAuth } from '@/app/api/routes/page';
 
 const genderOptions = [
     { label: 'Male', value: '1' },
@@ -36,16 +36,16 @@ const Signup = () => {
         setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
         setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
     };
-    
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         handleFieldChange(name, value);
     };
-    
+
     const handleOptionSelect = (value) => {
         handleFieldChange('gender', value);
     };
-    
+
     const handleCheckboxSelect = (selectedHobbies) => {
         handleFieldChange('hobbies', selectedHobbies);
     };
@@ -60,28 +60,29 @@ const Signup = () => {
     const formSubmit = async (e) => {
         e.preventDefault();
         const validation_errors = validate_signup_submit_form(formData);
-    
+
         if (Object.keys(validation_errors).length > 0) {
             setErrors(validation_errors);
             return;
         }
-    
-        const fieldsToCheck = ['username', 'email', 'mobile_number'];
+
+        const fieldsToCheck = ['email', 'username', 'mobile_number'];
         const uniqueErrors = {};
-    
+
         await Promise.all(fieldsToCheck.map(async (field) => {
             const isUnique = await checkUniqueFields(field, formData[field].trim());
             if (!isUnique) {
                 uniqueErrors[field] = `${field === 'mobile_number' ? 'Mobile number' : field.charAt(0).toUpperCase() + field.slice(1)} is already registered`;
             }
         }));
-    
+
         if (Object.keys(uniqueErrors).length > 0) {
             setErrors({ ...validation_errors, ...uniqueErrors });
             return;
         }
-    
+
         try {
+            const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
             const hashedPassword = await hash(formData.password, 10);
             const { confirm_password, ...userData } = formData;
             const hobbiesArray = Array.isArray(formData.hobbies) ? formData.hobbies : [formData.hobbies];
@@ -99,18 +100,23 @@ const Signup = () => {
                 password: String(hashedPassword),
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp()
-            }
+            };
             await addDoc(collection(db, 'users'), user_data);
-
-            createUserWithEmailAndPassword(auth, formData.email, formData.password);
 
             localStorage.setItem("hasShownAccountCreatedToast", false);
 
             router.push(LOGIN_URL);
-        } catch (e) {
-            toast.error(e.message, { position: 'top-right' });
+        } catch (error) {
+            const errorCode = error.code;
+            if (errorCode === 'auth/email-already-in-use') {
+                toast.error("Email is already in use. Please choose a different email.", {
+                    position: "top-right",
+                });
+            } else {
+                toast.error(error.message, { position: 'top-right' });
+            }
         }
-    };    
+    };
 
     return (
         <>
@@ -149,7 +155,7 @@ const Signup = () => {
                     </div>
 
                     <div className="submit_button">
-                        <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" label="Signup"/>
+                        <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" label="Signup" />
                     </div>
                 </form>
                 <div>
