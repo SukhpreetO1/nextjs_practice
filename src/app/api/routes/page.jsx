@@ -6,6 +6,7 @@ import Image from "next/image";
 import CardWithDetail from "@/components/CardWithDetail";
 import CheckboxField from "@/components/CheckboxField";
 import DateField from "@/components/DateField";
+import ImageUploading from "@/components/ImageUploading";
 import InputField from "@/components/InputField";
 import PasswordField from "@/components/PasswordField";
 import RadioButtonField from "@/components/RadioButtonField";
@@ -103,6 +104,7 @@ export {
   CardWithDetail,
   CheckboxField,
   DateField,
+  ImageUploading,
   InputField,
   PasswordField,
   RadioButtonField,

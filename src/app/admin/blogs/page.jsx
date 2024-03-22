@@ -1,7 +1,9 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ToastContainer } from '@/app/api/routes/page';
+
 const Blogs = () => {
+    const [blogs, setBlogs] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
@@ -10,7 +12,23 @@ const Blogs = () => {
             });
             localStorage.removeItem("hasShownBlogAddedToast");
         }
+
+        async function fetchData() {
+            const response = await fetch("/api/blogs");
+            const data = await response.json();
+            setBlogs(data.data);
+        }
+
+        fetchData();
     }, []);
+
+    const truncateDescription = (description) => {
+        const words = description.match(/.{1,10}/g);
+        if (words && words.length > 10) {
+            return words.slice(0, 13).join(' ') + '...';
+        }
+        return description;
+    };    
 
     return (
         <>
@@ -30,10 +48,10 @@ const Blogs = () => {
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" className="px-6 py-3">
-                                        Heading name
+                                    <th scope="col" className="px-6 py-3 w-1/6">
+                                        Blog name
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    <th scope="col" className="px-6 py-3 w-2/3">
                                         Description
                                     </th>
                                     <th scope="col" className="px-6 py-3">
@@ -42,25 +60,23 @@ const Blogs = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Apple MacBook Pro 17
-                                    </th>
-                                    <td className="px-6 py-4">
-                                        Silver
-                                    </td>
-                                    <td className="px-6 py-4 flex">
-                                        <Link href="#">
-                                            <FontAwesomeIcon icon={faInfo} className='w-4 h-4 mr-2' />
-                                        </Link>
-                                        <Link href="#">
-                                            <FontAwesomeIcon icon={faPenToSquare} className='w-4 h-4 mr-2' />
-                                        </Link>
-                                        <Link href="#">
-                                            <FontAwesomeIcon icon={faTrashCan} className='w-4 h-4' />
-                                        </Link>
-                                    </td>
-                                </tr>
+                                {blogs.map((blog, index) => (
+                                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td className="px-6 py-4">{blog.title}</td>
+                                        <td className="px-6 py-4">{truncateDescription(blog.description)}</td>
+                                        <td className="px-6 py-4 flex">
+                                            <Link href="#">
+                                                <FontAwesomeIcon icon={faInfo} className="w-4 h-4 mr-2" />
+                                            </Link>
+                                            <Link href="#">
+                                                <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2" />
+                                            </Link>
+                                            <Link href="#">
+                                                <FontAwesomeIcon icon={faTrashCan} className="w-4 h-4" />
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
@@ -71,4 +87,4 @@ const Blogs = () => {
     )
 }
 
-export default Blogs
+export default Blogs;

@@ -1,21 +1,33 @@
 "use client"
-import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter } from "@/app/api/routes/page";
+import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image } from "@/app/api/routes/page";
 import { useState } from "react";
 
 const AddBlogs = () => {
     const router = useRouter();
+
+    const [imagePreview, setImagePreview] = useState("");
+
     const [error, setError] = useState({
+        image: "",
         title: "",
         description: ""
     });
 
     const [blogForm, setBlogForm] = useState({
+        image: "",
         title: "",
         description: ""
     });
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value, files } = event.target;
+        if (name === "image" && files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
         // const validation_errors = validate_login_submit_form({ ...formData, [name]: value });
         setBlogForm(prevFormData => ({ ...prevFormData, [name]: value }));
         // setError(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
@@ -23,17 +35,47 @@ const AddBlogs = () => {
 
     const blogFormSubmit = async (event) => {
         event.preventDefault();
-        const blogData = {
-            title: String(blogForm.title),
-            description: String(blogForm.description)
+
+        const formData = new FormData();
+        formData.append('image', blogForm.image);
+
+        try {
+            console.log(blogForm.image);
+            const response = await fetch('/api/blogs/upload_images', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to upload image');
+            }
+
+            // Extract image name from response if needed
+            const { success, message } = await response.json();
+            const imageName = blogForm.image.split('\\').pop().split('/').pop();
+            if (success) {
+                console.log(success);
+                // const blogData = {
+                //     image: imageName,
+                //     title: String(blogForm.title),
+                //     description: String(blogForm.description),
+                //     created_at: new Date().toISOString(),
+                //     updated_at: new Date().toISOString()
+                // }
+
+                // await addDoc(collection(db, "blogs"), blogData);
+
+                // localStorage.setItem('hasShownBlogAddedToast', false);
+
+                // router.push(ADMIN_BLOGS);
+            } else {
+                throw new Error(message);
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error.message);
+            // Handle error
         }
-
-        await addDoc(collection(db, "blogs"), blogData);
-
-        localStorage.setItem('hasShownBlogAddedToast', false);
-
-        router.push(ADMIN_BLOGS);
-    }
+    };
 
     return (
         <>
@@ -45,11 +87,18 @@ const AddBlogs = () => {
 
                     <div className="form flex justify-center">
                         <form className="form w-2/5" action="#" method="POST" onSubmit={blogFormSubmit}>
+                            <div className="blog_images">
+                                <ImageUploading className="blog_image" id="blog_image" name="image" div_name="blog_image" label_heading="Image" value={blogForm.image} onChange={handleInputChange} error={error.image} accept="image/*" />
+                            </div>
                             <div className="bloag_heading_name">
                                 <InputField className="blog_name" id="blog_name" name="title" div_name="blog_name" label_heading="Title" placeholder="Enter the blog title" value={blogForm.title} onChange={handleInputChange} error={error.title} />
                             </div>
                             <div className="bloag_desctiption_part">
                                 <TextAreaField className="blog_description" id="blog_description" name="description" div_name="blog_description" label_heading="Description" placeholder="Enter the description" value={blogForm.description} onChange={handleInputChange} error={error.description} />
+                            </div>
+                            <div>
+                                {imagePreview && <h5 className="my-4">Preview Image :</h5>}
+                                {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="image-preview mb-3" width={800} height={100} />)}
                             </div>
                             <div className="submit_button">
                                 <SubmitButton className="submit" name="submit" id="submit" label="Add blog" />

@@ -1,5 +1,6 @@
 "use client"
-import { React, toast, ToastContainer, useEffect, DashboardHome } from '@/app/api/routes/page';
+import { toast, ToastContainer, DashboardHome } from '@/app/api/routes/page';
+import React, { useEffect } from 'react';
 
 const Dashboard = () => {
   useEffect(() => {

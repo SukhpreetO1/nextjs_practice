@@ -106,7 +106,7 @@
 
   .common_navbar_profile {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   .dashboard_home_images {
