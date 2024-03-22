@@ -1,5 +1,6 @@
 "use client"
-import { React, useEffect, useState, Image, AVATAR_IMAGE_URL, InputField, fetchUserDataFromToken, DateField } from '@/app/api/routes/page';
+import { Image, AVATAR_IMAGE_URL, InputField, fetchUserDataFromToken, DateField } from '@/app/api/routes/page';
+import React, { useEffect, useState } from 'react';
 
 const Profile = () => {
     const [email, setEmail] = useState('');

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 
 const CheckboxField = ({ label_heading, div_name, options, onSelect, className, error, setError }) => {

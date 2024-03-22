@@ -1,5 +1,6 @@
 "use client";
-import { React, CardWithDetail, useState, useEffect } from "@/app/api/routes/page";
+import { CardWithDetail } from "@/app/api/routes/page";
+import React, { useEffect, useState } from "react";
 
 const DashboardHome = () => {
   const [imageData, setImageData] = useState([]);

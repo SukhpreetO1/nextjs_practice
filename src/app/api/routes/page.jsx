@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 
@@ -42,7 +41,9 @@ import {
   NAVBAR_CONTACT,
   NAVBAR_ABOUT,
   NAVBAR_PROFILE,
-  ADMIN_DASHBOARD
+  ADMIN_DASHBOARD,
+  ADMIN_BLOGS,
+  ADMIN_ADD_BLOGS
 } from "@/app/api/redirection_route/page";
 
 // firebase import
@@ -78,6 +79,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 // use fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfo, faPenToSquare, faTrashCan, faEye, faEyeSlash, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 // used to store data in cookies
 import Cookies from "js-cookie";
@@ -93,9 +95,6 @@ import { fetchUserDataFromToken } from "@/helpers/helpers";
 
 export {
   Link,
-  React,
-  useState,
-  useEffect,
   useRouter,
   usePathname,
   Image,
@@ -132,6 +131,8 @@ export {
   NAVBAR_ABOUT,
   NAVBAR_PROFILE,
   ADMIN_DASHBOARD,
+  ADMIN_BLOGS,
+  ADMIN_ADD_BLOGS,
 
   auth,
   db,
@@ -161,6 +162,12 @@ export {
   toast,
 
   FontAwesomeIcon,
+  faInfo, 
+  faPenToSquare, 
+  faTrashCan,
+  faEye, 
+  faEyeSlash, 
+  faPlus,
 
   Cookies,
 

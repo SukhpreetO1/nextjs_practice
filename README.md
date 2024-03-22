@@ -72,6 +72,7 @@ To use the font awesome,
     npm i --save @fortawesome/free-regular-svg-icons
     npm i --save @fortawesome/react-fontawesome
     npm i --save @fortawesome/react-fontawesome@latest
+    npm install --save @fortawesome/free-solid-svg-icons
 
 To store data in cookies
     npm install js-cookie

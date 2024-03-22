@@ -1,6 +1,6 @@
-import React from "react";
-import { FontAwesomeIcon, useState } from "@/app/api/routes/page"
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+"use client"
+import React, { useState } from "react";
+import { FontAwesomeIcon, faEye, faEyeSlash } from "@/app/api/routes/page"
 
 const PasswordField = ({ label_heading, placeholder, name, id, className, div_name, value, onChange, error, setError }) => {
     const [showPassword, setShowPassword] = useState(false);

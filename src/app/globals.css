@@ -160,7 +160,9 @@
 }
 
 @media (max-width: 640px) {
-  .admin_dashboard {
+  .admin_dashboard,
+  .blogs_page,
+  .add_blogs {
     margin-left: 2vw !important;
   }
 }

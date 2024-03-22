@@ -19,3 +19,5 @@ export const NAVBAR_PROFILE = "/profile";
 
 // getting routes from admin component
 export const ADMIN_DASHBOARD = "/admin/dashboard";
+export const ADMIN_BLOGS = "/admin/blogs";
+export const ADMIN_ADD_BLOGS = "/admin/blogs/add_blogs";

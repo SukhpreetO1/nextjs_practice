@@ -1,5 +1,6 @@
 "use client"
-import { React, LOGO_IMAGE_URL, Image, useState, Link, AVATAR_IMAGE_URL, signOut, NAVBAR_DASHBOARD, auth, useRouter, fetchUserDataFromToken, NAVBAR_PROFILE, LOGIN_URL, toast, ToastContainer, NAVBAR_ABOUT, useEffect, NAVBAR_CONTACT } from '@/app/api/routes/page';
+import { LOGO_IMAGE_URL, Image, Link, AVATAR_IMAGE_URL, signOut, NAVBAR_DASHBOARD, auth, useRouter, fetchUserDataFromToken, NAVBAR_PROFILE, LOGIN_URL, toast, ToastContainer, NAVBAR_ABOUT, NAVBAR_CONTACT } from '@/app/api/routes/page';
+import React, { useEffect, useState } from 'react';
 
 const Navbar = () => {
     const router = useRouter();
