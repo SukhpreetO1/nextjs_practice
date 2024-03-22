@@ -16,3 +16,6 @@ export const NAVBAR_DASHBOARD = "/dashboard";
 export const NAVBAR_CONTACT = "/contact";
 export const NAVBAR_ABOUT = "/about";
 export const NAVBAR_PROFILE = "/profile";
+
+// getting routes from admin component
+export const ADMIN_DASHBOARD = "/admin/dashboard";

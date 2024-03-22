@@ -19,6 +19,9 @@ import Footer from "@/app/(common)/footer/page";
 // importing from users/navbar/dashboard folder
 import DashboardHome from "@/app/(users)/(navbar)/dashboard/(home)/page";
 
+// importing from the admin folder
+import Sidebar from "@/app/admin/(sidebar)/page";
+
 // js validation files
 import { validate_signup_submit_form } from "@/../public/assets/js/signup";
 import { validate_login_submit_form } from "@/../public/assets/js/login";
@@ -39,6 +42,7 @@ import {
   NAVBAR_CONTACT,
   NAVBAR_ABOUT,
   NAVBAR_PROFILE,
+  ADMIN_DASHBOARD
 } from "@/app/api/redirection_route/page";
 
 // firebase import
@@ -108,6 +112,8 @@ export {
   Footer,
   DashboardHome,
 
+  Sidebar,
+
   validate_signup_submit_form,
   validate_login_submit_form,
   validate_forgot_password_submit_form,
@@ -125,6 +131,7 @@ export {
   NAVBAR_CONTACT,
   NAVBAR_ABOUT,
   NAVBAR_PROFILE,
+  ADMIN_DASHBOARD,
 
   auth,
   db,

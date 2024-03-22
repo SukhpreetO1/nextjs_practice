@@ -1,5 +1,5 @@
 "use client";
-import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect, NAVBAR_DASHBOARD, FORGOT_PASSWORD, GOOGLE_LOGO, PHONE_NUMBER_LOGO, Image, signInWithPopup, GoogleAuthProvider } from '@/app/api/routes/page';
+import { React, useState, InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, useEffect, NAVBAR_DASHBOARD, FORGOT_PASSWORD, GOOGLE_LOGO, PHONE_NUMBER_LOGO, Image, signInWithPopup, GoogleAuthProvider, collection, db, where, query, getDocs, ADMIN_DASHBOARD } from '@/app/api/routes/page';
 
 const Login = () => {
   const router = useRouter();
@@ -46,11 +46,32 @@ const Login = () => {
       try {
         await signInWithEmailAndPassword(auth, formData.email, formData.password);
         if (auth.currentUser.email === formData.email) {
-          Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
-            expires: expirationTime
-          });
-          localStorage.setItem("hasShownLoginToast", false);
-          router.push(NAVBAR_DASHBOARD);
+          const checkUserEmailInFirestore = async (email) => {
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where('email', '==', email));
+        
+            const querySnapshot = await getDocs(q);
+        
+            if (!querySnapshot.empty) {
+              querySnapshot.forEach((doc) => {
+                const userData = doc.data();
+                if (userData.role_id === 2) {
+                  Cookies.set('currentAdminToken', JSON.stringify(auth.currentUser.accessToken), {
+                    expires: expirationTime
+                  });
+                  localStorage.setItem("hasShownLoginToast", false);
+                  router.push(ADMIN_DASHBOARD);
+                } else {
+                  Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
+                    expires: expirationTime
+                  });
+                  localStorage.setItem("hasShownLoginToast", false);
+                  router.push(NAVBAR_DASHBOARD);
+                }
+              });
+            }
+          };
+          checkUserEmailInFirestore(formData.email);
         } else {
           toast.error("Login failed. Please try again.", {
             position: "top-right",
@@ -79,7 +100,7 @@ const Login = () => {
       });
       localStorage.setItem("hasShownLoginToast", false);
       router.push(NAVBAR_DASHBOARD);
-    } catch (err){
+    } catch (err) {
       console.log(err);
     }
   }
@@ -118,10 +139,10 @@ const Login = () => {
               <div>Other ways to login :
                 <div className='flex justify-center mt-4'>
                   <div className="google_autherization cursor-pointer">
-                    <Image src={GOOGLE_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithGoogle()}/>
+                    <Image src={GOOGLE_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithGoogle()} />
                   </div>
                   <div className="phone_number_autherization cursor-pointer">
-                    <Image src={PHONE_NUMBER_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithPhone()}/>
+                    <Image src={PHONE_NUMBER_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithPhone()} />
                   </div>
                 </div>
               </div>

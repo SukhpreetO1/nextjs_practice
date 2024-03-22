@@ -158,3 +158,9 @@
       width: 100%;
   }
 }
+
+@media (max-width: 640px) {
+  .admin_dashboard {
+    margin-left: 2vw !important;
+  }
+}
