@@ -1,17 +1,28 @@
-import React from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS } from '@/app/api/routes/page';
+"use client"
+import React, { useEffect } from 'react';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ToastContainer } from '@/app/api/routes/page';
 const Blogs = () => {
+
+    useEffect(() => {
+        if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
+            toast.success("New blog added successfully", {
+                position: "top-right",
+            });
+            localStorage.removeItem("hasShownBlogAddedToast");
+        }
+    }, []);
+
     return (
         <>
             <section>
                 <div className="blogs_page ml-60">
-                    <div className="heading text-center text-5xl mt-8 mb-12">
+                    <div className="heading text-center text-5xl font-bold mt-8 mb-12">
                         Blogs
                     </div>
 
                     <div className="add_blogs_page absolute right-20 top-16">
                         <Link href={ADMIN_ADD_BLOGS} >
-                            <FontAwesomeIcon icon={faPlus} className='w-12 h-12'/>
+                            <FontAwesomeIcon icon={faPlus} className='w-12 h-12' />
                         </Link>
                     </div>
 
@@ -40,22 +51,22 @@ const Blogs = () => {
                                     </td>
                                     <td className="px-6 py-4 flex">
                                         <Link href="#">
-                                            <FontAwesomeIcon icon={faInfo} className='w-4 h-4 mr-2'/>
+                                            <FontAwesomeIcon icon={faInfo} className='w-4 h-4 mr-2' />
                                         </Link>
                                         <Link href="#">
-                                            <FontAwesomeIcon icon={faPenToSquare} className='w-4 h-4 mr-2'/>
+                                            <FontAwesomeIcon icon={faPenToSquare} className='w-4 h-4 mr-2' />
                                         </Link>
                                         <Link href="#">
-                                            <FontAwesomeIcon icon={faTrashCan} className='w-4 h-4'/>
+                                            <FontAwesomeIcon icon={faTrashCan} className='w-4 h-4' />
                                         </Link>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </section>
+            <ToastContainer />
         </>
     )
 }

@@ -3,13 +3,14 @@ import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 
 // getting data from components
-import InputField from "@/components/InputField";
-import DateField from "@/components/DateField";
-import RadioButtonField from "@/components/RadioButtonField";
-import CheckboxField from "@/components/CheckboxField";
-import PasswordField from "@/components/PasswordField";
-import SubmitButton from "@/components/SubmitButton";
 import CardWithDetail from "@/components/CardWithDetail";
+import CheckboxField from "@/components/CheckboxField";
+import DateField from "@/components/DateField";
+import InputField from "@/components/InputField";
+import PasswordField from "@/components/PasswordField";
+import RadioButtonField from "@/components/RadioButtonField";
+import SubmitButton from "@/components/SubmitButton";
+import TextAreaField from "@/components/TextAreaField";
 
 // importing from common folder
 import Navbar from "@/app/(common)/navbar/page";
@@ -99,13 +100,14 @@ export {
   usePathname,
   Image,
 
-  InputField,
-  DateField,
-  RadioButtonField,
-  CheckboxField,
-  PasswordField,
-  SubmitButton,
   CardWithDetail,
+  CheckboxField,
+  DateField,
+  InputField,
+  PasswordField,
+  RadioButtonField,
+  SubmitButton,
+  TextAreaField,
 
   Navbar,
   Footer,
