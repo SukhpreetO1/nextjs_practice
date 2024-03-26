@@ -2,11 +2,9 @@
 import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD } from "@/app/api/routes/page";
 import { useEffect, useState } from "react";
 
-const EditBlogs = () => {
-    const [blogs, setBlogs] = useState([]);
+const EditBlogs = (req) => {
     const router = useRouter();
-    const { id } = router.query;
-    console.log(id);
+    const id = req.params.id
 
     const [imagePreview, setImagePreview] = useState("");
 
@@ -39,7 +37,7 @@ const EditBlogs = () => {
             try {
                 const response = await fetch(`/api/blogs/edit_blogs/${id}`);
                 const data = await response.json();
-                setBlogs(data.data);
+                setBlogForm(data.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -50,29 +48,36 @@ const EditBlogs = () => {
 
     const blogFormSubmit = async (event) => {
         event.preventDefault();
-
+    
         const formData = new FormData();
         formData.append('image', blogForm.image);
-
+    
         try {
             const imageName = blogForm.image.split('\\').pop().split('/').pop().replace(/ /g, '_');
             const blogData = {
                 image: imageName,
                 title: String(blogForm.title),
                 description: String(blogForm.description),
-                created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
+            };
+    
+            if (router.query.id) {
+                const blogId = router.query.id;
+                const blogRef = doc(db, "blogs", blogId);
+                await updateDoc(blogRef, blogData);
+            } else {
+                console.error("No blog ID provided.");
+                return;
             }
-
-            await addDoc(collection(db, "blogs"), blogData);
-
+    
             localStorage.setItem('hasShownBlogAddedToast', false);
-
+    
             router.push(ADMIN_BLOGS);
         } catch (error) {
             console.log(error);
         }
     };
+    
 
     return (
         <>
@@ -113,13 +118,13 @@ const EditBlogs = () => {
                     <div className="form flex justify-center">
                         <form className="form w-2/5" action="#" method="POST" onSubmit={blogFormSubmit}>
                             <div className="bloag_heading_name">
-                                <InputField className="blog_name" id="blog_name" name="title" div_name="blog_name" label_heading="Title" placeholder="Enter the blog title" value={blogForm.title} onChange={handleInputChange} error={error.title} />
+                                <InputField className="blog_name" id="blog_name" name="title" div_name="blog_name" label_heading="Title" placeholder="Enter the blog title" value={blogForm.title} onChange={handleInputChange} error={error.title}/>
                             </div>
                             <div className="bloag_desctiption_part">
                                 <TextAreaField className="blog_description" id="blog_description" name="description" div_name="blog_description" label_heading="Description" placeholder="Enter the description" value={blogForm.description} onChange={handleInputChange} error={error.description} />
                             </div>
                             <div className="blog_images">
-                                <ImageUploading className="blog_image" id="blog_image" name="image" div_name="blog_image" label_heading="Image" value={blogForm.image} onChange={handleInputChange} error={error.image} accept="image/*" />
+                                <ImageUploading className="blog_image" id="blog_image" name="image" div_name="blog_image" label_heading="Image"  onChange={handleInputChange} error={error.image} accept="image/*" />
                             </div>
                             <div>
                                 {imagePreview && <h5 className="my-4">Preview Image :</h5>}
