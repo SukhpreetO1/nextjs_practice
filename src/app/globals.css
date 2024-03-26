@@ -13,7 +13,7 @@
 .signup_password,
 .profile_first_name,
 .profile_email,
-.profile_date_of_birth  {
+.profile_date_of_birth {
   margin-right: 1rem;
 }
 
@@ -40,14 +40,18 @@
   margin-right: 0px !important;
 }
 
-.about_avatar_image{
+.about_avatar_image {
   width: 150vw !important;
   border-radius: 50%;
 }
 
-.breadcrumbs{
+.breadcrumbs {
   position: absolute;
   top: 5rem;
+}
+
+.blog_modal {
+  margin-left: 36%;
 }
 
 @media (max-width: 2000px) {
@@ -100,7 +104,7 @@
 }
 
 @media (max-width: 767px) {
-  .common_navbar_logo{
+  .common_navbar_logo {
     display: none;
   }
 
@@ -127,7 +131,7 @@
     width: 100%;
   }
 
-  .contact_details{
+  .contact_details {
     width: 100%;
   }
 }
@@ -156,11 +160,12 @@
 
 @media (max-width: 535px) {
   .dashboard_card_section {
-      flex-direction: column;
+    flex-direction: column;
   }
 
-  .dashboard_images, .dashboard_content {
-      width: 100%;
+  .dashboard_images,
+  .dashboard_content {
+    width: 100%;
   }
 }
 

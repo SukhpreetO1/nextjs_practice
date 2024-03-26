@@ -1,9 +1,15 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ToastContainer, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ToastContainer, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS } from '@/app/api/routes/page';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
+
+    const [blogModalDetail, setBlogModalDetail] = useState([]);
+
+    const [showModal, setShowModal] = useState(false);
+
+    const [selectedBlogId, setSelectedBlogId] = useState(null);
 
     useEffect(() => {
         if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
@@ -21,6 +27,17 @@ const Blogs = () => {
 
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (selectedBlogId !== null) {
+            async function fetchData(modal_id) {
+                const response = await fetch("/api/blogs/blog_modal/" + modal_id);
+                const data = await response.json();
+                setBlogModalDetail(data.data);
+            }
+            fetchData(selectedBlogId);
+        }
+    }, [selectedBlogId]);
 
     const truncateDescription = (description) => {
         const words = description.match(/.{1,10}/g);
@@ -105,7 +122,7 @@ const Blogs = () => {
                                         <td className="px-6 py-4">{blog.title}</td>
                                         <td className="px-6 py-4">{truncateDescription(blog.description)}</td>
                                         <td className="px-6 py-4 flex">
-                                            <Link href={ADMIN_EDIT_BLOGS + `/${blog.id}`}>
+                                            <Link href="#" onClick={() => {setShowModal(true); setSelectedBlogId(blog.id);}}>
                                                 <FontAwesomeIcon icon={faInfo} className="w-4 h-4 mr-2" />
                                             </Link>
                                             <Link href={`${ADMIN_EDIT_BLOGS}/${blog.id}`}>
@@ -119,7 +136,37 @@ const Blogs = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {blogs?.length < 1 && <div className="py-2 text-center text-xl">No data</div> }
+                        {blogs?.length < 1 && <div className="py-2 text-center text-xl">No data</div>}
+                        {showModal && (
+                            <div id="default-modal" tabIndex="-1" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div className="relative p-4 w-full max-w-2xl max-h-full blog_modal">
+                                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                                Blog Details
+                                            </h3>
+                                            <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal" onClick={() => setShowModal(false)}>
+                                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div className="blog_details py-4 px-4">
+                                            <div className="title">
+                                                <h1 className='text-xl font-bold'>Title</h1>
+                                                <h1>{blogModalDetail.title}</h1>
+                                            </div>
+                                            <div className="description">
+                                                <p className='text-xl font-bold mt-4'>Description</p>
+                                                <div className="description-content break-words">
+                                                    <p>{blogModalDetail.description}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
