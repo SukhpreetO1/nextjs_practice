@@ -1,10 +1,10 @@
-"use client"
+"use client";
 import { ADMIN_BLOGS, Link } from "@/app/api/routes/page";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AdminDashboard = () => {
   const [data, setData] = useState([]);
-  const [count, setCount] = useState(0); // Initialize count state
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {

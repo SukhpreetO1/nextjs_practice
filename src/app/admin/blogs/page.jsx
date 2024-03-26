@@ -141,7 +141,7 @@ const Blogs = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {blogs?.length < 1 && <div className="py-2 text-center text-xl">No data</div>}
+                        {blogs?.length < 1 && <div className="py-2 text-center text-xl">No data found</div>}
                         {showModal && (
                             <div id="default-modal" tabIndex="-1" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div className="relative p-4 w-full max-w-2xl max-h-full blog_modal">

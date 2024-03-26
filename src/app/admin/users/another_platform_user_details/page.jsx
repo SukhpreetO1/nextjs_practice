@@ -2,21 +2,7 @@
 import { ADMIN_DASHBOARD, FontAwesomeIcon, Link, ToastContainer, faPenToSquare } from "@/app/api/routes/page";
 import { useEffect, useState } from "react";
 
-const genderOptions = [
-    { label: 'Male', value: '1' },
-    { label: 'Female', value: '2' },
-    { label: 'Other', value: '3' },
-];
-
-const hobbiesOptions = [
-    { label: 'Football', value: '1', selected: false },
-    { label: 'Cricket', value: '2', selected: false },
-    { label: 'Basketball', value: '3', selected: false },
-    { label: 'Tennis', value: '4', selected: false },
-    { label: 'Others', value: '5', selected: false },
-];
-
-const User = () => {
+const AnotherPlatformUserDetail = () => {
     const [users, setUsers] = useState([]);
 
     useEffect(()=> {
@@ -72,30 +58,16 @@ const User = () => {
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" className="px-6 py-3">First name</th>
-                                    <th scope="col" className="px-6 py-3">Last name</th>
                                     <th scope="col" className="px-6 py-3">Email</th>
-                                    <th scope="col" className="px-6 py-3">Username</th>
-                                    <th scope="col" className="px-6 py-3">Role</th>
-                                    <th scope="col" className="px-6 py-3">Date of birth</th>
-                                    <th scope="col" className="px-6 py-3">Mobile Number</th>
-                                    <th scope="col" className="px-6 py-3">Gender</th>
-                                    <th scope="col" className="px-6 py-3">Hobbies</th>
+                                    <th scope="col" className="px-6 py-3">Provider</th>
                                     <th scope="col" className="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {users.map((user, index) => (
                                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td className="px-6 py-4">{user.first_name}</td>
-                                        <td className="px-6 py-4">{user.last_name}</td>
                                         <td className="px-6 py-4">{user.email}</td>
                                         <td className="px-6 py-4">{user.username}</td>
-                                        <td className="px-6 py-4">{user.role_id === 1 ? 'User' : 'Admin'}</td>
-                                        <td className="px-6 py-4">{user.date_of_birth}</td>
-                                        <td className="px-6 py-4">{user.mobile_number}</td>
-                                        <td className="px-6 py-4">{getGenderLabel(user.gender)}</td>
-                                        <td className="px-6 py-4">{getHobbiesLabels(user.hobbies)}</td>
 
                                         <td className="px-6 py-4 flex">
                                             <Link href="#">
@@ -115,4 +87,4 @@ const User = () => {
     )
 }
 
-export default User;
+export default AnotherPlatformUserDetail;

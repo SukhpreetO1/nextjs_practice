@@ -46,7 +46,9 @@ import {
   ADMIN_DASHBOARD,
   ADMIN_BLOGS,
   ADMIN_ADD_BLOGS,
-  ADMIN_EDIT_BLOGS
+  ADMIN_EDIT_BLOGS,
+  USER_DETAILS,
+  USER_DETAILS_ANOTHER_PLATFORM
 } from "@/app/api/redirection_route/page";
 
 // firebase import
@@ -141,6 +143,8 @@ export {
   ADMIN_BLOGS,
   ADMIN_ADD_BLOGS,
   ADMIN_EDIT_BLOGS,
+  USER_DETAILS,
+  USER_DETAILS_ANOTHER_PLATFORM,
 
   auth,
   db,
