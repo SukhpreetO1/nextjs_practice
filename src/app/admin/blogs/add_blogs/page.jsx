@@ -1,5 +1,5 @@
 "use client"
-import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image } from "@/app/api/routes/page";
+import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD } from "@/app/api/routes/page";
 import { useState } from "react";
 
 const AddBlogs = () => {
@@ -48,7 +48,7 @@ const AddBlogs = () => {
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             }
-            
+
             await addDoc(collection(db, "blogs"), blogData);
 
             localStorage.setItem('hasShownBlogAddedToast', false);
@@ -67,6 +67,34 @@ const AddBlogs = () => {
                         <h1>Add Blog</h1>
                     </div>
 
+                    <div className="breadcrumbs">
+                        <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
+                            <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                                <li className="inline-flex items-center">
+                                    <Link href={ADMIN_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                        Home
+                                    </Link>
+                                </li>
+                                <li>
+                                    <div className="flex items-center">
+                                        <svg className="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
+                                        </svg>
+                                        <Link href={ADMIN_BLOGS} className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Blogs</Link>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div className="flex items-center">
+                                        <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
+                                        </svg>
+                                        <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Add blogs</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+
                     <div className="form flex justify-center">
                         <form className="form w-2/5" action="#" method="POST" onSubmit={blogFormSubmit}>
                             <div className="bloag_heading_name">
@@ -80,7 +108,7 @@ const AddBlogs = () => {
                             </div>
                             <div>
                                 {imagePreview && <h5 className="my-4">Preview Image :</h5>}
-                                {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="image-preview mb-3" width={800} height={100} encType="multipart/form-data"/>)}
+                                {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="image-preview mb-3" width={800} height={100} encType="multipart/form-data" />)}
                             </div>
                             <div className="submit_button">
                                 <SubmitButton className="submit" name="submit" id="submit" label="Add blog" />
