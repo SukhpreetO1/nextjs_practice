@@ -40,40 +40,22 @@ const AddBlogs = () => {
         formData.append('image', blogForm.image);
 
         try {
-            console.log(blogForm.image);
-            const response = await fetch('/api/blogs/upload_images', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to upload image');
+            const imageName = blogForm.image.split('\\').pop().split('/').pop().replace(/ /g, '_');
+            const blogData = {
+                image: imageName,
+                title: String(blogForm.title),
+                description: String(blogForm.description),
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
             }
+            
+            await addDoc(collection(db, "blogs"), blogData);
 
-            // Extract image name from response if needed
-            const { success, message } = await response.json();
-            const imageName = blogForm.image.split('\\').pop().split('/').pop();
-            if (success) {
-                console.log(success);
-                // const blogData = {
-                //     image: imageName,
-                //     title: String(blogForm.title),
-                //     description: String(blogForm.description),
-                //     created_at: new Date().toISOString(),
-                //     updated_at: new Date().toISOString()
-                // }
+            localStorage.setItem('hasShownBlogAddedToast', false);
 
-                // await addDoc(collection(db, "blogs"), blogData);
-
-                // localStorage.setItem('hasShownBlogAddedToast', false);
-
-                // router.push(ADMIN_BLOGS);
-            } else {
-                throw new Error(message);
-            }
+            router.push(ADMIN_BLOGS);
         } catch (error) {
-            console.error('Error uploading image:', error.message);
-            // Handle error
+            console.log(error);
         }
     };
 
@@ -87,18 +69,18 @@ const AddBlogs = () => {
 
                     <div className="form flex justify-center">
                         <form className="form w-2/5" action="#" method="POST" onSubmit={blogFormSubmit}>
-                            <div className="blog_images">
-                                <ImageUploading className="blog_image" id="blog_image" name="image" div_name="blog_image" label_heading="Image" value={blogForm.image} onChange={handleInputChange} error={error.image} accept="image/*" />
-                            </div>
                             <div className="bloag_heading_name">
                                 <InputField className="blog_name" id="blog_name" name="title" div_name="blog_name" label_heading="Title" placeholder="Enter the blog title" value={blogForm.title} onChange={handleInputChange} error={error.title} />
                             </div>
                             <div className="bloag_desctiption_part">
                                 <TextAreaField className="blog_description" id="blog_description" name="description" div_name="blog_description" label_heading="Description" placeholder="Enter the description" value={blogForm.description} onChange={handleInputChange} error={error.description} />
                             </div>
+                            <div className="blog_images">
+                                <ImageUploading className="blog_image" id="blog_image" name="image" div_name="blog_image" label_heading="Image" value={blogForm.image} onChange={handleInputChange} error={error.image} accept="image/*" />
+                            </div>
                             <div>
                                 {imagePreview && <h5 className="my-4">Preview Image :</h5>}
-                                {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="image-preview mb-3" width={800} height={100} />)}
+                                {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="image-preview mb-3" width={800} height={100} encType="multipart/form-data"/>)}
                             </div>
                             <div className="submit_button">
                                 <SubmitButton className="submit" name="submit" id="submit" label="Add blog" />
