@@ -9,7 +9,7 @@ export async function GET() {
     const data = [];
 
     querySnapshot.forEach((doc) => {
-      data.push(doc.data());
+      data.push({ id: doc.id, ...doc.data() });
     });
 
     return NextResponse.json({ data });

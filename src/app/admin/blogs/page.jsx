@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ToastContainer, ADMIN_DASHBOARD } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ToastContainer, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc } from '@/app/api/routes/page';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
@@ -28,7 +28,27 @@ const Blogs = () => {
             return words.slice(0, 13).join(' ') + '...';
         }
         return description;
-    };    
+    };
+
+    const deleteBlog = async (blogId) => {
+        try {
+            const ref = doc(db, "blogs", blogId);
+            deleteDoc(ref)
+                .then(() => {
+                    toast.success("Blog deleted successfully", {
+                        position: "top-right",
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } catch (error) {
+            console.error("Error deleting blog:", error);
+        }
+    }
 
     return (
         <>
@@ -85,13 +105,13 @@ const Blogs = () => {
                                         <td className="px-6 py-4">{blog.title}</td>
                                         <td className="px-6 py-4">{truncateDescription(blog.description)}</td>
                                         <td className="px-6 py-4 flex">
-                                            <Link href="#">
+                                            <Link href={ADMIN_EDIT_BLOGS + `/${blog.id}`}>
                                                 <FontAwesomeIcon icon={faInfo} className="w-4 h-4 mr-2" />
                                             </Link>
-                                            <Link href="#">
+                                            <Link href={`${ADMIN_EDIT_BLOGS}/${blog.id}`}>
                                                 <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2" />
                                             </Link>
-                                            <Link href="#">
+                                            <Link href="#" onClick={() => deleteBlog(blog.id)}>
                                                 <FontAwesomeIcon icon={faTrashCan} className="w-4 h-4" />
                                             </Link>
                                         </td>
@@ -99,6 +119,7 @@ const Blogs = () => {
                                 ))}
                             </tbody>
                         </table>
+                        {blogs?.length < 1 && <div className="py-2 text-center text-xl">No data</div> }
                     </div>
                 </div>
             </section>

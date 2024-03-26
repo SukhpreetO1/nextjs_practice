@@ -45,7 +45,8 @@ import {
   NAVBAR_PROFILE,
   ADMIN_DASHBOARD,
   ADMIN_BLOGS,
-  ADMIN_ADD_BLOGS
+  ADMIN_ADD_BLOGS,
+  ADMIN_EDIT_BLOGS
 } from "@/app/api/redirection_route/page";
 
 // firebase import
@@ -74,6 +75,7 @@ import {
   doc,
   getDoc,
   onSnapshot,
+  deleteDoc
 } from "firebase/firestore";
 
 // use toastify for notification
@@ -137,6 +139,7 @@ export {
   ADMIN_DASHBOARD,
   ADMIN_BLOGS,
   ADMIN_ADD_BLOGS,
+  ADMIN_EDIT_BLOGS,
 
   auth,
   db,
@@ -161,6 +164,7 @@ export {
   doc,
   getDoc,
   onSnapshot,
+  deleteDoc,
 
   ToastContainer,
   toast,
