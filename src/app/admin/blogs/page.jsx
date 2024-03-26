@@ -17,6 +17,11 @@ const Blogs = () => {
                 position: "top-right",
             });
             localStorage.removeItem("hasShownBlogAddedToast");
+        } else if (localStorage.getItem("hasShownBlogUpdatedToast") === "false") {
+            toast.success("Blog updated successfully", {
+                position: "top-right",
+            });
+            localStorage.removeItem("hasShownBlogUpdatedToast");
         }
 
         async function fetchData() {

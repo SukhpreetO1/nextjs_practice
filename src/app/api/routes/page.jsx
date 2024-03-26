@@ -75,7 +75,8 @@ import {
   doc,
   getDoc,
   onSnapshot,
-  deleteDoc
+  deleteDoc,
+  updateDoc
 } from "firebase/firestore";
 
 // use toastify for notification
@@ -165,6 +166,7 @@ export {
   getDoc,
   onSnapshot,
   deleteDoc,
+  updateDoc,
 
   ToastContainer,
   toast,

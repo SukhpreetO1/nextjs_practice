@@ -1,5 +1,5 @@
 "use client"
-import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD } from "@/app/api/routes/page";
+import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD, updateDoc } from "@/app/api/routes/page";
 import { useEffect, useState } from "react";
 
 const EditBlogs = (req) => {
@@ -70,7 +70,7 @@ const EditBlogs = (req) => {
                 return;
             }
     
-            localStorage.setItem('hasShownBlogAddedToast', false);
+            localStorage.setItem('hasShownBlogUpdatedToast', false);
     
             router.push(ADMIN_BLOGS);
         } catch (error) {
