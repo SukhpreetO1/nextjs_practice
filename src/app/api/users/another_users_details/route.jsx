@@ -1,21 +1,28 @@
+import { getAuth } from "@/app/api/routes/page";
 import { NextResponse } from "next/server";
-import { initializeApp } from "@/db/firebase";
 
 export async function GET() {
   try {
-    const admin = initializeApp();
-    console.log("admin", admin);
+    const listAllUsers = async (nextPageToken) => {
+      try {
+        const listUsersResult = await getAuth().listUsers(1000, nextPageToken);
+        listUsersResult.users.forEach((userRecord) => {
+          console.log("user", userRecord.toJSON());
+        });
+        if (listUsersResult.pageToken) {
+          await listAllUsers(listUsersResult.pageToken);
+        }
+      } catch (error) {
+        console.log("Error listing users:", error);
+        throw error; // Re-throw the error to be caught by the outer try-catch block
+      }
+    };
 
-    const userList = await admin.auth().listUsers();
-    console.log("userlist", userList);
-    
-    const userData = userList.users.map(userRecord => ({
-      uid: userRecord.uid,
-      email: userRecord.email,
-    }));
+    await listAllUsers();
 
-    return NextResponse.json({ data: userData }, { status: 200 });
+    return NextResponse.json({ data });
   } catch (error) {
+    console.log("Error:", error);
     return NextResponse.error(error.message, 500);
   }
 }
