@@ -1,5 +1,4 @@
 "use client";
-
 import { InputField, LOGIN_URL, Link, SubmitButton, useRouter, validate_forgot_password_submit_form, sendPasswordResetEmail, auth, collection, db, where, query, getDocs, toast } from "@/app/api/routes/page";
 import React, { useState } from "react";
 
@@ -26,7 +25,7 @@ const ForgotPassword = () => {
           if (formData.email !== null) {
             localStorage.setItem("hasShownForgotPasswordToast", false);
             router.push(LOGIN_URL);
-            return; 
+            return;
           }
         }
         throw new Error("Email not found. Please check it again");
@@ -56,13 +55,13 @@ const ForgotPassword = () => {
             <div className="email">
               <InputField label_heading="Email" className="email" id="email" name="email" div_name="email" placeholder="Enter your email here" value={formData.email} onChange={handleInputChange} error={errors.email} />
             </div>
-            <div className="login_redirection text-end text-blue-600 italic font-medium">
-              <Link href={LOGIN_URL} className="forgot_password_link">Login....</Link>
-            </div>
-            <div className="forgot_password_button">
+            <div className="forgot_password_button mt-5">
               <SubmitButton className="forgot_password_submit_button" id="forgot_password_submit_button" name="forgot_password_submit_button" div_name="forgot_password_submit_button" label="Forgot Password" />
             </div>
           </form>
+          <div className="login_redirection text-center text-blue-600 italic font-medium mt-2">
+            <Link href={LOGIN_URL} className="forgot_password_link">Login here</Link>
+          </div>
         </div>
       </div>
     </>

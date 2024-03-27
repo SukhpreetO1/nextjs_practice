@@ -68,7 +68,7 @@ const Login = () => {
             if (!querySnapshot.empty) {
               querySnapshot.forEach((doc) => {
                 const userData = doc.data();
-                if (userData.role_id === 2) {
+                if (userData.role_id === 1) {
                   Cookies.set('currentAdminToken', JSON.stringify(auth.currentUser.accessToken), {
                     expires: expirationTime
                   });
@@ -211,7 +211,7 @@ const Login = () => {
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> Login </h2>
           </div>
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
             <form className="space-y-4" action="#" method="POST" onSubmit={loginFormSubmit}>
               <div className="login_email">
                 <InputField label_heading="Email" id="email" className="email" name="email" placeholder="Email" div_name="login_email" value={formData.email} onChange={handleInputChange} error={errors.email} />

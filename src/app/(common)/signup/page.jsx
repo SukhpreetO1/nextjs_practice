@@ -160,7 +160,7 @@ const Signup = () => {
                     </div>
                 </form>
                 <div>
-                    <Link href={LOGIN_URL} className="underline underline-offset-4 italic text-blue-500"><p className="mt-3 text-center text-sm text-gray-500">Already have an account?</p></Link>
+                    <Link href={LOGIN_URL} className="underline underline-offset-4 italic text-blue-500"><p className="mt-3 text-center text-sm text-blue-500">Already have an account?</p></Link>
                 </div>
             </div>
         </>
