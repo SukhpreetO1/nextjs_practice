@@ -120,7 +120,7 @@ const Login = () => {
         date_of_birth: '',
         mobile_number: '',
         gender: '',
-        role_id: '',
+        role_id: Number(1),
         hobbies: '',
         password: '',
         created_at: serverTimestamp(),
