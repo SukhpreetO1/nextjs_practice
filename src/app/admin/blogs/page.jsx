@@ -157,16 +157,16 @@ const Blogs = () => {
                                             </button>
                                         </div>
                                         <div className="blog_details py-8 px-8">
-                                            <div className="uploaded_image">
-                                                <Image src={blogModalDetail.image} alt="Uploaded Image" width={100} height={100} />
-                                            </div>
+                                            <div className='flex mb-4'>
+                                                <div className="uploaded_image mr-4">
+                                                    <Image src={blogModalDetail.image} alt="Uploaded Image" width={400} height={100} />
+                                                </div>
 
-                                            <div className="title">
-                                                <h1 className='text-xl font-bold'>Title</h1>
-                                                <p className='break-words text-justify italic text-2xl leading-loose mb-4'>{blogModalDetail.title}</p>
+                                                <div className="title">
+                                                    <p className='break-words text-justify italic text-2xl leading-loose mb-4'>{blogModalDetail.title}</p>
+                                                </div>
                                             </div>
                                             <div className="description">
-                                                <p className='text-xl font-bold mt-4'>Description</p>
                                                 <div className="description-content break-words">
                                                     <p className='break-words text-justify font-light leading-loose text-base'>{blogModalDetail.description}</p>
                                                 </div>
