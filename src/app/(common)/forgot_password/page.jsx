@@ -4,12 +4,8 @@ import React, { useState } from "react";
 
 const ForgotPassword = () => {
   const router = useRouter();
-
   const [errors, setErrors] = useState({});
-
-  const [formData, setFormData] = useState({
-    email: '',
-  });
+  const [formData, setFormData] = useState({ email: '' });
 
   const forgotPasswordFormSubmit = async (e) => {
     e.preventDefault();
@@ -21,18 +17,14 @@ const ForgotPassword = () => {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          await sendPasswordResetEmail(auth, formData.email);;
-          if (formData.email !== null) {
-            localStorage.setItem("hasShownForgotPasswordToast", false);
-            router.push(LOGIN_URL);
-            return;
-          }
+          await sendPasswordResetEmail(auth, formData.email);
+          localStorage.setItem("hasShownForgotPasswordToast", false);
+          router.push(LOGIN_URL);
+        } else {
+          throw new Error("Email not found. Please check it again");
         }
-        throw new Error("Email not found. Please check it again");
       } catch (err) {
-        toast.error(err.message || "An error occurred. Please try again.", {
-          position: "top-right",
-        });
+        toast.error(err.message || "An error occurred. Please try again.", { position: "top-right" });
       }
     } else {
       setErrors(validation_errors);
