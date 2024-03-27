@@ -1,4 +1,4 @@
-import { getFirestore, collection, getDocs, db } from "@/app/api/routes/page";
+import { collection, getDocs, db } from "@/app/api/routes/page";
 import { NextResponse } from "next/server";
 
 export async function GET() {
