@@ -58,6 +58,11 @@
   margin-left: 36%;
 }
 
+.sign_in_with_mobile_number {
+  position: absolute;
+  left: 32%;
+  top: 24%;
+}
 
 
 /* loader css */

@@ -64,7 +64,11 @@ import {
   signInWithCustomToken,
   sendPasswordResetEmail,
   signInWithPopup, 
-  GoogleAuthProvider
+  GoogleAuthProvider,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+  signInWithCredential
 } from "firebase/auth";
 
 import {
@@ -160,6 +164,10 @@ export {
   sendPasswordResetEmail,
   signInWithPopup, 
   GoogleAuthProvider,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+  signInWithCredential,
   
   collection,
   query,
