@@ -1,5 +1,5 @@
 "use client";
-import { InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, ToastContainer, Cookies, NAVBAR_DASHBOARD, FORGOT_PASSWORD, GOOGLE_LOGO, PHONE_NUMBER_LOGO, Image, signInWithPopup, GoogleAuthProvider, collection, db, where, query, getDocs, ADMIN_DASHBOARD } from '@/app/api/routes/page';
+import { InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, Cookies, NAVBAR_DASHBOARD, FORGOT_PASSWORD, GOOGLE_LOGO, PHONE_NUMBER_LOGO, Image, signInWithPopup, GoogleAuthProvider, collection, db, where, query, getDocs, ADMIN_DASHBOARD, serverTimestamp, addDoc } from '@/app/api/routes/page';
 import React, { useState, useEffect } from 'react';
 
 const Login = () => {
@@ -50,9 +50,9 @@ const Login = () => {
           const checkUserEmailInFirestore = async (email) => {
             const usersRef = collection(db, 'users');
             const q = query(usersRef, where('email', '==', email));
-        
+
             const querySnapshot = await getDocs(q);
-        
+
             if (!querySnapshot.empty) {
               querySnapshot.forEach((doc) => {
                 const userData = doc.data();
@@ -96,6 +96,27 @@ const Login = () => {
     expirationTime.setTime(expirationTime.getTime() + 10 * 60 * 1000);
     try {
       await signInWithPopup(auth, provider);
+      const full_name = auth.currentUser.displayName;
+      if (full_name !== null){
+        var first_name = full_name.split(' ')[0];
+        var last_name = full_name.split(' ')[1];
+      }
+      const user_data = {
+        first_name: String(first_name),
+        last_name: String(last_name),
+        email: String(auth.currentUser.email),
+        username: '',
+        date_of_birth: '',
+        mobile_number: '',
+        gender: '',
+        role_id: '',
+        hobbies: '',
+        password: '',
+        created_at: serverTimestamp(),
+        updated_at: serverTimestamp()
+      };
+      await addDoc(collection(db, 'users'), user_data);
+
       Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
         expires: expirationTime
       });
@@ -137,13 +158,15 @@ const Login = () => {
               <p className="mt-3 text-center text-sm text-gray-500"> Not a member? <Link href={SIGNUP_URL} className="underline underline-offset-4 italic text-blue-500">Sign up here</Link></p>
             </div>
             <div className="other_autherization_method flex justify-center mt-4">
-              <div>Other ways to login :
-                <div className='flex justify-center mt-4'>
-                  <div className="google_autherization cursor-pointer">
-                    <Image src={GOOGLE_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithGoogle()} />
+              <div><span className='flex justify-center font-light italic text-gray-500'>- - - - - - - - - Other ways - - - - - - - - -</span>
+                <div className='my-4'>
+                  <div className="google_autherization cursor-pointer flex my-4" onClick={() => signInWithGoogle()}>
+                    <Image src={GOOGLE_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' />
+                    <span className='font-light text-gray-500'>Log in with google account</span>
                   </div>
-                  <div className="phone_number_autherization cursor-pointer">
-                    <Image src={PHONE_NUMBER_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' onClick={() => signInWithPhone()} />
+                  <div className="phone_number_autherization cursor-pointer flex" onClick={() => signInWithPhone()} >
+                    <Image src={PHONE_NUMBER_LOGO} width={50} height={50} alt="google_logo" className='w-8 h-8 me-3 rounded-lg' />
+                    <span className='font-light text-gray-500'>Log in with phone number</span>
                   </div>
                 </div>
               </div>
@@ -151,7 +174,6 @@ const Login = () => {
           </div>
         </div>
       </section>
-      <ToastContainer />
     </>
   );
 };

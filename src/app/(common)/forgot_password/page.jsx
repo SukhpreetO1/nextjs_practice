@@ -1,6 +1,6 @@
 "use client";
 
-import { InputField, LOGIN_URL, Link, SubmitButton, useRouter, validate_forgot_password_submit_form, sendPasswordResetEmail, auth, collection, db, where, query, getDocs, toast, ToastContainer } from "@/app/api/routes/page";
+import { InputField, LOGIN_URL, Link, SubmitButton, useRouter, validate_forgot_password_submit_form, sendPasswordResetEmail, auth, collection, db, where, query, getDocs, toast } from "@/app/api/routes/page";
 import React, { useState } from "react";
 
 const ForgotPassword = () => {
@@ -65,7 +65,6 @@ const ForgotPassword = () => {
           </form>
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 };

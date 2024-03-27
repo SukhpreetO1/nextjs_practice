@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ToastContainer, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS } from '@/app/api/routes/page';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
@@ -175,7 +175,6 @@ const Blogs = () => {
                     </div>
                 </div>
             </section>
-            <ToastContainer />
         </>
     )
 }

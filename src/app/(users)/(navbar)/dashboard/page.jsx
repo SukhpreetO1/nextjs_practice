@@ -1,5 +1,5 @@
 "use client"
-import { toast, ToastContainer, DashboardHome } from '@/app/api/routes/page';
+import { toast, DashboardHome } from '@/app/api/routes/page';
 import React, { useEffect } from 'react';
 
 const Dashboard = () => {
@@ -14,7 +14,6 @@ const Dashboard = () => {
   return (
     <>
       <DashboardHome />
-      <ToastContainer />
     </>
   )
 }

@@ -1,5 +1,5 @@
 "use client";
-import { InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, ToastContainer, useRouter, hash, collection, query, where, getDocs, addDoc, serverTimestamp, db, auth, createUserWithEmailAndPassword, onAuthStateChanged, getAuth } from '@/app/api/routes/page';
+import { InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, useRouter, hash, collection, query, where, getDocs, addDoc, serverTimestamp, db, auth, createUserWithEmailAndPassword, onAuthStateChanged, getAuth } from '@/app/api/routes/page';
 import React, { useState } from 'react';
 
 const genderOptions = [
@@ -163,7 +163,6 @@ const Signup = () => {
                     <p className="mt-3 text-center text-sm text-gray-500">Already have an account? <Link href={LOGIN_URL} className="underline underline-offset-4 italic text-blue-500">Login here.</Link></p>
                 </div>
             </div>
-            <ToastContainer />
         </>
     );
 };

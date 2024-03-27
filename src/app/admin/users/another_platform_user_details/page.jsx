@@ -1,5 +1,5 @@
 "use client"
-import { ADMIN_DASHBOARD, FontAwesomeIcon, Link, ToastContainer, faPenToSquare } from "@/app/api/routes/page";
+import { ADMIN_DASHBOARD, FontAwesomeIcon, Link, faPenToSquare } from "@/app/api/routes/page";
 import { useEffect, useState } from "react";
 
 const AnotherPlatformUserDetail = () => {
@@ -82,7 +82,6 @@ const AnotherPlatformUserDetail = () => {
                     </div>
                 </div>
             </section>
-            <ToastContainer />
         </>
     )
 }

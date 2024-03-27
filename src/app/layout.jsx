@@ -1,5 +1,6 @@
 import "@/app/globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "@/app/api/routes/page"
 
 export const metadata = {
   title: "Next js",
@@ -11,6 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <main>{children}</main>
+        <ToastContainer />
       </body>
     </html>
   )
