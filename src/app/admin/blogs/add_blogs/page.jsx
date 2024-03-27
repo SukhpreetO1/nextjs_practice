@@ -1,9 +1,11 @@
 "use client"
-import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD } from "@/app/api/routes/page";
+import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD, ref, uploadBytes, getStorage, getDownloadURL, } from "@/app/api/routes/page";
 import { useState } from "react";
 
 const AddBlogs = () => {
     const router = useRouter();
+
+    const storage = getStorage();
 
     const [imagePreview, setImagePreview] = useState("");
 
@@ -40,9 +42,16 @@ const AddBlogs = () => {
         formData.append('image', blogForm.image);
 
         try {
-            const imageName = blogForm.image.split('\\').pop().split('/').pop().replace(/ /g, '_');
+            const storageRef = ref(storage, `blogs/${imageName}`);
+            await uploadBytes(storageRef, blogForm.image);
+    
+            console.log('Image uploaded successfully');
+
+            // Get the download URL of the uploaded image
+            const downloadURL = await getDownloadURL(storageRef);
+
             const blogData = {
-                image: imageName,
+                image: downloadURL,
                 title: String(blogForm.title),
                 description: String(blogForm.description),
                 created_at: new Date().toISOString(),
@@ -55,7 +64,7 @@ const AddBlogs = () => {
 
             router.push(ADMIN_BLOGS);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 

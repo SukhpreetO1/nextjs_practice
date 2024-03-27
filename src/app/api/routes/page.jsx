@@ -86,6 +86,13 @@ import {
   updateDoc
 } from "firebase/firestore";
 
+import { 
+  ref, 
+  uploadBytes, 
+  getStorage, 
+  getDownloadURL 
+} from "firebase/storage";
+
 // use toastify for notification
 import { ToastContainer, toast } from "react-toastify";
 
@@ -181,6 +188,11 @@ export {
   onSnapshot,
   deleteDoc,
   updateDoc,
+
+  ref, 
+  uploadBytes, 
+  getStorage, 
+  getDownloadURL,
 
   ToastContainer,
   toast,

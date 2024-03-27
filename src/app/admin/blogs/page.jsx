@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS, Image } from '@/app/api/routes/page';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
@@ -157,6 +157,10 @@ const Blogs = () => {
                                             </button>
                                         </div>
                                         <div className="blog_details py-8 px-8">
+                                            <div className="uploaded_image">
+                                                <Image src={blogModalDetail.image} alt="Uploaded Image" width={100} height={100} />
+                                            </div>
+
                                             <div className="title">
                                                 <h1 className='text-xl font-bold'>Title</h1>
                                                 <p className='break-words text-justify italic text-2xl leading-loose mb-4'>{blogModalDetail.title}</p>
