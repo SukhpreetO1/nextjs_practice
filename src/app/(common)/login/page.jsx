@@ -7,6 +7,8 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
 
+  const [disabled, setDisabled] = useState(false);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -38,8 +40,13 @@ const Login = () => {
     setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
   };
 
+  const handleClick = () => {
+    setDisabled(true);
+  };
+
   const loginFormSubmit = async (e) => {
     e.preventDefault();
+    setDisabled(true);
     const validation_errors = validate_login_submit_form(formData);
     const expirationTime = new Date();
     expirationTime.setTime(expirationTime.getTime() + 10 * 60 * 1000);
@@ -61,12 +68,14 @@ const Login = () => {
                     expires: expirationTime
                   });
                   localStorage.setItem("hasShownLoginToast", false);
+                  setDisabled(false);
                   router.push(ADMIN_DASHBOARD);
                 } else {
                   Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
                     expires: expirationTime
                   });
                   localStorage.setItem("hasShownLoginToast", false);
+                  setDisabled(false);
                   router.push(NAVBAR_DASHBOARD);
                 }
               });
@@ -74,18 +83,20 @@ const Login = () => {
           };
           checkUserEmailInFirestore(formData.email);
         } else {
+          setDisabled(false);
           toast.error("Login failed. Please try again.", {
             position: "top-right",
           });
         }
       }
       catch (err) {
-        console.log(err);
+        setDisabled(false);
         toast.error("Invalid credential", {
           position: "top-right",
         });
       }
     } else {
+      setDisabled(false);
       setErrors(validation_errors);
     }
   }
@@ -151,7 +162,7 @@ const Login = () => {
                 <Link href={FORGOT_PASSWORD} className="forgot_password_link">Forgot Password?</Link>
               </div>
               <div className="login_button">
-                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" label="Login" />
+                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" label="Login" disabled={disabled} onClick={handleClick}/>
               </div>
             </form>
             <div>

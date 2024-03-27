@@ -34,11 +34,13 @@ const User = () => {
     };
 
     const getHobbiesLabels = (values) => {
-        const hobbies = values.map(value => {
-            const hobby = hobbiesOptions.find(option => option.value === value);
-            return hobby ? hobby.label : '';
-        });
-        return hobbies.join(', ');
+        if (values !== ''){
+            const hobbies = values.map(value => {
+                const hobby = hobbiesOptions.find(option => option.value === value);
+                return hobby ? hobby.label : '';
+            });
+            return hobbies.join(', ');
+        }
     };
         return (
         <>
