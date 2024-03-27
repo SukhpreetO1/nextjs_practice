@@ -4,38 +4,25 @@ import React, { useState, useEffect } from 'react';
 
 const Login = () => {
   const router = useRouter();
-
   const [errors, setErrors] = useState({});
-
   const [disabled, setDisabled] = useState(false);
-
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationId, setVerificationId] = useState('');
 
   useEffect(() => {
-    if (localStorage.getItem("hasShownAccountCreatedToast") === "false") {
-      toast.success("New account created successfully", {
-        position: "top-right",
-      });
-      localStorage.removeItem("hasShownAccountCreatedToast");
-    } else if (localStorage.getItem("hasShownLoggedOutToast") === "true") {
-      toast.success("Logout successfully", {
-        position: "top-right",
-      });
-      localStorage.removeItem("hasShownLoggedOutToast");
-    } else if (localStorage.getItem("hasShownForgotPasswordToast") === "false") {
-      toast.success("Forgot password mail send successfully", {
-        position: "top-right",
-      });
-      localStorage.removeItem("hasShownForgotPasswordToast");
-    }
+    const showToast = (item, message) => {
+      if (localStorage.getItem(item) === "false") {
+        toast.success(message, { position: "top-right" });
+        localStorage.removeItem(item);
+      }
+    };
+
+    showToast("hasShownAccountCreatedToast", "New account created successfully");
+    showToast("hasShownLoggedOutToast", "Logout successfully");
+    showToast("hasShownForgotPasswordToast", "Forgot password mail sent successfully");
   }, []);
 
   const handleInputChange = (e) => {
@@ -45,64 +32,46 @@ const Login = () => {
     setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
   };
 
-  const handleClick = () => {
-    setDisabled(true);
-  };
+  const handleClick = () => setDisabled(true);
 
   const loginFormSubmit = async (e) => {
     e.preventDefault();
-    setDisabled(true);
-    const validation_errors = validate_login_submit_form(formData);
-    const expirationTime = new Date();
-    expirationTime.setTime(expirationTime.getTime() + 10 * 60 * 1000);
-    if (Object.keys(validation_errors).length === 0) {
+    const validationErrors = validate_login_submit_form(formData);
+    const expirationTime = new Date(Date.now() + 10 * 60 * 1000);
+
+    const getUserDataFromFirestore = async (email) => {
+      try {
+        const usersRef = collection(db, 'users');
+        const q = query(usersRef, where('email', '==', email));
+
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => doc.data());
+      } catch (error) {
+        console.error("Error fetching user data from Firestore:", error);
+        return null;
+      }
+    };
+
+    if (Object.keys(validationErrors).length === 0) {
       try {
         await signInWithEmailAndPassword(auth, formData.email, formData.password);
-        if (auth.currentUser.email === formData.email) {
-          const checkUserEmailInFirestore = async (email) => {
-            const usersRef = collection(db, 'users');
-            const q = query(usersRef, where('email', '==', email));
+        const userData = await getUserDataFromFirestore(formData.email);
+        const role_id = userData[0]?.role_id;
+        const token = JSON.stringify(auth.currentUser.accessToken);
+        const cookieName = role_id === 1 ? 'currentAdminToken' : 'currentUserToken';
 
-            const querySnapshot = await getDocs(q);
-
-            if (!querySnapshot.empty) {
-              querySnapshot.forEach((doc) => {
-                const userData = doc.data();
-                if (userData.role_id === 1) {
-                  Cookies.set('currentAdminToken', JSON.stringify(auth.currentUser.accessToken), {
-                    expires: expirationTime
-                  });
-                  localStorage.setItem("hasShownLoginToast", false);
-                  setDisabled(false);
-                  router.push(ADMIN_DASHBOARD);
-                } else {
-                  Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
-                    expires: expirationTime
-                  });
-                  localStorage.setItem("hasShownLoginToast", false);
-                  setDisabled(false);
-                  router.push(NAVBAR_DASHBOARD);
-                }
-              });
-            }
-          };
-          checkUserEmailInFirestore(formData.email);
-        } else {
-          setDisabled(false);
-          toast.error("Login failed. Please try again.", {
-            position: "top-right",
-          });
-        }
-      }
-      catch (err) {
+        Cookies.set(cookieName, token, { expires: expirationTime });
+        localStorage.setItem("hasShownLoginToast", false);
         setDisabled(false);
-        toast.error("Invalid credential", {
-          position: "top-right",
-        });
+        router.push(role_id === 1 ? ADMIN_DASHBOARD : NAVBAR_DASHBOARD);
+      } catch (error) {
+        setDisabled(false);
+        toast.error(error.code === "auth/wrong-password" ? "Invalid credential" : "Login failed. Please try again.", { position: "top-right" });
+        console.log(error);
       }
     } else {
       setDisabled(false);
-      setErrors(validation_errors);
+      setErrors(validationErrors);
     }
   }
 
@@ -112,11 +81,8 @@ const Login = () => {
     expirationTime.setTime(expirationTime.getTime() + 10 * 60 * 1000);
     try {
       await signInWithPopup(auth, provider);
-      const full_name = auth.currentUser.displayName;
-      if (full_name !== null) {
-        var first_name = full_name.split(' ')[0];
-        var last_name = full_name.split(' ')[1];
-      }
+      const fullName = auth.currentUser.displayName || '';
+      const [first_name, last_name] = fullName.split(' ');
       const user_data = {
         first_name: String(first_name),
         last_name: String(last_name),
@@ -133,9 +99,7 @@ const Login = () => {
       };
       await addDoc(collection(db, 'users'), user_data);
 
-      Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), {
-        expires: expirationTime
-      });
+      Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), { expires: expirationTime });
       localStorage.setItem("hasShownLoginToast", false);
       router.push(NAVBAR_DASHBOARD);
     } catch (err) {
@@ -144,19 +108,13 @@ const Login = () => {
   }
 
   const handleSendCode = async () => {
-    const recaptchaVerifier = new RecaptchaVerifier(auth, 'send-code-button', {
-      size: 'invisible'
-    });
+    const recaptchaVerifier = new RecaptchaVerifier(auth, 'send-code-button', { size: 'invisible' });
     try {
       const verificationId = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
-      toast.success("OTP sent successfully", {
-        position: "top-right",
-      })
+      toast.success("OTP sent successfully", { position: "top-right" })
       setVerificationId(verificationId);
     } catch (error) {
-      toast.success("Phone number is not correct" + error, {
-        position: "top-right",
-      })
+      toast.success("Phone number is not correct" + error, { position: "top-right" })
       console.error(error);
     }
   };
@@ -180,15 +138,8 @@ const Login = () => {
 
     if (isValid) {
       const credential = PhoneAuthProvider.credential(verificationId, verificationCode);
-      console.log("verificationId", verificationId);
-      console.log("Phone Number:", phoneNumber);
-      console.log("credentials", credential);
-      
       try {
         const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, credential);
-        console.log("confirmationResult", confirmationResult);
-        
-        // Use the confirmation result to verify the OTP
         const userCredential = await confirmationResult.confirm(verificationCode);
         console.log("userCredential", userCredential);
         console.log("User signed in successfully");
@@ -197,7 +148,6 @@ const Login = () => {
       } catch (error) {
         console.log(error);
       }
-
     } else {
       setErrors(validation_errors);
     }
