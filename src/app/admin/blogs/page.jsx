@@ -143,8 +143,8 @@ const Blogs = () => {
                         </table>
                         {blogs?.length < 1 && <div className="py-2 text-center text-xl">No data found</div>}
                         {showModal && (
-                            <div id="default-modal" tabIndex="-1" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div className="relative p-4 w-full max-w-2xl max-h-full blog_modal">
+                            <div id="default-modal" tabIndex="-1" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-black bg-opacity-80">
+                                <div className="relative p-4 w-4/6 max-h-full blog_modal">
                                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -156,15 +156,15 @@ const Blogs = () => {
                                                 </svg>
                                             </button>
                                         </div>
-                                        <div className="blog_details py-4 px-4">
+                                        <div className="blog_details py-8 px-8">
                                             <div className="title">
                                                 <h1 className='text-xl font-bold'>Title</h1>
-                                                <h1>{blogModalDetail.title}</h1>
+                                                <p className='break-words text-justify italic text-2xl leading-loose mb-4'>{blogModalDetail.title}</p>
                                             </div>
                                             <div className="description">
                                                 <p className='text-xl font-bold mt-4'>Description</p>
                                                 <div className="description-content break-words">
-                                                    <p>{blogModalDetail.description}</p>
+                                                    <p className='break-words text-justify font-light leading-loose text-base'>{blogModalDetail.description}</p>
                                                 </div>
                                             </div>
                                         </div>
