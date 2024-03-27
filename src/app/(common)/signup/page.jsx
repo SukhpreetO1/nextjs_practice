@@ -96,7 +96,7 @@ const Signup = () => {
                 date_of_birth: String(formData.date_of_birth.trim()),
                 mobile_number: Number(formData.mobile_number.trim()),
                 gender: Number(formData.gender),
-                role_id: Number(1),
+                role_id: Number(2),
                 hobbies: hobbiesArray,
                 password: String(hashedPassword),
                 created_at: serverTimestamp(),
@@ -123,7 +123,7 @@ const Signup = () => {
         <>
             <div className="sign_up_form -2/5">
                 <div className="heading font-bold text-center">
-                    <h1 className="text-3xl mt-16">Signup</h1>
+                    <h1 className="text-3xl mt-16">Create a new account</h1>
                 </div>
 
                 <form className="signup_form mt-8" onSubmit={formSubmit}>
@@ -156,11 +156,11 @@ const Signup = () => {
                     </div>
 
                     <div className="submit_button">
-                        <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" label="Signup" />
+                        <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" label="Sign Up" />
                     </div>
                 </form>
                 <div>
-                    <p className="mt-3 text-center text-sm text-gray-500">Already have an account? <Link href={LOGIN_URL} className="underline underline-offset-4 italic text-blue-500">Login here.</Link></p>
+                    <Link href={LOGIN_URL} className="underline underline-offset-4 italic text-blue-500"><p className="mt-3 text-center text-sm text-gray-500">Already have an account?</p></Link>
                 </div>
             </div>
         </>
