@@ -43,15 +43,9 @@ const Signup = () => {
         handleFieldChange(name, value);
     };
 
-    const handleOptionSelect = (value) => {
-        handleFieldChange('gender', value);
-    };
+    const handleOptionSelect = (value) => handleFieldChange('gender', value);
+    const handleCheckboxSelect = (selectedHobbies) => handleFieldChange('hobbies', selectedHobbies);
 
-    const handleCheckboxSelect = (selectedHobbies) => {
-        handleFieldChange('hobbies', selectedHobbies);
-    };
-
-    // checking the unique value
     const checkUniqueFields = async (field, value) => {
         const q = query(collection(db, 'users'), where(field, '==', value));
         const querySnapshot = await getDocs(q);
@@ -103,16 +97,12 @@ const Signup = () => {
                 updated_at: serverTimestamp()
             };
             await addDoc(collection(db, 'users'), user_data);
-
             localStorage.setItem("hasShownAccountCreatedToast", false);
-
             router.push(LOGIN_URL);
         } catch (error) {
             const errorCode = error.code;
             if (errorCode === 'auth/email-already-in-use') {
-                toast.error("Email is already in use. Please choose a different email.", {
-                    position: "top-right",
-                });
+                toast.error("Email is already in use. Please choose a different email.", { position: "top-right" });
             } else {
                 toast.error(error.message, { position: 'top-right' });
             }
