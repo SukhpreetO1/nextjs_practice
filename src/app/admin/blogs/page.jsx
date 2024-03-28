@@ -4,12 +4,10 @@ import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
-
     const [blogModalDetail, setBlogModalDetail] = useState([]);
-
     const [showModal, setShowModal] = useState(false);
-
     const [selectedBlogId, setSelectedBlogId] = useState(null);
+    const [isChecked, setIsChecked] = useState();
 
     useEffect(() => {
         if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
@@ -43,6 +41,61 @@ const Blogs = () => {
             fetchData(selectedBlogId);
         }
     }, [selectedBlogId]);
+
+    useEffect(() => {
+        const initialCheckedState = blogs.map((blog) => blog.dashboard_visible === 1 ? false : true);
+        setIsChecked(initialCheckedState);
+    }, [blogs]);
+
+    const handleCheckboxChange = async (e, blogId) => {
+        const dashboard_visible_value = e.target.checked ? 1 : 2;
+        setIsChecked(e.target.checked);
+
+        try {
+            const hasDashboardVisibleTwo = await checkIfAnyBlogHasDashboardVisibleTwo();
+
+            if (hasDashboardVisibleTwo && dashboard_visible_value === 2) {
+                toast.error("Another blog is already visible on the dashboard.", { position: "top-right" });
+            } else {
+                const response = await fetch('/api/blogs', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: blogId, dashboard_visible: dashboard_visible_value }),
+                });
+
+                if (response.ok) {
+                    if (dashboard_visible_value === 2) {
+                        toast.success("Blog is not visible on the dashboard now.", { position: "top-right" });
+                    } else {
+                        toast.success("Now blog visible on the dashboard.", { position: "top-right" });
+                    }
+                } else {
+                    toast.error("Something went wrong. Please try again later.", { position: "top-right" });
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    async function checkIfAnyBlogHasDashboardVisibleTwo() {
+        const firestore = getFirestore();
+        const querySnapshot = await getDocs(collection(firestore, "blogs"));
+        
+        let hasDashboardVisibleTwo = false;
+      
+        querySnapshot.forEach((doc) => {
+          const blogData = doc.data();
+          if (blogData.dashboard_visible === 2) {
+            hasDashboardVisibleTwo = true;
+            return;
+          }
+        });
+      
+        return hasDashboardVisibleTwo;
+      }
 
     const truncateDescription = (description) => {
         const words = description.match(/.{1,10}/g);
@@ -127,15 +180,21 @@ const Blogs = () => {
                                         <td className="px-6 py-4">{blog.title}</td>
                                         <td className="px-6 py-4">{truncateDescription(blog.description)}</td>
                                         <td className="px-6 py-4 flex">
-                                            <Link href="#" onClick={() => {setShowModal(true); setSelectedBlogId(blog.id);}}>
-                                                <FontAwesomeIcon icon={faInfo} className="w-4 h-4 mr-2" />
+                                            <Link href="#" onClick={() => { setShowModal(true); setSelectedBlogId(blog.id); }}>
+                                                <FontAwesomeIcon icon={faInfo} className="w-4 h-4 mr-2 mt-1" />
                                             </Link>
                                             <Link href={`${ADMIN_EDIT_BLOGS}/${blog.id}`}>
-                                                <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2" />
+                                                <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2 mt-1" />
                                             </Link>
                                             <Link href="#" onClick={() => deleteBlog(blog.id)}>
-                                                <FontAwesomeIcon icon={faTrashCan} className="w-4 h-4" />
+                                                <FontAwesomeIcon icon={faTrashCan} className="w-4 h-4 mr-2 mt-1" />
                                             </Link>
+                                            <div className="toggle_button">
+                                                <label className="inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" value={blog.dashboard_visible} className="sr-only peer" checked={isChecked[index]} onChange={(e) => handleCheckboxChange(e, blog.id)} />
+                                                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                                </label>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

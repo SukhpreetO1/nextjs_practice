@@ -10,15 +10,15 @@ const AddBlogs = () => {
     const [imagePreview, setImagePreview] = useState("");
 
     const [error, setError] = useState({
-        image: "",
         title: "",
-        description: ""
+        description: "",
+        image: null,
     });
 
     const [blogForm, setBlogForm] = useState({
-        image: "",
         title: "",
-        description: ""
+        description: "",
+        image: null,
     });
 
     const handleInputChange = (event) => {
@@ -29,37 +29,34 @@ const AddBlogs = () => {
                 setImagePreview(reader.result);
             };
             reader.readAsDataURL(files[0]);
+            setBlogForm(prevFormData => ({ ...prevFormData, [name]: value, files}));
+        } else {
+            // const validation_errors = validate_login_submit_form({ ...formData, [name]: value });
+            setBlogForm(prevFormData => ({ ...prevFormData, [name]: value }));
+            // setError(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
         }
-        // const validation_errors = validate_login_submit_form({ ...formData, [name]: value });
-        setBlogForm(prevFormData => ({ ...prevFormData, [name]: value }));
-        // setError(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
     };
 
     const blogFormSubmit = async (event) => {
         event.preventDefault();
-
-        const formData = new FormData();
-        formData.append('image', blogForm.image);
-
         try {
+            const imageName = blogForm.files[0].name;
             const storageRef = ref(storage, `blogs/${imageName}`);
-            await uploadBytes(storageRef, blogForm.image);
-    
+            
+            const uploadedFile = await uploadBytes(storageRef, blogForm.files[0])
             console.log('Image uploaded successfully');
-
-            // Get the download URL of the uploaded image
+    
             const downloadURL = await getDownloadURL(storageRef);
 
             const blogData = {
                 image: downloadURL,
                 title: String(blogForm.title),
                 description: String(blogForm.description),
+                dashboard_visible: Number(1),
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             }
-
-            await addDoc(collection(db, "blogs"), blogData);
-
+            await addDoc(collection(db, "blogs"), blogData);    
             localStorage.setItem('hasShownBlogAddedToast', false);
 
             router.push(ADMIN_BLOGS);
@@ -67,6 +64,7 @@ const AddBlogs = () => {
             console.error(error);
         }
     };
+
 
     return (
         <>
