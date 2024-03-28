@@ -6,10 +6,12 @@ export default function CommonLayout({
 }) {
   const pathname = usePathname();
   return (
-    <section>
-      {pathname === LOGIN_URL || pathname === SIGNUP_URL || pathname === FORGOT_PASSWORD ? null : <Navbar />}
-      {children}
-      {pathname === LOGIN_URL || pathname === SIGNUP_URL || pathname === FORGOT_PASSWORD ? null : <Footer />}
-    </section>
+    <>
+      <main>
+        {pathname === LOGIN_URL || pathname === SIGNUP_URL || pathname === FORGOT_PASSWORD ? null : <Navbar />}
+        {children}
+        {pathname === LOGIN_URL || pathname === SIGNUP_URL || pathname === FORGOT_PASSWORD ? null : <Footer />}
+      </main>
+    </>
   )
 }
