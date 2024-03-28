@@ -36,6 +36,7 @@ export const config = {
     "/contact",
     "/about",
     "/profile",
+    "/blogs",
 
     "/admin/dashboard",
     "/admin/blogs",

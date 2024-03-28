@@ -30,9 +30,17 @@
 }
 
 .dashboard_home_images {
-  width: 50rem;
-  max-width: 20rem;
-  height: 25rem;
+  width: 15% !important;
+  position: absolute;
+  right: 11%;
+  top: 30%;
+}
+
+.blogs_cards {
+  width: 15% !important;
+  position: absolute;
+  right: 11%;
+  top: 50%;
 }
 
 .order-1 {

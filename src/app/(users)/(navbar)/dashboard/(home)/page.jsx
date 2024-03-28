@@ -22,11 +22,17 @@ const DashboardHome = () => {
   return (
     <>
       <section>
-        {data.map((blog, index) => (
-          <div key={index} className={`section_${index + 1}`}>
-            <CardWithDetail image_src={`/${blog.image}`} image_name={blog.image} title={blog.title} content={blog.description} index={index} />
-          </div>
-        ))}
+        {data.some(blog => blog.dashboard_visible === 2) ? (
+          data.map((blog, index) => (
+            <div key={index} className={`section_${index + 1}`}>
+              {blog.dashboard_visible === 2 ? (
+                <CardWithDetail image_src={blog.image} image_name={blog.title} title={blog.title} content={blog.description} index={index} className="dashboard_home_images"/>
+              ) : null}
+            </div>
+          ))
+        ) : (
+          <div>No blog visible right now.</div>
+        )}
       </section>
     </>
   );
