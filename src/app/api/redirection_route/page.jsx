@@ -27,3 +27,7 @@ export const ADMIN_PROFILE = "/admin/profile";
 
 export const USER_DETAILS = "/admin/users";
 export const USER_DETAILS_ANOTHER_PLATFORM = "/admin/users/another_platform_user_details";
+
+// getting routes for footer section
+export const PRIVACY_POLICIES = "/privacy_policy";
+export const TERMS_AND_CONDITION = "/terms_and_conditions";

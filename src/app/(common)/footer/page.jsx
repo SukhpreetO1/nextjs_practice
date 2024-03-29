@@ -1,18 +1,19 @@
-import React from 'react'
+import { Link, PRIVACY_POLICIES, TERMS_AND_CONDITION } from "@/app/api/routes/page"
 
 const Footer = () => {
   return (
     <>
         <footer className='mt-auto'>
-            <div className='footer_content flex bg-gray-200 font-normal leading-loose'>
-                <div className='footer_text text-justify pt-4 pb-12 px-5'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, beatae facere ipsum laborum pariatur assumenda fugit dolorum ipsa at reiciendis possimus, recusandae quidem aliquam. Minima.
+            <div className='footer_content bg-gray-200 font-normal leading-loose py-2'>
+                <div className='flex justify-between px-96 my-6'>
+                    <Link href={PRIVACY_POLICIES}><p className='footer_privacy_policy'>Privacy Policy </p></Link>
+                    <Link href={TERMS_AND_CONDITION}><p className='footer_terms_and_conditions'>Terms and Condition</p></Link>
+                    <Link href="#"><p className='footer_contact_us'>Contact Us</p></Link>
+                    <Link href="#"><p className='footer_about_us'>About Us</p></Link>
                 </div>
-                <div className='footer_text text-justify pt-4 pb-12 px-5 bg-gray-100'>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi corporis architecto voluptatibus cum laudantium natus hic in rem ex sunt quaerat tenetur quas, sit quisquam!
-                </div>
-                <div className='footer_text text-justify pt-4 pb-12 px-5'>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maxime excepturi ex repudiandae ratione repellendus adipisci minima. Iure, beatae nostrum quaerat soluta at odio voluptate neque?
+                <hr className='border-gray-400 border-t-2'/>
+                <div>
+                    <p className='text-gray-600 flex justify-center my-4'>© 2024 blog website. All Rights Reserved.</p>
                 </div>
             </div>
         </footer>
