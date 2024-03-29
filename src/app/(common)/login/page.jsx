@@ -37,7 +37,7 @@ const Login = () => {
   const loginFormSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate_login_submit_form(formData);
-    const expirationTime = new Date(Date.now() + 10 * 60 * 1000);
+    const expirationTime = new Date(Date.now() + 30 * 60 * 1000);
 
     const getUserDataFromFirestore = async (email) => {
       try {
@@ -78,7 +78,7 @@ const Login = () => {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const expirationTime = new Date();
-    expirationTime.setTime(expirationTime.getTime() + 10 * 60 * 1000);
+    expirationTime.setTime(expirationTime.getTime() + 30 * 60 * 1000);
     try {
       await signInWithPopup(auth, provider);
       const fullName = auth.currentUser.displayName || '';
