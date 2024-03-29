@@ -1,5 +1,5 @@
 "use client";
-import { InputField, Link, NAVBAR_DASHBOARD, SubmitButton, addDoc, auth, collection, db, getDocs, getFirestore, query, serverTimestamp, toast, validate_contact_form, where } from '@/app/api/routes/page'
+import { InputField, Link, NAVBAR_DASHBOARD, SubmitButton, TextAreaField, addDoc, auth, collection, db, getDocs, getFirestore, query, serverTimestamp, toast, validate_contact_form, where } from '@/app/api/routes/page'
 import React, { useState } from 'react'
 
 const Contact = () => {
@@ -81,7 +81,7 @@ const Contact = () => {
                         <form className="contact_form" onSubmit={contactForm}>
                             <InputField label_heading="Name" id="contact_name" name="contact_name" div_name="contact_name" value={formData.contact_name} onChange={handleInputChange} error={errors.contact_name}/>
                             <InputField label_heading="Email" id="contact_email" name="contact_email" div_name="contact_email" value={formData.contact_email} onChange={handleInputChange} error={errors.contact_email}/>
-                            <InputField label_heading="Message" id="contact_message" name="contact_message" div_name="contact_message" value={formData.contact_message} onChange={handleInputChange} error={errors.contact_message}/>
+                            <TextAreaField label_heading="Message" id="contact_message" name="contact_message" div_name="contact_message" value={formData.contact_message} onChange={handleInputChange} error={errors.contact_message}/>
                             <SubmitButton name="contact_submit" id="contact_submit" className="contact_submit" div_name="contact_submit" label="Submit" />
                         </form>
                     </div>
