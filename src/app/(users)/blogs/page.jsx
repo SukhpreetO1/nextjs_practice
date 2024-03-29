@@ -6,12 +6,11 @@ const Blogs = () => {
   const [data, setData] = useState([]);
 
   function truncateWords(text, limit, NAVBAR_BLOGS, id) {
-    const words = text.split(' ');
-    if (words.length > limit) {
+    if (text.length > limit) {
       return (
         <span>
-          {words.slice(0, limit).join(' ') + '   '}
-          <a href={`${NAVBAR_BLOGS}/${id}`} style={{ color: 'blue', textDecoration: 'underline' }}>See more....</a>
+          {text.slice(0, limit) + ' '}
+          <Link href={`${NAVBAR_BLOGS}/${id}`} className="text-cyan-800 font-extrabold mr-4"> Continue Reading ....</Link>
         </span>
       );
     } else {
@@ -35,7 +34,7 @@ const Blogs = () => {
 
   return (
     <>
-      <section className="mb-16">
+      <section className="mb-20">
         <div className="breadcrumbs">
           <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
@@ -57,8 +56,8 @@ const Blogs = () => {
         </div>
 
         {data.map((blog, index) => (
-          <div key={index} className={`section_${index + 1}`}>
-            <CardWithDetail image_src={blog.image} image_name={blog.title} title={blog.title} content={truncateWords(blog.description, 100, NAVBAR_BLOGS, blog.id)} index={index} className="blogs_cards" />
+          <div key={index} className={`px-20 section_${index + 1}`}>
+            <CardWithDetail image_src={blog.image} image_name={blog.title} title={blog.title} content={truncateWords(blog.description, 200, NAVBAR_BLOGS, blog.id)} index={index} className="blogs_cards" />
           </div>
         ))}
       </section>

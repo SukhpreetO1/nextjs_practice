@@ -44,13 +44,11 @@ main{
 .dashboard_home_images,
 .blogs_cards {
   width: 25vw !important;
-  margin-top: 12vh;
   margin-left: 10vh;
 }
 
 .blogs_cards_order {
   width: 25vw !important;
-  margin-top: 12vh;
   margin-right: 10vh;
 }
 

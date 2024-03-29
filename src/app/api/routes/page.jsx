@@ -16,9 +16,11 @@ import TextAreaField from "@/components/TextAreaField";
 // importing from common folder
 import Navbar from "@/app/(common)/navbar/page";
 import Footer from "@/app/(common)/footer/page";
+import BlogCommetForm from "@/app/(common)/blog_comment_form/page";
+import BlogReviews from "@/app/(common)/blog_reviews/page";
 
 // importing from users/navbar/dashboard folder
-import DashboardHome from "@/app/(users)/(navbar)/dashboard/(home)/page";
+import DashboardHome from "@/app/(users)/dashboard/(home)/page";
 
 // importing from the admin folder
 import Sidebar from "@/app/admin/(sidebar)/page";
@@ -136,6 +138,8 @@ export {
 
   Navbar,
   Footer,
+  BlogCommetForm,
+  BlogReviews,
   DashboardHome,
 
   Sidebar,
