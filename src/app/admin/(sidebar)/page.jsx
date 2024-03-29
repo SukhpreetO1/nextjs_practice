@@ -1,4 +1,4 @@
-import { React, LOGO_IMAGE_URL, Image, Link, ADMIN_DASHBOARD, ADMIN_BLOGS, USER_DETAILS, USER_DETAILS_ANOTHER_PLATFORM, ADMIN_PROFILE, toast, signOut, auth, useRouter, LOGIN_URL } from '@/app/api/routes/page';
+import { React, LOGO_IMAGE_URL, Image, Link, ADMIN_DASHBOARD, ADMIN_BLOGS, USER_DETAILS, USER_DETAILS_ANOTHER_PLATFORM, ADMIN_PROFILE, toast, signOut, auth, useRouter, LOGIN_URL, ADMIN_PRIVACY_POLICIES, ADMIN_TERMS_AND_CONDITION } from '@/app/api/routes/page';
 
 const Sidebar = () => {
   const router = useRouter();
@@ -19,10 +19,10 @@ const Sidebar = () => {
   const clearCookies = () => {
     const cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
-        const [name, _] = cookie.split("=");
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      const [name, _] = cookie.split("=");
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
     }
-};
+  };
 
   return (
     <>
@@ -67,9 +67,27 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link href={ADMIN_PRIVACY_POLICIES} className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group'>
+                    <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12c0 1.49.36 2.91 1.02 4.17l5.07 5.07c.36.36.86.56 1.38.56s1.02-.2 1.38-.56l5.07-5.07C21.64 14.91 22 13.49 22 12c0-5.52-4.48-10-10-10zm0 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
+                    </svg>
+
+                    <span className="flex-1 ms-3 whitespace-nowrap">Privacy Policy</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={ADMIN_TERMS_AND_CONDITION} className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group'>
+                    <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M6 4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6H6zm6 2l6 6h-6V6z" />
+                    </svg>
+
+                    <span className="flex-1 ms-3 whitespace-nowrap">Terms and Condition</span>
+                  </Link>
+                </li>
+                <li>
                   <Link href={ADMIN_PROFILE} className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group'>
-                    <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                      <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                    <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 7c-2.67 0-5 1.34-5 3v1h10v-1c0-1.66-2.33-3-5-3z" />
                     </svg>
                     <span className="flex-1 ms-3 whitespace-nowrap">Profile</span>
                   </Link>

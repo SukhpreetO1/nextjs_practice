@@ -24,6 +24,8 @@ export const ADMIN_BLOGS = "/admin/blogs";
 export const ADMIN_ADD_BLOGS = "/admin/blogs/add_blogs";
 export const ADMIN_EDIT_BLOGS = "/admin/blogs/edit_blogs";
 export const ADMIN_PROFILE = "/admin/profile";
+export const ADMIN_PRIVACY_POLICIES = "/admin/privacy_policy";
+export const ADMIN_TERMS_AND_CONDITION = "/admin/terms_and_conditions";
 
 export const USER_DETAILS = "/admin/users";
 export const USER_DETAILS_ANOTHER_PLATFORM = "/admin/users/another_platform_user_details";

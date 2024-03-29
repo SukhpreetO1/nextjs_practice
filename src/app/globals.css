@@ -216,6 +216,11 @@ main{
   }
 }
 
+.admin_policy_content {
+  margin-left: 20%;
+  margin-right: 10%;
+}
+
 @media (max-width: 535px) {
   .dashboard_card_section {
     display: block;
