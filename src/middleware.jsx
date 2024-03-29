@@ -32,24 +32,26 @@ export const config = {
     "/login",
     "/signup",
     "/forgot_password",
+
     "/dashboard",
     "/contact",
     "/about",
     "/profile",
     "/blogs",
-    "/privacy_policy",
-    "/terms_and_conditions",
-
+    
     "/admin/dashboard",
     "/admin/blogs",
     "/admin/blogs/[id]",
     "/admin/blogs/add_blogs",
     "/admin/blogs/edit_blogs",
     "/admin/blogs/edit_blogs/[id]",
-    "/admin/privacy_policy",
-    "/admin/terms_and_conditions",
-    "/admin/profile",
     "/admin/users",
-
+    "/admin/contact_form_messages",
+    "/admin/privacy_policy",
+    "/admin/profile",
+    "/admin/terms_and_conditions",
+    
+    "/privacy_policy",
+    "/terms_and_conditions",
   ],
 }

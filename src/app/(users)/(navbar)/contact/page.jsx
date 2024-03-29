@@ -30,7 +30,7 @@ const Contact = () => {
         const userFirestoreId = querySnapshot.docs[0].id;
 
         const user_data = {
-            user_email: userFirestoreId,
+            user_id: userFirestoreId,
             contact_name: formData.contact_name,
             contact_email: formData.contact_email,
             contact_message: formData.contact_message,

@@ -74,7 +74,8 @@ main{
   left: 5rem
 }
 
-.blog_modal {
+.blog_modal,
+.contact_form_message_modal {
   margin-left: 18%;
 }
 
