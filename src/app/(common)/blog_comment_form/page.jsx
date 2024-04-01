@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 
 const BlogCommetForm = () => {
     const [errors, setErrors] = useState({});
-    const [formData, setFormData] = useState({ blog_comment_name: '', blog_comment_email: '', blog_comment_message: '' })
+    const [formData, setFormData] = useState({ blog_comment_name: '', blog_comment_email: '', blog_comment: '' })
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -33,31 +33,31 @@ const BlogCommetForm = () => {
             user_id: userFirestoreId,
             blog_comment_name: formData.blog_comment_name,
             blog_comment_email: formData.blog_comment_email,
-            blog_comment_message: formData.blog_comment_message,
+            blog_comment: formData.blog_comment,
             created_at: serverTimestamp(),
             updated_at: serverTimestamp()
         }
-        await addDoc(collection(db, 'blog_comment_form'), user_data)
-        toast.success("Your message has been sent successfully", { position: "top-right" } );
+        await addDoc(collection(db, 'blogs_comment'), user_data)
+        toast.success("Comment added successfully", { position: "top-right" } );
         resetBlogCommentForm();
     }
 
     const resetBlogCommentForm = () => {
-        setFormData({ blog_comment_name: '', blog_comment_email: '', blog_comment_message: '' });
+        setFormData({ blog_comment_name: '', blog_comment_email: '', blog_comment: '' });
         setErrors({});
     }
     return (
         <>
             <section>
-                <div className='blog_comment_heading text-center mx-6 mb-8'>
-                    <p className='text-5xl font-bold mb-5'>Leave a Comment</p>
+                <div className='blog_comment_heading ml-64 mx-6 mb-8'>
+                    <p className='text-3xl font-bold mb-5'>Leave a Comment</p>
                 </div>
                 <div className="blog_comment_form flex mx-12 mt-12 mb-8">
                     <div className="blog_comment_sending_form w-1/4 ml-32">
                         <form className="blog_comment_form" onSubmit={blogCommentForm}>
                             <InputField label_heading="Name" id="blog_comment_name" name="blog_comment_name" div_name="blog_comment_name" value={formData.blog_comment_name} onChange={handleInputChange} error={errors.blog_comment_name}/>
                             <InputField label_heading="Email" id="blog_comment_email" name="blog_comment_email" div_name="blog_comment_email" value={formData.blog_comment_email} onChange={handleInputChange} error={errors.blog_comment_email}/>
-                            <TextAreaField label_heading="Message" id="blog_comment_message" name="blog_comment_message" div_name="blog_comment_message" value={formData.blog_comment_message} onChange={handleInputChange} error={errors.blog_comment_message}/>
+                            <TextAreaField label_heading="Comment" id="blog_comment" name="blog_comment" div_name="blog_comment" value={formData.blog_comment} onChange={handleInputChange} error={errors.blog_comment}/>
                             <SubmitButton name="blog_comment_submit" id="blog_comment_submit" className="blog_comment_submit" div_name="blog_comment_submit" label="Submit" />
                         </form>
                     </div>
