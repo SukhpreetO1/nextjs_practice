@@ -1,16 +1,18 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { SubmitButton, TextAreaField, toast } from "@/app/api/routes/page";
+import { Loader, SubmitButton, TextAreaField, toast } from "@/app/api/routes/page";
 
 const AdminTermsAndConditions = () => {
   const [error, setError] = useState({});
   const [privacyPolicy, setPrivacyPolicy] = useState({
     terms_and_conditions_details: "",
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
+        setLoading(true);
         const response = await fetch("/api/terms_and_conditions");
         const data = await response.json();
         if (data.message === "Terms and Conditions collection not found") {
@@ -18,6 +20,7 @@ const AdminTermsAndConditions = () => {
         } else {
           setPrivacyPolicy({ terms_and_conditions_details: data.data.terms_and_conditions_details });
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -71,20 +74,24 @@ const AdminTermsAndConditions = () => {
   return (
     <>
       <section>
-        <div className="admin_terms_and_conditions_heading ml-60">
-          <div className="heading text-center text-5xl font-bold mt-8 mb-12">
-            Terms and Conditions
-          </div>
-        </div>
+        {loading ? (<Loader />) : (
+          <div>
+            <div className="admin_terms_and_conditions_heading ml-60">
+              <div className="heading text-center text-5xl font-bold mt-8 mb-12">
+                Terms and Conditions
+              </div>
+            </div>
 
-        <form className='admin_terms_and_conditions_form' onSubmit={adminPrivacyPolicyForm}>
-          <div className="admin_policy_content">
-            <TextAreaField className="terms_and_conditions_details" id="terms_and_conditions_details" name="terms_and_conditions_details" div_name="terms_and_conditions_details" label_heading="Terms and Conditions Details" placeholder="Enter the Terms and Conditions here" onChange={handleInputChange} value={privacyPolicy.terms_and_conditions_details} error={error.terms_and_conditions_details} />
+            <form className='admin_terms_and_conditions_form' onSubmit={adminPrivacyPolicyForm}>
+              <div className="admin_policy_content">
+                <TextAreaField className="terms_and_conditions_details" id="terms_and_conditions_details" name="terms_and_conditions_details" div_name="terms_and_conditions_details" label_heading="Terms and Conditions Details" placeholder="Enter the Terms and Conditions here" onChange={handleInputChange} value={privacyPolicy.terms_and_conditions_details} error={error.terms_and_conditions_details} />
+              </div>
+              <div className="terms_and_conditions_button">
+                <SubmitButton className="terms_and_conditions_submit_button" id="terms_and_conditions_submit_button" name="terms_and_conditions_submit_button" div_name="terms_and_conditions_submit_button text-end mr-48 mt-6" label={privacyPolicy.terms_and_conditions_details ? "Update Terms and Conditions" : "Add Terms and Conditions"} />
+              </div>
+            </form>
           </div>
-          <div className="terms_and_conditions_button">
-            <SubmitButton className="terms_and_conditions_submit_button" id="terms_and_conditions_submit_button" name="terms_and_conditions_submit_button" div_name="terms_and_conditions_submit_button text-end mr-48 mt-6" label={privacyPolicy.terms_and_conditions_details ? "Update Terms and Conditions" : "Add Terms and Conditions"} />
-          </div>
-        </form>
+        )}
       </section>
     </>
   );

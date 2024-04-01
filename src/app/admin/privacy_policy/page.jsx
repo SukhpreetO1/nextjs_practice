@@ -1,16 +1,18 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { SubmitButton, TextAreaField, toast } from "@/app/api/routes/page";
+import { Loader, SubmitButton, TextAreaField, toast } from "@/app/api/routes/page";
 
 const AdminPrivacyPolicy = () => {
     const [error, setError] = useState({});
     const [privacyPolicy, setPrivacyPolicy] = useState({
         privacy_policy_details: "",
     });
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
             try {
+                setLoading(true);
                 const response = await fetch("/api/privacy_policy");
                 const data = await response.json();
                 if (data.message === "Privacy policy collection not found") {
@@ -18,6 +20,7 @@ const AdminPrivacyPolicy = () => {
                 } else {
                     setPrivacyPolicy({ privacy_policy_details: data.data.privacy_policy_details });
                 }
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -71,20 +74,24 @@ const AdminPrivacyPolicy = () => {
     return (
         <>
             <section>
-                <div className="admin_privacy_policy_heading ml-60">
-                    <div className="heading text-center text-5xl font-bold mt-8 mb-12">
-                        Privacy Policy
+                { loading ? ( <Loader /> ) : (
+                <div>
+                    <div className="admin_privacy_policy_heading ml-60">
+                        <div className="heading text-center text-5xl font-bold mt-8 mb-12">
+                            Privacy Policy
+                        </div>
                     </div>
-                </div>
 
-                <form className='admin_privacy_policy_form' onSubmit={adminPrivacyPolicyForm}>
-                    <div className="admin_policy_content">
-                        <TextAreaField className="privacy_policy_details" id="privacy_policy_details" name="privacy_policy_details" div_name="privacy_policy_details" label_heading="Privacy Policy Details" placeholder="Enter the privacy policy detail here" onChange={handleInputChange} value={privacyPolicy.privacy_policy_details} error={error.privacy_policy_details} />
-                    </div>
-                    <div className="privacy_policy_button">
-                        <SubmitButton className="privacy_policy_submit_button" id="privacy_policy_submit_button" name="privacy_policy_submit_button" div_name="privacy_policy_submit_button text-end mr-48 mt-6" label={privacyPolicy.privacy_policy_details ? "Update Privacy Policy" : "Add Privacy Policy"} />
-                    </div>
-                </form>
+                    <form className='admin_privacy_policy_form' onSubmit={adminPrivacyPolicyForm}>
+                        <div className="admin_policy_content">
+                            <TextAreaField className="privacy_policy_details" id="privacy_policy_details" name="privacy_policy_details" div_name="privacy_policy_details" label_heading="Privacy Policy Details" placeholder="Enter the privacy policy detail here" onChange={handleInputChange} value={privacyPolicy.privacy_policy_details} error={error.privacy_policy_details} />
+                        </div>
+                        <div className="privacy_policy_button">
+                            <SubmitButton className="privacy_policy_submit_button" id="privacy_policy_submit_button" name="privacy_policy_submit_button" div_name="privacy_policy_submit_button text-end mr-48 mt-6" label={privacyPolicy.privacy_policy_details ? "Update Privacy Policy" : "Add Privacy Policy"} />
+                        </div>
+                    </form>
+                </div>
+                )}
             </section>
         </>
     );
