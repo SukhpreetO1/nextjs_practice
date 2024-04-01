@@ -1,5 +1,5 @@
 "use client";
-import { InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, Cookies, NAVBAR_DASHBOARD, FORGOT_PASSWORD, GOOGLE_LOGO, PHONE_NUMBER_LOGO, Image, signInWithPopup, GoogleAuthProvider, signInWithPhoneNumber, collection, db, where, query, getDocs, ADMIN_DASHBOARD, serverTimestamp, addDoc, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential } from '@/app/api/routes/page';
+import { InputField, PasswordField, SubmitButton, validate_login_submit_form, SIGNUP_URL, Link, auth, signInWithEmailAndPassword, useRouter, toast, Cookies, NAVBAR_DASHBOARD, FORGOT_PASSWORD, GOOGLE_LOGO, PHONE_NUMBER_LOGO, Image, signInWithPopup, GoogleAuthProvider, signInWithPhoneNumber, collection, db, where, query, getDocs, ADMIN_DASHBOARD, serverTimestamp, addDoc, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential, Loader } from '@/app/api/routes/page';
 import React, { useState, useEffect } from 'react';
 
 const Login = () => {
@@ -11,6 +11,7 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationId, setVerificationId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const showToast = (item, message) => {
@@ -32,10 +33,14 @@ const Login = () => {
     setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
   };
 
-  const handleClick = () => setDisabled(true);
+  const handleClick = () => {
+    setIsLoading(true);
+    setDisabled(true);
+  };
 
   const loginFormSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const validationErrors = validate_login_submit_form(formData);
     const expirationTime = new Date(Date.now() + 30 * 60 * 1000);
 
@@ -62,14 +67,18 @@ const Login = () => {
 
         Cookies.set(cookieName, token, { expires: expirationTime });
         localStorage.setItem("hasShownLoginToast", false);
+        setIsLoading(false);
         setDisabled(false);
         router.push(role_id === 1 ? ADMIN_DASHBOARD : NAVBAR_DASHBOARD);
       } catch (error) {
-        setDisabled(false);
         toast.error(error.code === "auth/wrong-password" ? "Invalid credential" : "Login failed. Please try again.", { position: "top-right" });
+        if (error.code === "auth/too-many-requests") { toast.error("Attempts too many times. Please try again later", { position: "top-right" });}
         console.log(error);
+        setDisabled(false);
+        setIsLoading(false);
       }
     } else {
+      setIsLoading(false);
       setDisabled(false);
       setErrors(validationErrors);
     }
@@ -114,7 +123,7 @@ const Login = () => {
       toast.success("OTP sent successfully", { position: "top-right" })
       setVerificationId(verificationId);
     } catch (error) {
-      toast.success("Phone number is not correct" + error, { position: "top-right" })
+      toast.error("Phone number is not correct" + error, { position: "top-right" })
       console.error(error);
     }
   };
@@ -173,7 +182,7 @@ const Login = () => {
                 <Link href={FORGOT_PASSWORD} className="forgot_password_link">Forgot Password?</Link>
               </div>
               <div className="login_button">
-                <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" label="Login" disabled={disabled} onClick={handleClick} />
+                {isLoading ? ( <Loader /> ) : ( <SubmitButton className="login_submit_button" id="login_submit_button" name="login_submit_button" div_name="login_submit_button" label="Login" disabled={disabled} onClick={handleClick} /> )}
               </div>
             </form>
             <div>

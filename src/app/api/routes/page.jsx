@@ -8,6 +8,7 @@ import CheckboxField from "@/components/CheckboxField";
 import DateField from "@/components/DateField";
 import ImageUploading from "@/components/ImageUploading";
 import InputField from "@/components/InputField";
+import Loader from "@/components/Loader";
 import PasswordField from "@/components/PasswordField";
 import RadioButtonField from "@/components/RadioButtonField";
 import SubmitButton from "@/components/SubmitButton";
@@ -30,6 +31,7 @@ import { validate_signup_submit_form } from "@/../public/assets/js/signup";
 import { validate_login_submit_form } from "@/../public/assets/js/login";
 import { validate_forgot_password_submit_form } from "@/../public/assets/js/forgot_password";
 import { validate_contact_form } from "@/../public/assets/js/contact_form"
+import { validate_blog_comment_form } from "@/../public/assets/js/validate_blog_comment_form"
 
 // page redirection files
 import {
@@ -131,6 +133,7 @@ export {
   DateField,
   ImageUploading,
   InputField,
+  Loader,
   PasswordField,
   RadioButtonField,
   SubmitButton,
@@ -148,6 +151,7 @@ export {
   validate_login_submit_form,
   validate_forgot_password_submit_form,
   validate_contact_form,
+  validate_blog_comment_form,
 
   HOME_URL,
   LOGIN_URL,

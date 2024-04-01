@@ -1,5 +1,5 @@
 "use client";
-import { InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, useRouter, hash, collection, query, where, getDocs, addDoc, serverTimestamp, db, auth, createUserWithEmailAndPassword, onAuthStateChanged, getAuth } from '@/app/api/routes/page';
+import { InputField, DateField, RadioButtonField, CheckboxField, PasswordField, SubmitButton, validate_signup_submit_form, LOGIN_URL, Link, toast, useRouter, hash, collection, query, where, getDocs, addDoc, serverTimestamp, db, auth, createUserWithEmailAndPassword, onAuthStateChanged, getAuth, Loader } from '@/app/api/routes/page';
 import React, { useState } from 'react';
 
 const genderOptions = [
@@ -19,6 +19,7 @@ const hobbiesOptions = [
 const Signup = () => {
     const router = useRouter();
     const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -52,8 +53,11 @@ const Signup = () => {
         return querySnapshot.empty;
     };
 
+    const handleClick = () => setIsLoading(true);
+
     const formSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const validation_errors = validate_signup_submit_form(formData);
 
         if (Object.keys(validation_errors).length > 0) {
@@ -99,6 +103,7 @@ const Signup = () => {
             await addDoc(collection(db, 'users'), user_data);
             localStorage.setItem("hasShownAccountCreatedToast", false);
             router.push(LOGIN_URL);
+            setIsLoading(false);
         } catch (error) {
             const errorCode = error.code;
             if (errorCode === 'auth/email-already-in-use') {
@@ -106,6 +111,7 @@ const Signup = () => {
             } else {
                 toast.error(error.message, { position: 'top-right' });
             }
+            setIsLoading(false);
         }
     };
 
@@ -146,7 +152,7 @@ const Signup = () => {
                     </div>
 
                     <div className="submit_button">
-                        <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" label="Sign Up" />
+                        {isLoading ? ( <Loader /> ) : ( <SubmitButton className="signup_submit_button" id="signup_submit_button" name="signup_submit_button" div_name="signup_submit_button" label="Sign Up" onClick={handleClick} /> )}
                     </div>
                 </form>
                 <div>
