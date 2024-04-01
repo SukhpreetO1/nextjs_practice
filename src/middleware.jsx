@@ -50,6 +50,7 @@ export const config = {
     "/admin/privacy_policy",
     "/admin/profile",
     "/admin/terms_and_conditions",
+    "/admin/hobbies",
     
     "/privacy_policy",
     "/terms_and_conditions",
