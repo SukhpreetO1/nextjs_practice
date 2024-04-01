@@ -1,4 +1,4 @@
-import { collection, getDocs, db, addDoc, updateDoc } from "@/app/api/routes/page";
+import { collection, getDocs, db, addDoc, updateDoc, serverTimestamp } from "@/app/api/routes/page";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -22,6 +22,8 @@ export async function POST(request) {
         const { terms_and_conditions_details } = requestBody;
         const terms_and_conditions_data = {
             terms_and_conditions_details: terms_and_conditions_details,
+            created_at : serverTimestamp(),
+            updated_at : serverTimestamp()
         }
 
         await addDoc(collection(db, "terms_and_conditions"), terms_and_conditions_data);
@@ -43,7 +45,7 @@ export async function PUT(request) {
             if (doc.exists()) {
                 const privacyPolicyRef = doc.ref;
 
-                await updateDoc(privacyPolicyRef, { terms_and_conditions_details: terms_and_conditions_details });
+                await updateDoc(privacyPolicyRef, { terms_and_conditions_details: terms_and_conditions_details, updated_at: serverTimestamp() });
                 return NextResponse.json({ message: "Terms and Conditions updated successfully.", status: 200 });
             } else {
                 return NextResponse.json({ message: "Terms and Conditions does not exist.", status: 404 });

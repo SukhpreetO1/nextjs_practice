@@ -1,4 +1,4 @@
-import { collection, getDocs, db, addDoc, updateDoc } from "@/app/api/routes/page";
+import { collection, getDocs, db, addDoc, updateDoc, serverTimestamp } from "@/app/api/routes/page";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -22,6 +22,8 @@ export async function POST(request) {
         const { privacy_policy_details } = requestBody;
         const privacy_policy_data = {
             privacy_policy_details: privacy_policy_details,
+            created_at : serverTimestamp(),
+            updated_at : serverTimestamp()
         }
 
         await addDoc(collection(db, "privacy_policy"), privacy_policy_data);
@@ -43,7 +45,7 @@ export async function PUT(request) {
             if (doc.exists()) {
                 const privacyPolicyRef = doc.ref;
 
-                await updateDoc(privacyPolicyRef, { privacy_policy_details: privacy_policy_details });
+                await updateDoc(privacyPolicyRef, { privacy_policy_details: privacy_policy_details, updated_at : serverTimestamp() });
                 return NextResponse.json({ message: "Privacy policy updated successfully.", status: 200 });
             } else {
                 return NextResponse.json({ message: "Privacy policy document does not exist.", status: 404 });
