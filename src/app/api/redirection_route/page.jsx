@@ -28,6 +28,7 @@ export const ADMIN_CONTACT_MESSAGES = "/admin/contact_form_messages";
 export const ADMIN_PRIVACY_POLICIES = "/admin/privacy_policy";
 export const ADMIN_PROFILE = "/admin/profile";
 export const ADMIN_TERMS_AND_CONDITION = "/admin/terms_and_conditions";
+export const HOBBIES = "/admin/hobbies";
 
 // getting routes for footer section
 export const PRIVACY_POLICIES = "/privacy_policy";

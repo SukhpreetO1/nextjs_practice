@@ -92,6 +92,7 @@ main{
   height: 100vh;
 }
 
+.loader-container,
 .custom_loader_container {
   position: fixed;
   left: 0px;
