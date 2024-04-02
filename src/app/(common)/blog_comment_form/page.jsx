@@ -1,5 +1,5 @@
 "use client";
-import { InputField, Link, NAVBAR_DASHBOARD, SubmitButton, TextAreaField, addDoc, auth, collection, db, getDocs, getFirestore, query, serverTimestamp, toast, validate_blog_comment_form, where } from '@/app/api/routes/page'
+import { InputField, SubmitButton, TextAreaField, addDoc, auth, collection, db, getDocs, getFirestore, query, serverTimestamp, toast, validate_blog_comment_form, where } from '@/app/api/routes/page'
 import React, { useState } from 'react'
 
 const BlogCommetForm = () => {
@@ -49,17 +49,19 @@ const BlogCommetForm = () => {
     return (
         <>
             <section>
-                <div className='blog_comment_heading ml-64 mx-6 mb-8'>
-                    <p className='text-3xl font-bold mb-5'>Leave a Comment</p>
-                </div>
-                <div className="blog_comment_form flex mx-12 mt-12 mb-8">
-                    <div className="blog_comment_sending_form w-1/4 ml-32">
-                        <form className="blog_comment_form" onSubmit={blogCommentForm}>
-                            <InputField label_heading="Name" id="blog_comment_name" name="blog_comment_name" div_name="blog_comment_name" value={formData.blog_comment_name} onChange={handleInputChange} error={errors.blog_comment_name}/>
-                            <InputField label_heading="Email" id="blog_comment_email" name="blog_comment_email" div_name="blog_comment_email" value={formData.blog_comment_email} onChange={handleInputChange} error={errors.blog_comment_email}/>
-                            <TextAreaField label_heading="Comment" id="blog_comment" name="blog_comment" div_name="blog_comment" value={formData.blog_comment} onChange={handleInputChange} error={errors.blog_comment}/>
-                            <SubmitButton name="blog_comment_submit" id="blog_comment_submit" className="blog_comment_submit" div_name="blog_comment_submit" label="Submit" />
-                        </form>
+                <div>
+                    <div className='blog_comment_heading mx-6 mb-8 text-center'>
+                        <p className='text-3xl font-bold mb-5'>Leave a Comment</p>
+                    </div>
+                    <div className="blog_comment_form mt-12 mb-8 mx-6">
+                        <div className="blog_comment_sending_form">
+                            <form className="blog_comment_form" onSubmit={blogCommentForm}>
+                                <InputField label_heading="Name" id="blog_comment_name" name="blog_comment_name" div_name="blog_comment_name" value={formData.blog_comment_name} onChange={handleInputChange} error={errors.blog_comment_name}/>
+                                <InputField label_heading="Email" id="blog_comment_email" name="blog_comment_email" div_name="blog_comment_email" value={formData.blog_comment_email} onChange={handleInputChange} error={errors.blog_comment_email}/>
+                                <TextAreaField label_heading="Comment" id="blog_comment" name="blog_comment" div_name="blog_comment" value={formData.blog_comment} onChange={handleInputChange} error={errors.blog_comment}/>
+                                <SubmitButton name="blog_comment_submit" id="blog_comment_submit" className="blog_comment_submit" div_name="blog_comment_submit" label="Submit" />
+                            </form>
+                        </div>
                     </div>
                 </div>
             </section>

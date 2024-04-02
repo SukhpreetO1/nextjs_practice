@@ -61,12 +61,12 @@ const SingleBlogsContent = (req) => {
                                 <CardWithDetail image_src={blog.image} image_name={blog.title} title={blog.title} content={blog.description} index="1" className="blogs_cards" />
                             </div>
                         </div>
-                        <div className='user_comment_reviews_page'>
-                            <div className="comment">
-                                <BlogCommetForm />
-                            </div>
-                            <div className="reviews">
+                        <div className='user_comment_reviews_page flex'>
+                            <div className="reviews w-2/3">
                                 <BlogReviews />
+                            </div>
+                            <div className="comment w-1/3 mr-6">
+                                <BlogCommetForm />
                             </div>
                         </div>
                     </div>
