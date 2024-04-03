@@ -63,7 +63,7 @@ const SingleBlogsContent = (req) => {
                         </div>
                         <div className='user_comment_reviews_page flex'>
                             <div className="reviews w-2/3">
-                                <BlogReviews />
+                                <BlogReviews id={id} />
                             </div>
                             <div className="comment w-1/3 mr-6">
                                 <BlogCommetForm />
