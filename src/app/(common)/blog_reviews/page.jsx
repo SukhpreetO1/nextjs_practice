@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { useRouter } from "@/app/api/routes/page";
 
-const BlogReviews = ({ id }) => {
+const BlogReviews = ({ id, updatedComments }) => {
   const [blogReviews, setBlogReviews] = useState([]);
   const [blogReviewsCount, setBlogReviewsCount] = useState(0);
 
@@ -17,6 +16,11 @@ const BlogReviews = ({ id }) => {
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    setBlogReviews(updatedComments);
+    setBlogReviewsCount(updatedComments.length);
+  }, [updatedComments]);
+
   return (
     <>
       <section>
@@ -30,8 +34,8 @@ const BlogReviews = ({ id }) => {
                 <div className="blog_commented_name font-bold">
                   <p className="">{blogReview.blog_comment_name}</p>
                 </div>
-                <div className="blog_commented_comments ms-8 break-all text-justify w-11/12 whitespace-pre-wrap">
-                  <pre className="">{blogReview.blog_comment}</pre>
+                <div className="blog_commented_comments ms-8 break-all text-justify w-11/12">
+                  <pre className="whitespace-pre-wrap">{blogReview.blog_comment}</pre>
                 </div>
               </div>
               <div className="reply_button">

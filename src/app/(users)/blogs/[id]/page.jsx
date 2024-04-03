@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 const SingleBlogsContent = (req) => {
     const [blog, setData] = useState([]);
     const [loader, setLoader] = useState(false);
+    const [updatedComments, setUpdatedComments] = useState([]);
     const id = req.params.id;
 
     useEffect(() => {
@@ -22,6 +23,16 @@ const SingleBlogsContent = (req) => {
         fetchData();
         setLoader(false);
     }, [id]);
+
+    useEffect(() => {
+        fetchUpdatedComments();
+    });
+
+    const fetchUpdatedComments = async () => {
+        const response = await fetch(`/api/blog_reviews/${id}`);
+        const responseData = await response.json();
+        setUpdatedComments(responseData.data);
+    };
 
     return (
         <>
@@ -63,10 +74,10 @@ const SingleBlogsContent = (req) => {
                         </div>
                         <div className='user_comment_reviews_page'>
                             <div className="comment">
-                                <BlogCommetForm id={id}/>
+                                <BlogCommetForm id={id} fetchUpdatedComments={fetchUpdatedComments} />
                             </div>
                             <div className="reviews">
-                                <BlogReviews id={id} />
+                                <BlogReviews id={id} updatedComments={updatedComments} />
                             </div>
                         </div>
                     </div>

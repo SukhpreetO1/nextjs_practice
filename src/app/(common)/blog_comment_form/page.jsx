@@ -1,8 +1,8 @@
 "use client";
-import { InputField, SubmitButton, TextAreaField, addDoc, auth, collection, db, getDocs, getFirestore, query, serverTimestamp, toast, validate_blog_comment_form, where } from '@/app/api/routes/page'
+import { SubmitButton, TextAreaField, addDoc, auth, collection, db, getDocs, getFirestore, query, serverTimestamp, toast, validate_blog_comment_form, where } from '@/app/api/routes/page'
 import React, { useState } from 'react'
 
-const BlogCommetForm = ({ id }) => {
+const BlogCommetForm = ({ id, fetchUpdatedComments }) => {
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({ blog_comment: '' })
 
@@ -33,6 +33,7 @@ const BlogCommetForm = ({ id }) => {
         }
         await addDoc(collection(db, 'blogs_comment'), user_data);
         toast.success("Comment added successfully", { position: "top-right" } );
+        fetchUpdatedComments();
         resetBlogCommentForm();
     }
 
