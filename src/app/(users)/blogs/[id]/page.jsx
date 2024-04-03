@@ -1,6 +1,6 @@
 "use client"
 import { BlogCommetForm, BlogReviews, CardWithDetail, Link, Loader, NAVBAR_BLOGS, NAVBAR_DASHBOARD } from '@/app/api/routes/page';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 const SingleBlogsContent = (req) => {
     const [blog, setData] = useState([]);
@@ -24,15 +24,19 @@ const SingleBlogsContent = (req) => {
         setLoader(false);
     }, [id]);
 
+    const fetchUpdatedComments = useCallback(async () => {
+        try {
+            const response = await fetch(`/api/blog_reviews/${id}`);
+            const responseData = await response.json();
+            setUpdatedComments(responseData.data);
+        } catch (error) {
+            console.error('Error fetching updated comments:', error);
+        }
+    }, [id]);
+
     useEffect(() => {
         fetchUpdatedComments();
-    });
-
-    const fetchUpdatedComments = async () => {
-        const response = await fetch(`/api/blog_reviews/${id}`);
-        const responseData = await response.json();
-        setUpdatedComments(responseData.data);
-    };
+    }, [fetchUpdatedComments]);
 
     return (
         <>

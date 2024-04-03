@@ -122,9 +122,11 @@ main{
   margin-left: 3rem !important;
 }
 
-.blog_comment > label{
+.blog_comment > label,
+.blog_comment_reply > label {
   display: none !important;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
