@@ -26,10 +26,11 @@ const BlogReviews = ({ id, updatedComments }) => {
       <section>
         <div className='mx-24'>
           <div className="title">
-            <p className="text-xl font-bold mb-5">{blogReviewsCount} Comments</p>
+            <p className="text-2xl italic font-thin mb-5"><span>{blogReviewsCount}</span> Comments</p>
           </div>
+          <hr className='border-t-2 border-gray-400'/>
           {blogReviews.map((blogReview) => (
-            <div key={blogReview.id} className="header flex my-4 leading-loose ">
+            <div key={blogReview.id} className="header flex my-4 leading-loose border-2 border-gray-300 rounded-lg px-6 py-6">
               <div className='w-11/12'>
                 <div className="blog_commented_name font-bold">
                   <p className="">{blogReview.blog_comment_name}</p>
