@@ -62,7 +62,7 @@ const Blogs = () => {
 
             {data.map((blog, index) => (
               <div key={index} className={`px-20 section_${index + 1}`}>
-                <CardWithDetail image_src={blog.image} image_name={blog.title} title={blog.title} content={truncateWords(blog.description, 200, NAVBAR_BLOGS, blog.id)} index={index} className="blogs_cards" />
+                <CardWithDetail src={blog.image} image_name={blog.title} title={blog.title} content={truncateWords(blog.description, 200, NAVBAR_BLOGS, blog.id)} index={index} className="blogs_cards" />
               </div>
             ))}
           </div>

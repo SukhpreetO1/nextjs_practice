@@ -30,9 +30,9 @@ const PrivacyPolicy = () => {
           </p>
         </div>
         <div className="policy_content mx-24">
-          <div className="font-light text-justify mt-12 mb-24">
+          <pre className="font-light text-justify mt-12 mb-24 whitespace-pre-wrap">
             {privacyPolicy?.privacy_policy_details}
-          </div>
+          </pre>
         </div>
       </section>
     </>

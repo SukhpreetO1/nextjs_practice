@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 // getting data from components
 import CardWithDetail from "@/components/CardWithDetail";

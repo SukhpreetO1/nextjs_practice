@@ -1,9 +1,9 @@
-import { getFirestore, collection, getDocs, db, getDoc, doc, updateDoc } from "@/app/api/routes/page";
+import { getFirestore, collection, getDocs, db, getDoc, doc, updateDoc, query, where } from "@/app/api/routes/page";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req, { params }) {
   try {
-    const querySnapshot = await getDocs(collection(db, "blogs_comment"));
+    const querySnapshot = await getDocs(query(collection(db, "blogs_comment"), where("blog_id", "==", params.id)));
     const data = [];
     querySnapshot.forEach((doc) => {
       data.push({ id: doc.id, ...doc.data() });

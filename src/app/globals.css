@@ -112,6 +112,19 @@ main{
   animation: spin 2s linear infinite;
 }
 
+.dashboard_images > span > span {
+  display: none !important;
+}
+
+.blog_image {
+  position: relative !important;
+  height: 100% !important;
+  margin-left: 3rem !important;
+}
+
+.blog_comment > label{
+  display: none !important;
+}
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

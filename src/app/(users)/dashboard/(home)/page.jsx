@@ -31,7 +31,7 @@ const DashboardHome = () => {
               data.map((blog, index) => (
                 <div key={index} className={`section_${index + 1}`}>
                   {blog.dashboard_visible === 2 ? (
-                    <CardWithDetail image_src={blog.image} image_name={blog.title} title={blog.title} content={blog.description} index={index} className="dashboard_home_images" />
+                    <CardWithDetail src={blog.image} image_name={blog.title} title={blog.title} content={blog.description} index={index} className="dashboard_home_images" />
                   ) : null}
                 </div>
               ))

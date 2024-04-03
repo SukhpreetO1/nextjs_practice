@@ -30,7 +30,7 @@ const TermsAndConditions = () => {
           </p>
         </div>
         <div className="policy_content mx-24">
-          <div className="font-light text-justify mt-12 mb-24">
+          <div className="font-light text-justify mt-12 mb-24 whitespace-pre-wrap">
             {privacyPolicy?.terms_and_conditions_details}
           </div>
         </div>
