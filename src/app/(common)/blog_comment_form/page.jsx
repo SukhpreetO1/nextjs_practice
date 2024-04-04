@@ -49,7 +49,7 @@ const BlogCommetForm = ({ id, fetchUpdatedComments }) => {
                         <div className="blog_comment_sending_form">
                             <form className="blog_comment_form flex mx-16 w-11/12" onSubmit={blogCommentForm}>
                                 <div className='w-11/12'>
-                                    <TextAreaField label_heading="" id="blog_comment" name="blog_comment" className="blog_comment" div_name="blog_comment" value={formData.blog_comment} onChange={(e) => setFormData({ ...formData, blog_comment: e.target.value })} error={errors.blog_comment} placeholder="Leave a Comment here"/>
+                                    <TextAreaField label_heading="" id="blog_comment" name="blog_comment" className="blog_comment h-10" div_name="blog_comment" value={formData.blog_comment} onChange={(e) => setFormData({ ...formData, blog_comment: e.target.value })} error={errors.blog_comment} placeholder="Leave a Comment here"/>
                                 </div>
                                 <div className='w-1/12'>
                                     <SubmitButton name="blog_comment_submit" id="blog_comment_submit" className="blog_comment_submit" div_name="blog_comment_submit -mt-1" label="Add comment" />

@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS, Image, getFirestore, getDocs, collection, Loader } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS, Image, getFirestore, getDocs, collection, Loader, TextAreaField, SubmitButton, where, query, auth, serverTimestamp, addDoc } from '@/app/api/routes/page';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
@@ -9,6 +9,13 @@ const Blogs = () => {
     const [selectedBlogId, setSelectedBlogId] = useState(null);
     const [isChecked, setIsChecked] = useState();
     const [loading, setLoading] = useState(false);
+
+    const [blogReviews, setBlogReviews] = useState([]);
+    const [replyFormData, setReplyFormData] = useState({ blog_comment_reply: "" });
+    const [blogCommentId, setBlogCommentId] = useState();
+
+    const [blogReviewReply, setShowCommentsReply] = useState(false);
+    const [blogReviewCommentReplies, setBlogReviewCommentReplies] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
@@ -36,10 +43,18 @@ const Blogs = () => {
 
     useEffect(() => {
         if (selectedBlogId !== null) {
-            async function fetchData(modal_id) {
-                const response = await fetch("/api/blogs/blog_modal/" + modal_id);
+            async function fetchData(blog_id) {
+                const response = await fetch("/api/blogs/blog_modal/" + blog_id);
                 const data = await response.json();
                 setBlogModalDetail(data.data);
+
+                const reviews_response = await fetch(`/api/blog_reviews/${blog_id}`);
+                const reviews_data = await reviews_response.json();
+                setBlogReviews(reviews_data.data);
+                
+                const reviews_comment_response = await fetch(`/api/blog_reviews_reply/${blog_id}`);
+                const reviews_comment_data = await reviews_comment_response.json();
+                setBlogReviewCommentReplies(reviews_comment_data.data);
             }
             fetchData(selectedBlogId);
         }
@@ -88,22 +103,25 @@ const Blogs = () => {
         }
     };
 
+    const handleReplyButtonClick = (blog_comment_id) => {
+        setBlogCommentId(blog_comment_id);
+        setShowCommentsReply(!blogReviewReply);
+    };
+
     async function checkIfAnyBlogHasDashboardVisibleTwo() {
         const firestore = getFirestore();
         const querySnapshot = await getDocs(collection(firestore, "blogs"));
-        
         let hasDashboardVisibleTwo = false;
-      
         querySnapshot.forEach((doc) => {
-          const blogData = doc.data();
-          if (blogData.dashboard_visible === 2) {
-            hasDashboardVisibleTwo = true;
-            return;
-          }
+            const blogData = doc.data();
+            if (blogData.dashboard_visible === 2) {
+                hasDashboardVisibleTwo = true;
+                return;
+            }
         });
-      
+
         return hasDashboardVisibleTwo;
-      }
+    }
 
     const truncateDescription = (description) => {
         const words = description.match(/.{1,10}/g);
@@ -133,6 +151,32 @@ const Blogs = () => {
         }
     }
 
+    const replyFormSubmit = async (e) => {
+        e.preventDefault();
+    
+        const firestore = getFirestore();
+        const usersRef = collection(firestore, 'users');
+        const q = query(usersRef, where("email", "==", auth.currentUser.email));
+        const querySnapshot = await getDocs(q);
+        const userFirestoreId = querySnapshot.docs[0].id;
+        const userData = querySnapshot.docs[0].data();
+
+        const user_data = {
+          user_id: userFirestoreId,
+          blog_id: selectedBlogId,
+          blog_comment_reply_name: userData.first_name + " " + userData.last_name,
+          blog_comment_id: blogCommentId,
+          blog_comment_reply: replyFormData.blog_comment_reply,
+          created_at: serverTimestamp(),
+          updated_at: serverTimestamp()
+        }
+        await addDoc(collection(db, 'blogs_comment_reply'), user_data);
+        toast.success("Reply added successfully", { position: "top-right" });
+    
+        setReplyFormData({ blog_comment_reply: '' });
+        setShowCommentsReply(false);
+      }
+
     return (
         <>
             <section>
@@ -149,7 +193,6 @@ const Blogs = () => {
                                 <FontAwesomeIcon icon={faPlus} className='w-8 h-8' />
                             </Link>
                         </div>
-
 
                         <div className="relative overflow-x-auto">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -194,7 +237,7 @@ const Blogs = () => {
                             </table>
                             {blogs?.length < 1 && <div className="py-2 text-center text-xl">No data found</div>}
                             {showModal && (
-                                <div id="default-modal" tabIndex="-1" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-black bg-opacity-80">
+                                <div id="default-modal" tabIndex="-1" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full bg-black bg-opacity-80">
                                     <div className="relative p-4 w-4/6 max-h-full blog_modal">
                                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -222,6 +265,60 @@ const Blogs = () => {
                                                         <p className='break-words text-justify font-light leading-loose text-base'>{blogModalDetail.description}</p>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <hr className='border-t-2 border-gray-400 w-11/12 ml-12' />
+                                            <div className="reviews p-7">
+                                                <div className="reviews_heading font-bold text-2xl">
+                                                    Comments
+                                                </div>
+                                                {blogReviews.map((blogReview) => (
+                                                    <div key={blogReview.id} className="header my-4 leading-loose border-2 border-gray-300 rounded-lg px-6 py-6">
+                                                        <div className='flex'>
+                                                            <div className='w-11/12'>
+                                                                <input type="hidden" name="blog_comment_id" value={blogReview.id} id="blog_comment_id" />
+                                                                <div className="blog_commented_name font-bold">
+                                                                    <p className="">{blogReview.blog_comment_name}</p>
+                                                                </div>
+                                                                <div className="blog_commented_comments ms-8 break-all text-justify w-11/12">
+                                                                    <pre className="whitespace-pre-wrap">{blogReview.blog_comment}</pre>
+                                                                </div>
+                                                            </div>
+                                                            <div className="reply_button">
+                                                                <button type='Submit' name='blog_reviews_reply_button' id='blog_reviews_reply_button' className='blog_reviews_reply_button hover:text-blue-500' onClick={() => handleReplyButtonClick(blogReview.id)}> Reply </button>
+                                                            </div>
+                                                        </div>
+                                                        {blogCommentId === blogReview.id && blogReviewReply && (
+                                                            <form method='POST' onSubmit={replyFormSubmit}>
+                                                                <div className='flex'>
+                                                                    <div className="comments_reply w-5/6 mr-3 ml-6">
+                                                                        <TextAreaField label_heading="" id="blog_comment_reply" name="blog_comment_reply" className="blog_comment_reply h-10" value={replyFormData.blog_comment_reply} onChange={(e) => setReplyFormData({ ...replyFormData, blog_comment_reply: e.target.value })} div_name="blog_comment_reply" placeholder="Add reply here" />
+                                                                    </div>
+                                                                    <div className="comment w-32">
+                                                                        <SubmitButton name="blog_comment_reply_submit" id="blog_comment_reply_submit" className="blog_comment_reply_submit" div_name="blog_comment_reply_submit -mt-1" label="Add Reply" />
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        )}
+                                                        {blogReviewCommentReplies.map((blogReviewCommentReply) => (
+                                                            (blogReviewCommentReply.blog_comment_id === blogReview.id) ?
+                                                            ( <div key={blogReviewCommentReply.id} className="header my-4 leading-loose px-6">
+                                                                <hr className='border-t-2 border-gray-300 my-4 w-11/12 ml-6'/>
+                                                                <div className='flex'>
+                                                                    <div className='w-11/12'>
+                                                                        <input type="hidden" name="blog_comment_id" value={blogReviewCommentReply.id} id="blog_comment_id" />
+                                                                        <div className="blog_commented_name font-bold">
+                                                                            <p className="">{blogReviewCommentReply.blog_comment_reply_name}</p>
+                                                                        </div>
+                                                                        <div className="blog_commented_comments ms-8 break-all text-justify w-11/12">
+                                                                            <pre className="whitespace-pre-wrap">{blogReviewCommentReply.blog_comment_reply}</pre>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div> ) : null
+                                                        ))}
+                                                    </div>
+                                                ))}
+                                                
                                             </div>
                                         </div>
                                     </div>
