@@ -9,7 +9,7 @@ const CardWithDetail = ({ src, image_name, content, index, title, className }) =
             <div>
                 <div className="dashboard_card_section flex mx-24 mb-8">
                     <div className={`dashboard_images mt-10 mr-8 ${isEven ? 'order-1' : 'order-2'}`}>
-                        <Image src={src} width={0} height={0} alt={image_name} className={isEven ? `${className}_order blog_image` : `${className} blog_image`} layout="responsive" quality={80}/>
+                        <Image src={src} width={0} height={0} alt={image_name} className={isEven ? `${className}_order users_blog_image` : `${className} users_blog_image`} layout="responsive" quality={80}/>
                     </div>
                     <div className={`dashboard_content mt-10 text-justify mr-8 text-xl font-light w-full lg:w-4/6 ${isEven ? 'order-2' : 'order-1'}`}>
                         <p className='break-words text-justify font-bold italic text-2xl leading-loose mb-4'>{title}</p>

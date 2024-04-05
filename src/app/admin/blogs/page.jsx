@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_DASHBOARD, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, ADMIN_BLOG_MODAL, ADMIN_BLOGS, Image, getFirestore, getDocs, collection, Loader, TextAreaField, SubmitButton, where, query, auth, serverTimestamp, addDoc } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, Image, getFirestore, getDocs, collection, Loader, TextAreaField, SubmitButton, where, query, auth, serverTimestamp, addDoc, faReply, Tooltip } from '@/app/api/routes/page';
+import { faThumbsDown, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
@@ -16,6 +17,7 @@ const Blogs = () => {
 
     const [blogReviewReply, setShowCommentsReply] = useState(false);
     const [blogReviewCommentReplies, setBlogReviewCommentReplies] = useState([]);
+    const [blogReviewsCount, setBlogReviewsCount] = useState(0);
 
     useEffect(() => {
         if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
@@ -52,6 +54,7 @@ const Blogs = () => {
 
         const reviews_response = await fetch(`/api/blog_reviews/${blog_id}`);
         const reviews_data = await reviews_response.json();
+        setBlogReviewsCount(reviews_data.data.length);
         setBlogReviews(reviews_data.data);
 
         const reviews_comment_response = await fetch(`/api/blog_reviews_reply/${blog_id}`);
@@ -106,6 +109,14 @@ const Blogs = () => {
         setBlogCommentId(blog_comment_id);
         setShowCommentsReply(!blogReviewReply);
     };
+
+    const handleLikeButtonClick = (blog_comment_id) => {
+        console.log("like button", blog_comment_id);
+    }
+
+    const handleDislikeButtonClick = (blog_comment_id) => {
+        console.log("dislike button", blog_comment_id);
+    }
 
     async function checkIfAnyBlogHasDashboardVisibleTwo() {
         const firestore = getFirestore();
@@ -169,6 +180,7 @@ const Blogs = () => {
             updated_at: serverTimestamp()
         }
         await addDoc(collection(db, 'blogs_comment_reply'), user_data);
+        fetchBlogData(selectedBlogId);
         toast.success("Reply added successfully", { position: "top-right" });
 
         setReplyFormData({ blog_comment_reply: '' });
@@ -268,8 +280,8 @@ const Blogs = () => {
                                             </div>
                                             <hr className='border-t-2 border-gray-400 w-11/12 ml-12' />
                                             <div className="reviews p-7">
-                                                <div className="reviews_heading font-bold text-2xl">
-                                                    Comments
+                                                <div className="reviews_heading text-2xl italic font-thin mb-5">
+                                                    <span>{blogReviewsCount}</span> Comments
                                                 </div>
                                                 {blogReviews.map((blogReview) => (
                                                     <div key={blogReview.id} className="header my-4 leading-loose border-2 border-gray-300 rounded-lg px-6 py-6">
@@ -283,7 +295,15 @@ const Blogs = () => {
                                                                 </div>
                                                             </div>
                                                             <div className="reply_button">
-                                                                <button type='Submit' name='blog_reviews_reply_button' id='blog_reviews_reply_button' className='blog_reviews_reply_button hover:text-blue-500' onClick={() => handleReplyButtonClick(blogReview.id)}> Reply </button>
+                                                                <Tooltip showArrow={true} content="I am a tooltip">
+                                                                    <button type='Submit' name='blog_reviews_like_button' id='blog_reviews_like_button' className='blog_reviews_like_button hover:text-blue-500 mr-4' onClick={() => handleLikeButtonClick(blogReview.id)} data-tip='Like Button Tooltip'><FontAwesomeIcon icon={faThumbsUp} /></button>
+                                                                </Tooltip>
+                                                                <Tooltip showArrow={true} content="I am a tooltip">
+                                                                    <button type='Submit' name='blog_reviews_dislike_button' id='blog_reviews_dislike_button' className='blog_reviews_dislike_button hover:text-blue-500 mr-4' onClick={() => handleDislikeButtonClick(blogReview.id)}><FontAwesomeIcon icon={faThumbsDown} /></button>
+                                                                </Tooltip>
+                                                                <Tooltip showArrow={true} content="I am a tooltip">
+                                                                    <button type='Submit' name='blog_reviews_reply_button' id='blog_reviews_reply_button' className='blog_reviews_reply_button hover:text-blue-500' onClick={() => handleReplyButtonClick(blogReview.id)}> <FontAwesomeIcon icon={faReply} /> </button>
+                                                                </Tooltip>
                                                             </div>
                                                         </div>
                                                         {blogCommentId === blogReview.id && blogReviewReply && (

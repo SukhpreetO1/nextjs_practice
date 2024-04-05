@@ -139,6 +139,11 @@ img.modal_showing_images {
   margin-top: -6rem !important;
 }
 
+.users_blog_image {
+  width: 25vw !important;
+  height: 100% !important;
+  position: relative !important;
+}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }

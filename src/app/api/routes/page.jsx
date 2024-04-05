@@ -109,7 +109,17 @@ import { ToastContainer, toast } from "react-toastify";
 
 // use fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfo, faPenToSquare, faTrashCan, faEye, faEyeSlash, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { 
+  faInfo, 
+  faPenToSquare, 
+  faTrashCan, 
+  faEye, 
+  faEyeSlash, 
+  faPlus,
+  faThumbsUp,
+  faThumbsDown,
+  faReply
+} from "@fortawesome/free-solid-svg-icons";
 
 // used to store data in cookies
 import Cookies from "js-cookie";
@@ -123,6 +133,7 @@ import jwt from "jsonwebtoken";
 // use for getting data from helper
 import { fetchUserDataFromToken } from "@/helpers/helpers";
 
+import {Tooltip} from "@nextui-org/react";
 export {
   Link,
   useRouter,
@@ -226,6 +237,9 @@ export {
   faEye, 
   faEyeSlash, 
   faPlus,
+  faThumbsUp,
+  faThumbsDown,
+  faReply,
 
   Cookies,
 
@@ -235,4 +249,5 @@ export {
   jwt,
 
   fetchUserDataFromToken,
+  Tooltip
 };
