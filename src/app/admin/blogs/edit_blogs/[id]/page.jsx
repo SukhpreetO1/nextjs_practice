@@ -124,7 +124,7 @@ const EditBlogs = (req) => {
                                 <TextAreaField className="blog_description" id="blog_description" name="description" div_name="blog_description" label_heading="Description" placeholder="Enter the description" value={blogForm.description} onChange={handleInputChange} error={error.description} />
                             </div>
                             <div className="blog_images">
-                                <ImageUploading className="blog_image" id="blog_image" name="image" div_name="blog_image" label_heading="Image"  onChange={handleInputChange} error={error.image} accept="image/*" />
+                                <ImageUploading className="showing_uploading_blog_image" id="blog_image" name="image" div_name="showing_uploading_blog_image" label_heading="Image"  onChange={handleInputChange} error={error.image} accept="image/*" />
                             </div>
                             <div>
                                 {imagePreview && <h5 className="my-4">Preview Image :</h5>}

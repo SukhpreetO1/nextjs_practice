@@ -7,7 +7,7 @@ const Blogs = () => {
     const [blogModalDetail, setBlogModalDetail] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedBlogId, setSelectedBlogId] = useState(null);
-    const [isChecked, setIsChecked] = useState();
+    const [isChecked, setIsChecked] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const [blogReviews, setBlogReviews] = useState([]);
@@ -19,23 +19,9 @@ const Blogs = () => {
 
     useEffect(() => {
         if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
-            toast.success("New blog added successfully", {
-                position: "top-right",
-            });
-            localStorage.removeItem("hasShownBlogAddedToast");
+            showToast("New blog added successfully");
         } else if (localStorage.getItem("hasShownBlogUpdatedToast") === "false") {
-            toast.success("Blog updated successfully", {
-                position: "top-right",
-            });
-            localStorage.removeItem("hasShownBlogUpdatedToast");
-        }
-
-        async function fetchData() {
-            setLoading(true);
-            const response = await fetch("/api/blogs");
-            const data = await response.json();
-            setBlogs(data.data);
-            setLoading(false);
+            showToast("Blog updated successfully");
         }
 
         fetchData();
@@ -43,20 +29,7 @@ const Blogs = () => {
 
     useEffect(() => {
         if (selectedBlogId !== null) {
-            async function fetchData(blog_id) {
-                const response = await fetch("/api/blogs/blog_modal/" + blog_id);
-                const data = await response.json();
-                setBlogModalDetail(data.data);
-
-                const reviews_response = await fetch(`/api/blog_reviews/${blog_id}`);
-                const reviews_data = await reviews_response.json();
-                setBlogReviews(reviews_data.data);
-                
-                const reviews_comment_response = await fetch(`/api/blog_reviews_reply/${blog_id}`);
-                const reviews_comment_data = await reviews_comment_response.json();
-                setBlogReviewCommentReplies(reviews_comment_data.data);
-            }
-            fetchData(selectedBlogId);
+            fetchBlogData(selectedBlogId);
         }
     }, [selectedBlogId]);
 
@@ -64,6 +37,32 @@ const Blogs = () => {
         const initialCheckedState = blogs.map((blog) => blog.dashboard_visible === 1 ? false : true);
         setIsChecked(initialCheckedState);
     }, [blogs]);
+
+    const fetchData = async () => {
+        setLoading(true);
+        const response = await fetch("/api/blogs");
+        const data = await response.json();
+        setBlogs(data.data);
+        setLoading(false);
+    };
+    const fetchBlogData = async (blog_id) => {
+        const response = await fetch(`/api/blogs/blog_modal/${blog_id}`);
+        const data = await response.json();
+        setBlogModalDetail(data.data);
+
+        const reviews_response = await fetch(`/api/blog_reviews/${blog_id}`);
+        const reviews_data = await reviews_response.json();
+        setBlogReviews(reviews_data.data);
+
+        const reviews_comment_response = await fetch(`/api/blog_reviews_reply/${blog_id}`);
+        const reviews_comment_data = await reviews_comment_response.json();
+        setBlogReviewCommentReplies(reviews_comment_data.data);
+    };
+
+    const showToast = (message) => {
+        toast.success(message, { position: "top-right" });
+        localStorage.removeItem("hasShownBlogAddedToast");
+    };
 
     const modalHandler = () => {
         setShowModal(false);
@@ -153,7 +152,6 @@ const Blogs = () => {
 
     const replyFormSubmit = async (e) => {
         e.preventDefault();
-    
         const firestore = getFirestore();
         const usersRef = collection(firestore, 'users');
         const q = query(usersRef, where("email", "==", auth.currentUser.email));
@@ -162,20 +160,20 @@ const Blogs = () => {
         const userData = querySnapshot.docs[0].data();
 
         const user_data = {
-          user_id: userFirestoreId,
-          blog_id: selectedBlogId,
-          blog_comment_reply_name: userData.first_name + " " + userData.last_name,
-          blog_comment_id: blogCommentId,
-          blog_comment_reply: replyFormData.blog_comment_reply,
-          created_at: serverTimestamp(),
-          updated_at: serverTimestamp()
+            user_id: userFirestoreId,
+            blog_id: selectedBlogId,
+            blog_comment_reply_name: userData.first_name + " " + userData.last_name,
+            blog_comment_id: blogCommentId,
+            blog_comment_reply: replyFormData.blog_comment_reply,
+            created_at: serverTimestamp(),
+            updated_at: serverTimestamp()
         }
         await addDoc(collection(db, 'blogs_comment_reply'), user_data);
         toast.success("Reply added successfully", { position: "top-right" });
-    
+
         setReplyFormData({ blog_comment_reply: '' });
         setShowCommentsReply(false);
-      }
+    }
 
     return (
         <>
@@ -226,7 +224,7 @@ const Blogs = () => {
                                                 </Link>
                                                 <div className="toggle_button">
                                                     <label className="inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" value={blog.dashboard_visible} className="sr-only peer" checked={isChecked[index]} onChange={(e) => handleCheckboxChange(e, blog.id)} />
+                                                        <input type="checkbox" value={blog.dashboard_visible} className="sr-only peer" checked={blog.dashboard_visible === 2 ? isChecked : ''} onChange={(e) => handleCheckboxChange(e, blog.id)} />
                                                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                                     </label>
                                                 </div>
@@ -253,7 +251,9 @@ const Blogs = () => {
                                             <div className="blog_details py-8 px-8">
                                                 <div className='flex mb-4'>
                                                     <div className="uploaded_image mr-4">
-                                                        <Image src={blogModalDetail.image} alt="Uploaded Image" width={400} height={100} />
+                                                        {blogModalDetail.image && (
+                                                            <Image src={blogModalDetail.image} alt="Uploaded Image" className="modal_showing_images" width={400} height={100} />
+                                                        )}
                                                     </div>
 
                                                     <div className="title">
@@ -275,7 +275,6 @@ const Blogs = () => {
                                                     <div key={blogReview.id} className="header my-4 leading-loose border-2 border-gray-300 rounded-lg px-6 py-6">
                                                         <div className='flex'>
                                                             <div className='w-11/12'>
-                                                                <input type="hidden" name="blog_comment_id" value={blogReview.id} id="blog_comment_id" />
                                                                 <div className="blog_commented_name font-bold">
                                                                     <p className="">{blogReview.blog_comment_name}</p>
                                                                 </div>
@@ -301,24 +300,23 @@ const Blogs = () => {
                                                         )}
                                                         {blogReviewCommentReplies.map((blogReviewCommentReply) => (
                                                             (blogReviewCommentReply.blog_comment_id === blogReview.id) ?
-                                                            ( <div key={blogReviewCommentReply.id} className="header my-4 leading-loose px-6">
-                                                                <hr className='border-t-2 border-gray-300 my-4 w-11/12 ml-6'/>
-                                                                <div className='flex'>
-                                                                    <div className='w-11/12'>
-                                                                        <input type="hidden" name="blog_comment_id" value={blogReviewCommentReply.id} id="blog_comment_id" />
-                                                                        <div className="blog_commented_name font-bold">
-                                                                            <p className="">{blogReviewCommentReply.blog_comment_reply_name}</p>
-                                                                        </div>
-                                                                        <div className="blog_commented_comments ms-8 break-all text-justify w-11/12">
-                                                                            <pre className="whitespace-pre-wrap">{blogReviewCommentReply.blog_comment_reply}</pre>
+                                                                (<div key={blogReviewCommentReply.id} className="header my-4 leading-loose px-6">
+                                                                    <hr className='border-t-2 border-gray-300 my-4 w-11/12 ml-6' />
+                                                                    <div className='flex'>
+                                                                        <div className='w-11/12'>
+                                                                            <div className="blog_commented_name font-bold">
+                                                                                <p className="">{blogReviewCommentReply.blog_comment_reply_name}</p>
+                                                                            </div>
+                                                                            <div className="blog_commented_comments ms-8 break-all text-justify w-11/12">
+                                                                                <pre className="whitespace-pre-wrap">{blogReviewCommentReply.blog_comment_reply}</pre>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            </div> ) : null
+                                                                </div>) : null
                                                         ))}
                                                     </div>
                                                 ))}
-                                                
+
                                             </div>
                                         </div>
                                     </div>

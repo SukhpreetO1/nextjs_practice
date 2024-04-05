@@ -83,11 +83,11 @@ const AddBlogs = () => {
                                 <TextAreaField className="blog_description" id="blog_description" name="description" div_name="blog_description" label_heading="Description" placeholder="Enter the description" value={blogForm.description} onChange={handleInputChange} error={error.description} />
                             </div>
                             <div className="blog_images">
-                                <ImageUploading className="blog_image" id="blog_image" name="image" div_name="blog_image" label_heading="Image" value={blogForm.image} onChange={handleInputChange} error={error.image} accept="image/*" />
+                                <ImageUploading className="upload_blog_image" id="blog_image" name="image" div_name="upload_blog_image" label_heading="Image" value={blogForm.image} onChange={handleInputChange} error={error.image} accept="image/*" />
                             </div>
                             <div>
                                 {imagePreview && <h5 className="my-4">Preview Image :</h5>}
-                                {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="image-preview mb-3" width={800} height={100} encType="multipart/form-data" />)}
+                                {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="uploading_images_preview image-preview mb-3 relative" width={800} height={100} encType="multipart/form-data" />)}
                             </div>
                             <div className="submit_button">
                                 <SubmitButton className="submit" name="submit" id="submit" label="Add blog" />

@@ -127,6 +127,19 @@ main{
   display: none !important;
 }
 
+.uploading_images_preview {
+  position: relative !important;
+  min-height: 20rem !important;
+  margin-top: -4rem !important; 
+}
+
+img.modal_showing_images {
+  min-height: 15rem !important;
+  position: relative !important;
+  margin-top: -6rem !important;
+}
+
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
