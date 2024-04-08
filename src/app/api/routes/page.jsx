@@ -94,7 +94,8 @@ import {
   getDoc,
   onSnapshot,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  increment
 } from "firebase/firestore";
 
 import { 
@@ -221,6 +222,7 @@ export {
   onSnapshot,
   deleteDoc,
   updateDoc,
+  increment,
 
   ref, 
   uploadBytes, 
