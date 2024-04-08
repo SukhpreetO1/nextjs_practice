@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc } from "@/app/api/routes/page";
+import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "@/app/api/routes/page";
 import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
@@ -8,6 +8,8 @@ export async function GET(req, { params }) {
 
     if (docSnap.exists()) {
         const formData = docSnap.data();
+        formData.id = docSnap.id;
+
         const userDocRef = doc(firestore, "users", formData.user_id);
         const userDocSnap = await getDoc(userDocRef);
         
@@ -18,6 +20,19 @@ export async function GET(req, { params }) {
         } else {
             return NextResponse.json({ error: "User data not found" }, { status: 404 });
         }
+
+        const contactFormReplyCollection = collection(firestore, "contact_form_reply");
+        
+        const querySnapshot = await getDocs(query(contactFormReplyCollection, where("contact_form_id", "==", params.id)));
+        const replyData = [];
+        querySnapshot.forEach((doc) => {
+            const reply = doc.data();
+            reply.id = doc.id;
+            replyData.push(reply);
+        });
+
+        formData.replyData = replyData;
+
         return NextResponse.json({ data: formData });
     } else {
         return NextResponse.json({ error: "Contact form data not found" }, { status: 404 });

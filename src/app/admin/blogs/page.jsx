@@ -77,28 +77,22 @@ const Blogs = () => {
         setIsChecked(e.target.checked);
 
         try {
-            const hasDashboardVisibleTwo = await checkIfAnyBlogHasDashboardVisibleTwo();
+            const response = await fetch('/api/blogs', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: blogId, dashboard_visible: dashboard_visible_value }),
+            });
 
-            if (hasDashboardVisibleTwo && dashboard_visible_value === 2) {
-                toast.error("Another blog is already visible on the dashboard.", { position: "top-right" });
-            } else {
-                const response = await fetch('/api/blogs', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id: blogId, dashboard_visible: dashboard_visible_value }),
-                });
-
-                if (response.ok) {
-                    if (dashboard_visible_value === 2) {
-                        toast.success("Blog is not visible on the dashboard now.", { position: "top-right" });
-                    } else {
-                        toast.success("Now blog visible on the dashboard.", { position: "top-right" });
-                    }
+            if (response.ok) {
+                if (dashboard_visible_value === 2) {
+                    toast.success("Blog is not visible on the dashboard now.", { position: "top-right" });
                 } else {
-                    toast.error("Something went wrong. Please try again later.", { position: "top-right" });
+                    toast.success("Now blog visible on the dashboard.", { position: "top-right" });
                 }
+            } else {
+                toast.error("Something went wrong. Please try again later.", { position: "top-right" });
             }
         } catch (error) {
             console.log(error);
@@ -138,21 +132,6 @@ const Blogs = () => {
             .catch((error) => {
                 console.error('Error updating blogs comment dislike count: ', error);
             });
-    }
-
-    async function checkIfAnyBlogHasDashboardVisibleTwo() {
-        const firestore = getFirestore();
-        const querySnapshot = await getDocs(collection(firestore, "blogs"));
-        let hasDashboardVisibleTwo = false;
-        querySnapshot.forEach((doc) => {
-            const blogData = doc.data();
-            if (blogData.dashboard_visible === 2) {
-                hasDashboardVisibleTwo = true;
-                return;
-            }
-        });
-
-        return hasDashboardVisibleTwo;
     }
 
     const truncateDescription = (description) => {

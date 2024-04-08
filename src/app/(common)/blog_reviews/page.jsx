@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { SubmitButton, TextAreaField } from "@/app/api/routes/page";
+import { FontAwesomeIcon, SubmitButton, TextAreaField, Tooltip, collection, doc, faReply, faThumbsDown, faThumbsUp, getFirestore, increment, toast, updateDoc } from "@/app/api/routes/page";
 
 const BlogReviews = ({ id, updatedComments }) => {
   const [blogReviews, setBlogReviews] = useState([]);
@@ -31,6 +31,36 @@ const BlogReviews = ({ id, updatedComments }) => {
     setBlogReviewsCount(updatedComments.length);
   }, [updatedComments]);
 
+  const handleLikeButtonClick = (blog_comment_id) => {
+    const firestore = getFirestore();
+    const docRef = doc(collection(firestore, 'blogs_comment'), blog_comment_id);
+
+    updateDoc(docRef, {
+      blogs_comment_like: increment(1)
+    })
+      .then(() => {
+        toast.success("Blog comment liked successfully!", { position: "top-right" });
+      })
+      .catch((error) => {
+        console.error('Error updating blogs comment like count: ', error);
+      });
+  }
+
+  const handleDislikeButtonClick = (blog_comment_id) => {
+    const firestore = getFirestore();
+    const docRef = doc(collection(firestore, 'blogs_comment'), blog_comment_id);
+
+    updateDoc(docRef, {
+      blogs_comment_dislike: increment(1)
+    })
+      .then(() => {
+        toast.success("Blog comment disliked", { position: "top-right" });
+      })
+      .catch((error) => {
+        console.error('Error updating blogs comment dislike count: ', error);
+      });
+  }
+
   return (
     <>
       <section>
@@ -49,6 +79,20 @@ const BlogReviews = ({ id, updatedComments }) => {
                   </div>
                   <div className="blog_commented_comments ms-8 break-all text-justify w-11/12">
                     <pre className="whitespace-pre-wrap">{blogReview.blog_comment}</pre>
+                  </div>
+                </div>
+                <div className="reply_button flex w-28">
+                  <div>
+                    <Tooltip showArrow={true} content="Like" className='text-blue-800'>
+                      <button type='Submit' name='blog_reviews_like_button' id='blog_reviews_like_button' className='blog_reviews_like_button hover:text-blue-500 mr-4' onClick={() => handleLikeButtonClick(blogReview.id)} data-tip='Like Button Tooltip'><FontAwesomeIcon icon={faThumbsUp} /></button>
+                    </Tooltip>
+                    <span className='mr-3 -ml-2'>{blogReview.blogs_comment_like}</span>
+                  </div>
+                  <div>
+                    <Tooltip showArrow={true} content="Dislike" className='text-red-700'>
+                      <button type='Submit' name='blog_reviews_dislike_button' id='blog_reviews_dislike_button' className='blog_reviews_dislike_button hover:text-blue-500 mr-4' onClick={() => handleDislikeButtonClick(blogReview.id)}><FontAwesomeIcon icon={faThumbsDown} /></button>
+                    </Tooltip>
+                    <span className='mr-3 -ml-2'>{blogReview.blogs_comment_dislike}</span>
                   </div>
                 </div>
               </div>
