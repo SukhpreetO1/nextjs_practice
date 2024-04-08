@@ -1,5 +1,7 @@
 "use client";
 import { ADMIN_BLOGS, ADMIN_CONTACT_MESSAGES, Link, Loader, USER_DETAILS } from "@/app/api/routes/page";
+import BarChart from "@/components/charts/barChart";
+import LineChart from "@/components/charts/lineChart";
 import React, { useEffect, useState } from "react";
 
 const AdminDashboard = () => {
@@ -65,6 +67,10 @@ const AdminDashboard = () => {
             </div>
           </>
         )}
+      </div>
+      <div className="ml-60 flex justify-around mt-12">
+        <BarChart />
+        <LineChart />
       </div>
     </section>
   );
