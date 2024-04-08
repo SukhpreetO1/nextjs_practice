@@ -146,17 +146,17 @@ const ContactFormMessages = () => {
                                             <div className="contact_form_message_details py-8 px-8">
                                                 <div className='flex mb-2'>
                                                     <div className="title">
-                                                        <p className='break-words text-justify italic text-2xl leading-loose mb-4'><span>Name : </span>{contactMessagesDetail.contact_name ? contactMessagesDetail.contact_name : ''}</p>
+                                                        <p className='break-words text-justify italic text-2xl leading-loose mb-4'>{contactMessagesDetail.contact_name ? 'Name : ' + contactMessagesDetail.contact_name : ''}</p>
                                                     </div>
                                                 </div>
                                                 <div className="description mb-2">
                                                     <div className="description-content break-words">
-                                                        <p className='break-words text-justify font-light leading-loose text-base'><span>Message : </span>{contactMessagesDetail.contact_message ? contactMessagesDetail.contact_name : ''}</p>
+                                                        <p className='break-words text-justify font-light leading-loose text-base'>{contactMessagesDetail.contact_message ? "Message : " + contactMessagesDetail.contact_name : ''}</p>
                                                     </div>
                                                 </div>
                                                 <div className="send_by">
                                                     <div className="send_by">
-                                                        <p className='break-words text-justify font-light leading-loose text-base'><span>Send by : </span>{contactMessagesDetail.user_first_name ? contactMessagesDetail.user_first_name : '' + ' ' + contactMessagesDetail.user_last_name ? contactMessagesDetail.user_last_name : ''}</p>
+                                                        <p className='break-words text-justify font-light leading-loose text-base'>{contactMessagesDetail.user_first_name ? "Send by : " + contactMessagesDetail.user_first_name : '' + ' ' + contactMessagesDetail.user_last_name ? contactMessagesDetail.user_last_name : ''}</p>
                                                     </div>
                                                 </div>
                                                 <hr className="my-4" />
