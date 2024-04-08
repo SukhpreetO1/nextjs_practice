@@ -1,5 +1,5 @@
 "use client"
-import { Image, AVATAR_IMAGE_URL, InputField, fetchUserDataFromToken, DateField, CheckboxField, RadioButtonField, Loader } from '@/app/api/routes/page';
+import { Image, AVATAR_IMAGE_URL, InputField, fetchUserDataFromToken, DateField, CheckboxField, RadioButtonField, Loader, Link, ADMIN_DASHBOARD } from '@/app/api/routes/page';
 import React, { useEffect, useState } from 'react';
 
 const genderOptions = [
@@ -41,6 +41,32 @@ const AdminProfile = () => {
     return (
         <>
             <section>
+                <div className="admin_terms_and_conditions_heading ml-60">
+                    <div className="heading text-center text-5xl font-bold mt-8 mb-12">
+                        Profile
+                    </div>
+                </div>
+
+                <div className="admin_breadcrumbs">
+                    <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
+                        <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                            <li className="inline-flex items-center">
+                                <Link href={ADMIN_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                    Home
+                                </Link>
+                            </li>
+                            <li aria-current="page">
+                                <div className="flex items-center">
+                                    <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
+                                    </svg>
+                                    <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Profile</span>
+                                </div>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+
                 <div className='admin_profile_detail_page w-2/5 '>
                     <div className='profile_page flex justify-center'>
                         <Image src={AVATAR_IMAGE_URL} width={150} height={150} alt='logo' />
