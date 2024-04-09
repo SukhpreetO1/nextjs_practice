@@ -1,4 +1,5 @@
 "use client"
+import { NAVBAR_BLOGS_DETAILS } from '@/app/api/redirection_route/page';
 import { LOGO_IMAGE_URL, Image, Link, AVATAR_IMAGE_URL, signOut, NAVBAR_DASHBOARD, auth, useRouter, fetchUserDataFromToken, NAVBAR_PROFILE, LOGIN_URL, toast, NAVBAR_ABOUT, NAVBAR_CONTACT, NAVBAR_BLOGS } from '@/app/api/routes/page';
 import React, { useEffect, useState } from 'react';
 
@@ -60,7 +61,7 @@ const Navbar = () => {
                                     <Link href={NAVBAR_DASHBOARD} onClick={() => setNavbar(!navbar)}> Home </Link>
                                 </li>
                                 <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
-                                    <Link href={NAVBAR_BLOGS} onClick={() => setNavbar(!navbar)}> Blogs </Link>
+                                    <Link href={NAVBAR_BLOGS_DETAILS} onClick={() => setNavbar(!navbar)}> Blogs </Link>
                                 </li>
                                 <li className="pb-6 text-xl py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-orange-700  border-orange-700  md:hover:text-orange-700 md:hover:bg-transparent">
                                     <Link href={NAVBAR_CONTACT} onClick={() => setNavbar(!navbar)}> Contact </Link>
@@ -80,6 +81,7 @@ const Navbar = () => {
                                 <p className="mb-2">Hello {userData && userData.first_name ? userData.first_name : userData} {userData && userData.last_name ? userData.last_name : ''}</p>
                                 <hr />
                                 <Link href={NAVBAR_PROFILE}><p className="mt-2">Profile</p></Link>
+                                <Link href={NAVBAR_BLOGS}><p className="mt-2">Blogs</p></Link>
                                 <Link href="#" onClick={handleLogout}><p className="mt-2">Logout</p></Link>
                             </div>
                         )}

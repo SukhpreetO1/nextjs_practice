@@ -72,6 +72,12 @@ main{
   left: 5rem
 }
 
+.users_blogs_breadcrumbs {
+  position: absolute;
+  top: 7rem;
+  left: 5rem
+}
+
 .admin_breadcrumbs {
   position: absolute;
   top: 5rem;
