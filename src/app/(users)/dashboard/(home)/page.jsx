@@ -13,13 +13,13 @@ const DashboardHome = () => {
         const response = await fetch('/api/blogs');
         const data = await response.json();
         setData(data.data);
+        setLoader(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-    setLoader(false);
   }, []);
 
   return (

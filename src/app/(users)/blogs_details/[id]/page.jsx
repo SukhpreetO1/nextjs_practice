@@ -1,5 +1,5 @@
 "use client"
-import { BlogCommetForm, BlogReviews, CardWithDetail, Link, Loader, NAVBAR_BLOGS, NAVBAR_DASHBOARD } from '@/app/api/routes/page';
+import { BlogCommetForm, BlogReviews, CardWithDetail, Link, Loader, NAVBAR_BLOGS, NAVBAR_BLOGS_DETAILS, NAVBAR_DASHBOARD } from '@/app/api/routes/page';
 import React, { useCallback, useEffect, useState } from 'react'
 
 const SingleBlogsContent = (req) => {
@@ -15,13 +15,13 @@ const SingleBlogsContent = (req) => {
                 const response = await fetch(`/api/blogs/blog_detail/${id}`);
                 const data = await response.json();
                 setData(data.data);
+                setLoader(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchData();
-        setLoader(false);
     }, [id]);
 
     const fetchUpdatedComments = useCallback(async () => {
@@ -56,7 +56,7 @@ const SingleBlogsContent = (req) => {
                                             <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                                             </svg>
-                                            <Link href={NAVBAR_BLOGS} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                            <Link href={NAVBAR_BLOGS_DETAILS} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                                                 Blogs
                                             </Link>
                                         </li>
