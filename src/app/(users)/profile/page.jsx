@@ -1,5 +1,5 @@
 "use client"
-import { Image, AVATAR_IMAGE_URL, InputField, fetchUserDataFromToken, DateField, Link, NAVBAR_DASHBOARD, SubmitButton, RadioButtonField, validate_profile_form, CheckboxField, serverTimestamp, toast, updateDoc, doc, db } from '@/app/api/routes/page';
+import { Image, AVATAR_IMAGE_URL, InputField, fetchUserDataFromToken, DateField, Link, NAVBAR_DASHBOARD, SubmitButton, RadioButtonField, validate_profile_form, CheckboxField, serverTimestamp, toast, updateDoc, doc, db, Loader } from '@/app/api/routes/page';
 import React, { useEffect, useState } from 'react';
 
 const genderOptions = [
@@ -17,32 +17,19 @@ const hobbiesOptions = [
 ];
 
 const Profile = () => {
+    const [loader, setLoader] = useState(false);
     const [errors, setErrors] = useState({});
-    const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
-        username: '',
-        date_of_birth: '',
-        mobile_number: '',
-        gender: '',
-        hobbies:[],
-    });
-    const [selectedGender, setSelectedGender] = useState(formData.gender);
-    const [selectedHobbies, setSelectedHobbies] = useState(formData.hobbies);
+    const [formData, setFormData] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoader(true);
             const cleanup = await fetchUserDataFromToken(setFormData);
+            setLoader(false);
             return cleanup;
         };
         fetchData();
     }, []);
-
-    useEffect(() => {
-        setSelectedGender(formData.gender);
-        setSelectedHobbies(formData.hobbies);
-    }, [formData.gender, formData.hobbies]);
 
     const handleFieldChange = (name, value) => {
         const validation_errors = validate_profile_form({ ...formData, [name]: value });
@@ -117,34 +104,35 @@ const Profile = () => {
                 </div>
 
                 <div className='user_profile_detail_page w-2/5 mb-8'>
-                    {formData ? (
-                        <form action="" method='PUT' onSubmit={userUpdateProfile}>
-                            <div className='profile_page flex justify-center'>
-                                <Image src={AVATAR_IMAGE_URL} width={150} height={150} alt='logo' />
-                            </div>
-                            <div className="first_name_last_name flex col-span-6">
-                                <InputField value={formData.first_name ? formData.first_name : ''} className='first_name' label_heading="First name" id="first_name" name="first_name" div_name="first_name mr-4" onChange={handleInputChange} error={errors.first_name} />
-                                <InputField value={formData.last_name ? formData.last_name : ''} className='last_name' label_heading="Last name" id="last_name" name="last_name" div_name="last_name" onChange={handleInputChange} error={errors.last_name} />
-                            </div>
-                            <div className="email_username flex col-span-6">
-                                <InputField value={formData.email ? formData.email : ''} className='email' label_heading="Email" id="email" name="email" div_name="email mr-4" onChange={handleInputChange} error={errors.email} />
-                                <InputField value={formData.username ? formData.username : ''} className='username' label_heading="Username" id="username" name="username" div_name="username" onChange={handleInputChange} error={errors.username} />
-                            </div>
-                            <div className="date_of_birth_mobile_number flex col-span-6">
-                                <DateField value={formData.date_of_birth ? formData.date_of_birth : ''} className='date_of_birth' label_heading="Date of Birth" id="date_of_birth" name="date_of_birth" div_name="date_of_birth mr-4" onChange={handleInputChange} error={errors.date_of_birth} />
-                                <InputField value={formData.mobile_number ? formData.mobile_number : ''} className='mobile_number' label_heading="Mobile Number" id="mobile_number" name="mobile_number" div_name="mobile_number" onChange={handleInputChange} error={errors.mobile_number} />
-                            </div>
-                            <div className="gender">
-                                <RadioButtonField value={selectedGender} label_heading="Gender" div_name="gender" className="gender" name="gender" options={genderOptions} id="gender" onSelect={handleOptionSelect} error={errors.gender}/>
-                            </div>
-                            <div className="hobbies">
-                                <CheckboxField value={selectedHobbies} className='hobbies' label_heading="Hobbies" options={hobbiesOptions} id="hobbies" name="hobbies" div_name="hobbies" onChange={handleOptionSelect} onSelect={handleCheckboxSelect} error={errors.hobbies} />
-                            </div>
-                            <div className="submit_button mt-4">
-                                <SubmitButton className="submit_button" id="submit_button" name="submit_button" div_name="submit_button" label="Update" />
-                            </div>
-                        </form>
-                    ) : null}
+                    {loader ? (<Loader />) : (
+                        formData ? (
+                            <form action="" method='PUT' onSubmit={userUpdateProfile}>
+                                <div className='profile_page flex justify-center'>
+                                    <Image src={AVATAR_IMAGE_URL} width={150} height={150} alt='logo' />
+                                </div>
+                                <div className="first_name_last_name flex col-span-6">
+                                    <InputField value={formData.first_name ? formData.first_name : ''} className='first_name' label_heading="First name" id="first_name" name="first_name" div_name="first_name mr-4" onChange={handleInputChange} error={errors.first_name} />
+                                    <InputField value={formData.last_name ? formData.last_name : ''} className='last_name' label_heading="Last name" id="last_name" name="last_name" div_name="last_name" onChange={handleInputChange} error={errors.last_name} />
+                                </div>
+                                <div className="email_username flex col-span-6">
+                                    <InputField value={formData.email ? formData.email : ''} className='email' label_heading="Email" id="email" name="email" div_name="email mr-4" onChange={handleInputChange} error={errors.email} />
+                                    <InputField value={formData.username ? formData.username : ''} className='username' label_heading="Username" id="username" name="username" div_name="username" onChange={handleInputChange} error={errors.username} />
+                                </div>
+                                <div className="date_of_birth_mobile_number flex col-span-6">
+                                    <DateField value={formData.date_of_birth ? formData.date_of_birth : ''} className='date_of_birth' label_heading="Date of Birth" id="date_of_birth" name="date_of_birth" div_name="date_of_birth mr-4" onChange={handleInputChange} error={errors.date_of_birth} />
+                                    <InputField value={formData.mobile_number ? formData.mobile_number : ''} className='mobile_number' label_heading="Mobile Number" id="mobile_number" name="mobile_number" div_name="mobile_number" onChange={handleInputChange} error={errors.mobile_number} />
+                                </div>
+                                <div className="gender">
+                                    <RadioButtonField value={formData.gender} label_heading="Gender" div_name="gender" className="gender" name="gender" options={genderOptions} id="gender" onSelect={handleOptionSelect} error={errors.gender} />
+                                </div>
+                                <div className="hobbies">
+                                    <CheckboxField value={formData.hobbies} className='hobbies' label_heading="Hobbies" options={hobbiesOptions} id="hobbies" name="hobbies" div_name="hobbies" onChange={handleOptionSelect} onSelect={handleCheckboxSelect} error={errors.hobbies} />
+                                </div>
+                                <div className="submit_button mt-4">
+                                    <SubmitButton className="submit_button" id="submit_button" name="submit_button" div_name="submit_button" label="Update" />
+                                </div>
+                            </form>
+                        ) : null)}
                 </div>
             </section>
         </>
