@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, Image, getFirestore, getDocs, collection, Loader, TextAreaField, SubmitButton, where, query, auth, serverTimestamp, addDoc, faReply, Tooltip, updateDoc, increment, ADMIN_DASHBOARD } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, Image, getFirestore, getDocs, collection, Loader, TextAreaField, SubmitButton, where, query, auth, serverTimestamp, addDoc, faReply, Tooltip, updateDoc, increment, ADMIN_DASHBOARD, faEye } from '@/app/api/routes/page';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 
 const Blogs = () => {
@@ -18,6 +18,8 @@ const Blogs = () => {
     const [blogReviewReply, setShowCommentsReply] = useState(false);
     const [blogReviewCommentReplies, setBlogReviewCommentReplies] = useState([]);
     const [blogReviewsCount, setBlogReviewsCount] = useState(0);
+
+    const [usersDetails, setUsersDetails] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem("hasShownBlogAddedToast") === "false") {
@@ -45,8 +47,14 @@ const Blogs = () => {
         const response = await fetch("/api/blogs");
         const data = await response.json();
         setBlogs(data.data);
+        
+        const users_details = await fetch('/api/users');
+        const users_details_data = await users_details.json();
+        setUsersDetails(users_details_data.data);
+
         setLoading(false);
     };
+
     const fetchBlogData = async (blog_id) => {
         const response = await fetch(`/api/blogs/blog_modal/${blog_id}`);
         const data = await response.json();
@@ -247,20 +255,26 @@ const Blogs = () => {
                                             <td className="px-6 py-4">{truncateDescription(blog.description)}</td>
                                             <td className="px-6 py-4 flex">
                                                 <Link href="#" onClick={() => { setShowModal(true); setSelectedBlogId(blog.id); }}>
-                                                    <FontAwesomeIcon icon={faInfo} className="w-4 h-4 mr-2 mt-1" />
+                                                    <FontAwesomeIcon icon={faEye} className="w-4 h-4 mr-2 mt-1" />
                                                 </Link>
                                                 <Link href={`${ADMIN_EDIT_BLOGS}/${blog.id}`}>
                                                     <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2 mt-1" />
                                                 </Link>
-                                                <Link href="#" onClick={() => deleteBlog(blog.id)}>
-                                                    <FontAwesomeIcon icon={faTrashCan} className="w-4 h-4 mr-2 mt-1" />
-                                                </Link>
-                                                <div className="toggle_button">
-                                                    <label className="inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" value={blog.dashboard_visible} className="sr-only peer" checked={blog.dashboard_visible === 2 ? isChecked : ''} onChange={(e) => handleCheckboxChange(e, blog.id)} />
-                                                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                                    </label>
-                                                </div>
+                                                {usersDetails.map((user) => (
+                                                    user.role_id === 1 ? (
+                                                        <div key={blog.id} className='flex'>
+                                                            <Link href="#" onClick={() => deleteBlog(blog.id)}>
+                                                                <FontAwesomeIcon icon={faTrashCan} className="w-4 h-4 mr-2 mt-1" />
+                                                            </Link>
+                                                            <div className="toggle_button">
+                                                                <label className="inline-flex items-center cursor-pointer">
+                                                                    <input type="checkbox" value={blog.dashboard_visible} className="sr-only peer" checked={blog.dashboard_visible === 2 ? isChecked : ''} onChange={(e) => handleCheckboxChange(e, blog.id)} />
+                                                                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    ) : null
+                                                ))}
                                             </td>
                                         </tr>
                                     ))}

@@ -75,7 +75,7 @@ const BlogReviews = ({ id, updatedComments }) => {
                 <div className='w-11/12'>
                   <input type="hidden" name="blog_comment_id" value={blogReview.id} id="blog_comment_id" />
                   <div className="blog_commented_name font-bold">
-                    <p className="">{blogReview.blog_comment_name}</p>
+                    <p className="">{blogReview.blog_comment_name} <span className='font-light text-sm ml-2 italic'>{new Date(blogReview.created_at.seconds * 1000).toLocaleString('en-GB', {day: '2-digit',month: 'short',year: 'numeric'})}</span></p>
                   </div>
                   <div className="blog_commented_comments ms-8 break-all text-justify w-11/12">
                     <pre className="whitespace-pre-wrap">{blogReview.blog_comment}</pre>
