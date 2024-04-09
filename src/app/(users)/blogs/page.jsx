@@ -120,7 +120,7 @@ const Blogs = () => {
     const truncateDescription = (description) => {
         const words = description.match(/.{1,10}/g);
         if (words && words.length > 10) {
-            return words.slice(0, 13).join(' ') + '...';
+            return words.slice(0, 11).join(' ') + '...';
         }
         return description;
     };
