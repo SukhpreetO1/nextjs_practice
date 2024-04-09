@@ -56,7 +56,7 @@ const User = () => {
                             User Details
                         </div>
 
-                        <div className="breadcrumbs">
+                        <div className="admin_breadcrumbs">
                             <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
                                 <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                                     <li className="inline-flex items-center">
