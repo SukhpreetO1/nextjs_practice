@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon, faPenToSquare, faTrashCan, faInfo, faPlus, Link, ADMIN_ADD_BLOGS, toast, ADMIN_EDIT_BLOGS, doc, db, deleteDoc, Image, getFirestore, getDocs, collection, Loader, TextAreaField, SubmitButton, where, query, auth, serverTimestamp, addDoc, faReply, Tooltip, updateDoc, increment, ADMIN_DASHBOARD, faEye } from '@/app/api/routes/page';
+import { FontAwesomeIcon, faPenToSquare, faPlus, Link, toast, doc, db, Image, getFirestore, getDocs, collection, Loader, TextAreaField, SubmitButton, where, query, auth, serverTimestamp, addDoc, faReply, Tooltip, updateDoc, increment, faEye, USER_ADD_BLOGS, USER_EDIT_BLOGS, NAVBAR_DASHBOARD } from '@/app/api/routes/page';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 
 const Blogs = () => {
@@ -8,7 +8,6 @@ const Blogs = () => {
     const [blogModalDetail, setBlogModalDetail] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedBlogId, setSelectedBlogId] = useState(null);
-    const [isChecked, setIsChecked] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const [blogReviews, setBlogReviews] = useState([]);
@@ -28,7 +27,20 @@ const Blogs = () => {
             showToast("Blog updated successfully");
         }
 
+        const firestore = getFirestore();
+        const usersRef = collection(firestore, 'users');
+        const q = query(usersRef, where("email", "==", auth.currentUser.email));
+        const fetchUserData = async () => {
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                const userData = doc.data();
+                userData.id = doc.id;
+                setUsersDetails(userData);
+            });
+        };
+        fetchUserData();
         fetchData();
+
     }, []);
 
     useEffect(() => {
@@ -37,21 +49,11 @@ const Blogs = () => {
         }
     }, [selectedBlogId]);
 
-    useEffect(() => {
-        const initialCheckedState = blogs.map((blog) => blog.dashboard_visible === 1 ? false : true);
-        setIsChecked(initialCheckedState);
-    }, [blogs]);
-
     const fetchData = async () => {
         setLoading(true);
         const response = await fetch("/api/blogs");
         const data = await response.json();
         setBlogs(data.data);
-        
-        const users_details = await fetch('/api/users');
-        const users_details_data = await users_details.json();
-        setUsersDetails(users_details_data.data);
-
         setLoading(false);
     };
 
@@ -78,33 +80,6 @@ const Blogs = () => {
     const modalHandler = () => {
         setShowModal(false);
         setBlogModalDetail("")
-    };
-
-    const handleCheckboxChange = async (e, blogId) => {
-        const dashboard_visible_value = e.target.checked ? 1 : 2;
-        setIsChecked(e.target.checked);
-
-        try {
-            const response = await fetch('/api/blogs', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id: blogId, dashboard_visible: dashboard_visible_value }),
-            });
-
-            if (response.ok) {
-                if (dashboard_visible_value === 2) {
-                    toast.success("Blog is not visible on the dashboard now.", { position: "top-right" });
-                } else {
-                    toast.success("Now blog visible on the dashboard.", { position: "top-right" });
-                }
-            } else {
-                toast.error("Something went wrong. Please try again later.", { position: "top-right" });
-            }
-        } catch (error) {
-            console.log(error);
-        }
     };
 
     const handleReplyButtonClick = (blog_comment_id) => {
@@ -150,25 +125,13 @@ const Blogs = () => {
         return description;
     };
 
-    const deleteBlog = async (blogId) => {
-        try {
-            const ref = doc(db, "blogs", blogId);
-            deleteDoc(ref)
-                .then(() => {
-                    toast.success("Blog deleted successfully", {
-                        position: "top-right",
-                    });
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        } catch (error) {
-            console.error("Error deleting blog:", error);
+    const truncateTitle = (title) => {
+        const words = title.match(/.{1,5}/g);
+        if (words && words.length > 5) {
+            return words.slice(0, 5).join(' ') + '...';
         }
-    }
+        return title;
+    };
 
     const replyFormSubmit = async (e) => {
         e.preventDefault();
@@ -202,7 +165,7 @@ const Blogs = () => {
                 {loading ? (
                     <Loader />
                 ) : (
-                    <div className="blogs_page mx-16">
+                    <div className="blogs_page mx-16 mb-12">
                         <div className="heading text-center text-5xl font-bold mb-7">
                             Blogs
                         </div>
@@ -211,7 +174,7 @@ const Blogs = () => {
                             <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
                                 <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                                     <li className="inline-flex items-center">
-                                        <Link href={ADMIN_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                        <Link href={NAVBAR_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                                             Home
                                         </Link>
                                     </li>
@@ -228,7 +191,7 @@ const Blogs = () => {
                         </div>
 
                         <div className="add_blogs_page absolute right-24 top-28">
-                            <Link href={ADMIN_ADD_BLOGS} >
+                            <Link href={USER_ADD_BLOGS} >
                                 <FontAwesomeIcon icon={faPlus} className='w-8 h-8' />
                             </Link>
                         </div>
@@ -251,15 +214,17 @@ const Blogs = () => {
                                 <tbody>
                                     {blogs.map((blog, index) => (
                                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <td className="px-6 py-4">{blog.title}</td>
+                                            <td className="px-6 py-4">{truncateTitle(blog.title)}</td>
                                             <td className="px-6 py-4">{truncateDescription(blog.description)}</td>
                                             <td className="px-6 py-4 flex">
                                                 <Link href="#" onClick={() => { setShowModal(true); setSelectedBlogId(blog.id); }}>
                                                     <FontAwesomeIcon icon={faEye} className="w-4 h-4 mr-2 mt-1" />
                                                 </Link>
-                                                <Link href={`${ADMIN_EDIT_BLOGS}/${blog.id}`}>
-                                                    <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2 mt-1" />
-                                                </Link>
+                                                {blog.user_id === (usersDetails.id) && (
+                                                    <Link href={`${USER_EDIT_BLOGS}/${blog.id}`}>
+                                                        <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2 mt-1" />
+                                                    </Link>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
@@ -290,6 +255,7 @@ const Blogs = () => {
 
                                                     <div className="title">
                                                         <p className='break-words text-justify italic text-2xl leading-loose mb-4'>{blogModalDetail.title}</p>
+                                                        <p className='break-words text-justify italic text-base leading-loose mb-4'>Added By : <span className='font-light'>{blogModalDetail.title}</span></p>
                                                     </div>
                                                 </div>
                                                 <div className="description">

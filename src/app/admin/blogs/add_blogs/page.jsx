@@ -48,7 +48,14 @@ const AddBlogs = () => {
     
             const downloadURL = await getDownloadURL(storageRef);
 
+            const firestore = getFirestore();
+            const usersRef = collection(firestore, 'users');
+            const q = query(usersRef, where("email", "==", auth.currentUser.email));
+            const querySnapshot = await getDocs(q);
+            const userFirestoreId = querySnapshot.docs[0].id;
+
             const blogData = {
+                user_id: userFirestoreId,
                 image: downloadURL,
                 title: String(blogForm.title),
                 description: String(blogForm.description),

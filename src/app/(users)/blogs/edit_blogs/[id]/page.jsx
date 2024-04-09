@@ -1,5 +1,5 @@
 "use client"
-import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD, updateDoc } from "@/app/api/routes/page";
+import { NAVBAR_BLOGS, InputField, SubmitButton, TextAreaField, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD, updateDoc, NAVBAR_DASHBOARD } from "@/app/api/routes/page";
 import { useEffect, useState } from "react";
 
 const EditBlogs = (req) => {
@@ -72,7 +72,7 @@ const EditBlogs = (req) => {
     
             localStorage.setItem('hasShownBlogUpdatedToast', false);
     
-            router.push(ADMIN_BLOGS);
+            router.push(NAVBAR_BLOGS);
         } catch (error) {
             console.log(error);
         }
@@ -82,44 +82,16 @@ const EditBlogs = (req) => {
     return (
         <>
             <section>
-                <div className="edit_blogs ml-60">
+                <div className="edit_blogs mb-12">
                     <div className="edit_blog_heading text-5xl text-center font-bold mt-8 mb-12">
                         <h1>Edit Blog</h1>
-                    </div>
-
-                    <div className="admin_breadcrumbs">
-                        <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
-                            <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                                <li className="inline-flex items-center">
-                                    <Link href={ADMIN_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                                        Home
-                                    </Link>
-                                </li>
-                                <li className="inline-flex items-center">
-                                    <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                    <Link href={ADMIN_BLOGS} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                                        Blogs
-                                    </Link>
-                                </li>
-                                <li aria-current="page">
-                                    <div className="flex items-center">
-                                        <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
-                                        </svg>
-                                        <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Edit Blogs</span>
-                                    </div>
-                                </li>
-                            </ol>
-                        </nav>
                     </div>
 
                     <div className="breadcrumbs">
                         <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
                             <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                                 <li className="inline-flex items-center">
-                                    <Link href={ADMIN_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                    <Link href={NAVBAR_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                                         Home
                                     </Link>
                                 </li>
@@ -128,7 +100,7 @@ const EditBlogs = (req) => {
                                         <svg className="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                                         </svg>
-                                        <Link href={ADMIN_BLOGS} className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Blogs</Link>
+                                        <Link href={NAVBAR_BLOGS} className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Blogs</Link>
                                     </div>
                                 </li>
                                 <li aria-current="page">
@@ -159,7 +131,7 @@ const EditBlogs = (req) => {
                                 {imagePreview && (<Image src={imagePreview} alt="Uploaded Preview" className="image-preview mb-3" width={800} height={100} encType="multipart/form-data" />)}
                             </div>
                             <div className="submit_button">
-                                <SubmitButton className="submit" name="submit" id="submit" label="Add blog" />
+                                <SubmitButton className="submit" name="submit" id="submit" label="Update blog" />
                             </div>
                         </form>
                     </div>

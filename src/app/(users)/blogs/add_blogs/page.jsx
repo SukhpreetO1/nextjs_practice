@@ -1,5 +1,5 @@
 "use client"
-import { ADMIN_BLOGS, InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD, ref, uploadBytes, getStorage, getDownloadURL, } from "@/app/api/routes/page";
+import { InputField, SubmitButton, TextAreaField, addDoc, collection, db, useRouter, ImageUploading, Image, Link, ADMIN_DASHBOARD, ref, uploadBytes, getStorage, getDownloadURL, getFirestore, where, query, getDocs, auth, NAVBAR_BLOGS, NAVBAR_DASHBOARD, } from "@/app/api/routes/page";
 import { useState } from "react";
 
 const AddBlogs = () => {
@@ -48,7 +48,14 @@ const AddBlogs = () => {
     
             const downloadURL = await getDownloadURL(storageRef);
 
+            const firestore = getFirestore();
+            const usersRef = collection(firestore, 'users');
+            const q = query(usersRef, where("email", "==", auth.currentUser.email));
+            const querySnapshot = await getDocs(q);
+            const userFirestoreId = querySnapshot.docs[0].id;
+            
             const blogData = {
+                user_id: userFirestoreId,
                 image: downloadURL,
                 title: String(blogForm.title),
                 description: String(blogForm.description),
@@ -59,7 +66,7 @@ const AddBlogs = () => {
             await addDoc(collection(db, "blogs"), blogData);    
             localStorage.setItem('hasShownBlogAddedToast', false);
 
-            router.push(ADMIN_BLOGS);
+            router.push(NAVBAR_BLOGS);
         } catch (error) {
             console.error(error);
         }
@@ -69,7 +76,7 @@ const AddBlogs = () => {
     return (
         <>
             <section>
-                <div className="add_blogs ml-60">
+                <div className="add_blogs mb-12">
                     <div className="add_blog_heading text-5xl text-center font-bold mt-8 mb-12">
                         <h1>Add Blog</h1>
                     </div>
@@ -78,7 +85,7 @@ const AddBlogs = () => {
                         <nav className="flex px-5 py-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 w-64" aria-label="Breadcrumb">
                             <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                                 <li className="inline-flex items-center">
-                                    <Link href={ADMIN_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                    <Link href={NAVBAR_DASHBOARD} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                                         Home
                                     </Link>
                                 </li>
@@ -86,7 +93,7 @@ const AddBlogs = () => {
                                     <svg className="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                                     </svg>
-                                    <Link href={ADMIN_BLOGS} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                    <Link href={NAVBAR_BLOGS} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                                         Blogs
                                     </Link>
                                 </li>

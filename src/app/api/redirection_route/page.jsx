@@ -18,6 +18,8 @@ export const NAVBAR_ABOUT = "/about";
 export const NAVBAR_PROFILE = "/profile";
 export const NAVBAR_BLOGS_DETAILS = "/blogs_details";
 export const NAVBAR_BLOGS = "/blogs";
+export const USER_ADD_BLOGS = "/blogs/add_blogs";
+export const USER_EDIT_BLOGS = "/blogs/edit_blogs";
 
 // getting routes from admin component
 export const ADMIN_DASHBOARD = "/admin/dashboard";
