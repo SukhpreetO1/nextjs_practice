@@ -13,10 +13,12 @@ export async function fetchUserDataFromToken(setUserData) {
 
                 if (!querySnapshot.empty) {
                     querySnapshot.forEach((doc) => {
-                        setUserData(doc.data());
+                        const userData = { ...doc.data(), id: doc.id };
+                        setUserData(userData);
                     });
                 } else {
-                    setUserData(email);
+                    const userData = { email, id: null };
+                    setUserData(userData);
                     console.log('User document not found');
                 }
             } else {
