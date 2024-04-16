@@ -119,9 +119,9 @@ const Login = () => {
   const handleSendCode = async () => {
     const recaptchaVerifier = new RecaptchaVerifier(auth, 'send-code-button', { size: 'invisible' });
     try {
-      const verificationId = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
+      const verification_id = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
       toast.success("OTP sent successfully", { position: "top-right" })
-      setVerificationId(verificationId);
+      setVerificationId(verification_id);
     } catch (error) {
       toast.error("Phone number is not correct" + error, { position: "top-right" })
       console.error(error);
@@ -146,16 +146,42 @@ const Login = () => {
     }
 
     if (isValid) {
-      const credential = PhoneAuthProvider.credential(verificationId, verificationCode);
+      const credential = PhoneAuthProvider.credential(verificationId.verificationId, verificationCode);
       try {
-        const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, credential);
-        const userCredential = await confirmationResult.confirm(verificationCode);
-        console.log("userCredential", userCredential);
-        console.log("User signed in successfully");
+        const confirmationResult = await signInWithCredential(auth, credential);
+        const expirationTime = new Date();
+        expirationTime.setTime(expirationTime.getTime() + 30 * 60 * 1000);
+        const user_data = {
+          first_name: '',
+          last_name: '',
+          email: '',
+          username: '',
+          date_of_birth: '',
+          mobile_number: phoneNumber,
+          gender: '',
+          role_id: Number(1),
+          hobbies: '',
+          password: '',
+          created_at: serverTimestamp(),
+          updated_at: serverTimestamp()
+        };
+        await addDoc(collection(db, 'users'), user_data);
+  
+        Cookies.set('currentUserToken', JSON.stringify(auth.currentUser.accessToken), { expires: expirationTime });
         setShowModal(false);
-        // router.push(LOGIN_URL);
+        setVerificationCode('');
+        setPhoneNumber('');
+        localStorage.setItem("hasShownLoginToast", false);
+        router.push(NAVBAR_DASHBOARD);
       } catch (error) {
-        console.log(error);
+        if (error.code === "auth/code-expired") {
+          toast.error("OTP Expire.", { position: "top-right" })
+        } else if (error.code === "auth/invalid-verification-code") {
+          toast.error("Invalid OTP", { position: "top-right" })
+        }
+        setShowModal(false);
+        setVerificationCode('');
+        setPhoneNumber('');
       }
     } else {
       setErrors(validation_errors);

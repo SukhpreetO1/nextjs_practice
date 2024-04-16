@@ -8,18 +8,22 @@ export async function fetchUserDataFromToken(setUserData) {
             const decodedToken = jwt.decode(token);
             if (decodedToken) {
                 const email = decodedToken.email;
-                const usersCollection = collection(db, 'users');
-                const querySnapshot = await getDocs(query(usersCollection, where('email', '==', email)));
+                if (email) {
+                    const usersCollection = collection(db, 'users');
+                    const querySnapshot = await getDocs(query(usersCollection, where('email', '==', email)));
 
-                if (!querySnapshot.empty) {
-                    querySnapshot.forEach((doc) => {
-                        const userData = { ...doc.data(), id: doc.id };
+                    if (!querySnapshot.empty) {
+                        querySnapshot.forEach((doc) => {
+                            const userData = { ...doc.data(), id: doc.id };
+                            setUserData(userData);
+                        });
+                    } else {
+                        const userData = { email, id: null };
                         setUserData(userData);
-                    });
+                        console.log('User document not found');
+                    }
                 } else {
-                    const userData = { email, id: null };
-                    setUserData(userData);
-                    console.log('User document not found');
+                    console.log('Email is not defined');
                 }
             } else {
                 console.log('Unable to decode token');

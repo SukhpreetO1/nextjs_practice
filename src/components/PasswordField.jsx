@@ -1,8 +1,9 @@
 "use client"
 import React, { useState } from "react";
 import { FontAwesomeIcon, faEye, faEyeSlash } from "@/app/api/routes/page"
+import PasswordChecklist from "react-password-checklist";
 
-const PasswordField = ({ label_heading, placeholder, name, id, className, div_name, value, onChange, error, setError }) => {
+const PasswordField = ({ label_heading, placeholder, name, id, className, div_name, value, onChange, error }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const passwordVisibility = () => {
@@ -19,7 +20,20 @@ const PasswordField = ({ label_heading, placeholder, name, id, className, div_na
                             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                         </span>
                     </div>
-                    <span className={`${error} text-red-500 font-semibold text-xs`} >{error}</span>
+                    
+                    {className === "password" && value && value.length >= 1 && (
+                        <PasswordChecklist rules={["lowercase", "capital", "number", "minLength", "maxLength" ]} minLength={6} maxLength={20} value={value} 
+                            messages={{
+                                lowercase: "Must contain at least one lowercase letter.",
+                                capital: "Must contain at least one uppercase letter.",
+                                number: "Must contain at least one number",
+                                minLength: "Must have at least 6 characters long.",
+                                maxLength: "Must not be greater than 20 characters.",
+                            }}
+                            className="checklist_password"
+                        />
+                    )}
+                    <span className="text-red-500 font-semibold text-xs" >{error}</span>
                 </div>
             </div>
         </>

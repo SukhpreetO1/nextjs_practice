@@ -91,3 +91,5 @@ In order to stop calling routes 2 times when add "use client", then change the n
     npm install express multer
 
     npm install nodemailer
+
+    npm install react-password-checklist --save

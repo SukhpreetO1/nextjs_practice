@@ -61,6 +61,7 @@ const Signup = () => {
         const validation_errors = validate_signup_submit_form(formData);
 
         if (Object.keys(validation_errors).length > 0) {
+            setIsLoading(false);
             setErrors(validation_errors);
             return;
         }
