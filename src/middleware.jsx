@@ -38,6 +38,7 @@ export const config = {
     "/about",
     "/profile",
     "/blogs",
+    "/blogs_details",
     "/blogs/[id]",
     
     "/admin/dashboard",

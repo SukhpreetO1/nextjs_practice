@@ -54,20 +54,32 @@ const ContactFormMessages = () => {
     const commentMessagereply = async (e, selectedReplyMessages, selectedReplyMessages_id) => {
         e.preventDefault();
         const blog_contact_form_reply = formData.blog_contact_message_reply;
-        const newReplyData = {
-            contact_form_id: selectedReplyMessages_id,
-            contact_email: selectedReplyMessages.contact_email,
-            contact_name: selectedReplyMessages.contact_name,
-            blog_contact_form_reply: blog_contact_form_reply,
-            created_at: serverTimestamp(),
-            updated_at: serverTimestamp()
-        };
-        await addDoc(collection(db, 'contact_form_reply'), newReplyData);
-        toast.success("Reply has been sent successfully", { position: "top-right" });
-        setShowReplyModal(false);
-        setFormData({ blog_contact_message_reply: '' });
-    }
 
+        const requestData = {
+            selectedReplyMessages: selectedReplyMessages,
+            blog_contact_form_reply: blog_contact_form_reply
+        };
+
+        const mail = await fetch("/api/mails/contact_form_reply", {method: "POST", body: JSON.stringify(requestData)})
+        const response = await mail.json();
+
+        if (response.status === 200) {
+            const newReplyData = {
+                contact_form_id: selectedReplyMessages_id,
+                contact_email: selectedReplyMessages.contact_email,
+                contact_name: selectedReplyMessages.contact_name,
+                blog_contact_form_reply: blog_contact_form_reply,
+                created_at: serverTimestamp(),
+                updated_at: serverTimestamp()
+            };
+            await addDoc(collection(db, 'contact_form_reply'), newReplyData);
+            toast.success("Reply has been sent successfully", { position: "top-right" });
+            setShowReplyModal(false);
+            setFormData({ blog_contact_message_reply: '' });
+        } else {
+            toast.error("Failed to send reply", { position: "top-right" });
+        }
+    }
 
     return (
         <>
@@ -151,7 +163,7 @@ const ContactFormMessages = () => {
                                                 </div>
                                                 <div className="description mb-2">
                                                     <div className="description-content break-words">
-                                                        <p className='break-words text-justify font-light leading-loose text-base'>{contactMessagesDetail.contact_message ? "Message : " + contactMessagesDetail.contact_name : ''}</p>
+                                                        <p className='break-words text-justify font-light leading-loose text-base'>{contactMessagesDetail.contact_message ? "Message : " + contactMessagesDetail.contact_message : ''}</p>
                                                     </div>
                                                 </div>
                                                 <div className="send_by">
@@ -164,7 +176,7 @@ const ContactFormMessages = () => {
                                                     <div className="mb-2"><span className="font-medium italic text-xl">Reply : </span>
                                                         {contactMessagesDetail.replyData.map((reply, index) => (
                                                             <div className="contact_message_reply" key={index}>
-                                                                <p className='break-words text-justify font-light leading-loose text-base'><span>Message : </span>{reply.blog_contact_form_reply}</p>
+                                                                <p className='break-words text-justify font-light leading-loose text-base'>{reply.blog_contact_form_reply}</p>
                                                             </div>
                                                         ))}
                                                     </div>

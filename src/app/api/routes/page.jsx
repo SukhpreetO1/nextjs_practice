@@ -13,7 +13,6 @@ import PasswordField from "@/components/PasswordField";
 import RadioButtonField from "@/components/RadioButtonField";
 import SubmitButton from "@/components/SubmitButton";
 import TextAreaField from "@/components/TextAreaField";
-import ContactFormReply from "@/components/mails_templates/ContactFormReply";
 
 // importing from common folder
 import Navbar from "@/app/(common)/navbar/page";
@@ -156,7 +155,6 @@ export {
   RadioButtonField,
   SubmitButton,
   TextAreaField,
-  ContactFormReply,
 
   Navbar,
   Footer,
